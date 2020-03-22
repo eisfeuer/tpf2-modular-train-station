@@ -1,0 +1,6 @@
+def environment
+    {
+        staging_area: '/cygdrive/c/Spiele/Steam/userdata/66980661/1066780/local/staging_area',
+        transport_fever_2_path: '/cygdrive/d/Spiele/steamapps/common/Transport Fever 2'
+    }
+end

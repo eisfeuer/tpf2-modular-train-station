@@ -39,3 +39,11 @@ luac.out
 *.x86_64
 *.hex
 
+environment.rb
+work/textures
+textures/*.dds
+textures/*.json
+work/*.blend1
+work/*.fbx
+releases/*
+

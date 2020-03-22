@@ -1,0 +1,101 @@
+require "./environment.rb"
+require "./properties.rb"
+require 'find'
+
+def dds_files
+    FileList['textures/*.png'].map do |file_name|
+        file_name.gsub(/\.png$/, '.dds')
+    end
+end
+
+def compression_methods
+    {
+        '_albedo' => 'bc1',
+        '_albedo_opacity' => 'bc3',
+        '_metal_gloss_ao' => 'bc1',
+        '_normal' => 'bc5'
+    }
+end
+
+def compression_method_by_file_ending(file_name)
+    compression_methods.each do |file_ending, compression_method|
+        if file_name.end_with?("#{file_ending}.png") then
+            return compression_method
+        end
+    end
+    null
+end
+
+def mod_name
+    author_prefix + '_' + technical_name + '_' + version_postfix.to_s()
+end
+
+def version_postfix
+    properties[:major_version]
+end
+
+def author_prefix
+    properties[:author_prefix]
+end
+
+def technical_name
+    properties[:technical_name]
+end
+
+def transport_fever_mod_path
+    environment[:transport_fever_path] + '/mods'
+end
+
+def staging_area
+    environment[:staging_area]
+end
+
+def staging_area_path
+    staging_area + '/' + mod_name
+end
+
+task push: [] do
+    puts 'pushing mod to staging area'
+    sh "cp -R ./mod/. #{staging_area_path}/"
+end
+
+task :clean_staging_area do
+    puts 'cleal staging area'
+    sh "rm -rf #{staging_area_path}/"
+end
+
+task :remove_tests do
+    puts 'removing test files'
+    sh "rm #{staging_area_path}/res/scripts/*_spec.lua"
+end
+
+task :remove_debug do
+    puts 'removing debug stuff'
+    sh "rm #{staging_area_path}/res/scripts/inspect.lua"
+end
+
+task cleanpush: [:clean_staging_area, :push]
+
+task release: [:cleanpush, :remove_debug, :remove_tests]
+
+task pull: [] do
+    puts 'pulling mod from staging area'
+    sh "cp -R #{staging_area_path}/. ./mod"
+end
+
+task dds: [:textures] do
+    sh "cp ./textures/*.dds ./mod/res/textures"
+end
+
+file "textures" => dds_files
+
+rule '.dds' => ['.png'] do |t|
+    compression = compression_method_by_file_ending(t.source)
+    if !compression then
+        puts 'Unknown file ending'
+        return null
+    end
+    sh "magick #{t.source} -flip -size #{properties[:texture_resolution]} temp.png"
+	sh "nvcompress -color -#{compression} temp.png #{t.name}"
+	sh "rm temp.png"
+end

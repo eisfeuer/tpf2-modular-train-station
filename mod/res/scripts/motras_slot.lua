@@ -13,9 +13,12 @@ local function toSignedId(unsigned_id)
 end
 
 function Slot:new (o)
+    if not (o and o.id) then
+        error("Required Property Id is missing")
+    end
+
     local ids = NatBomb.explode(DIGIT_SPACES, o.id or 0)
 
-    o = o or {}
     o.type = ids[1] or t.UNKNOWN
     o.gridType = math.floor(o.type / 64)
     o.gridX = toSignedId(ids[2])

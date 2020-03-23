@@ -3,70 +3,84 @@ local t = require("motras_types")
 local Grid = require("motras_grid")
 
 local GridElement = require("motras_grid_element")
-local Place = require("motras_place")
+local Void = require("motras_void")
 
-describe("Place", function()
+describe("Void", function()
     local slotId = Slot.makeId({
-        type = t.PLACE,
         gridX = 1,
         gridY = 2
     })
     local slot = Slot:new{id = slotId}
     local gridElement = GridElement:new{slot = slot, grid = Grid:new{}}
-    local place = Place:new(gridElement)
+    local void = Void:new(gridElement)
+
+    describe("new", function ()
+        it("makes void from params", function ()
+            local void = Void:new({
+                    gridX = 1,
+                    gridY = 2
+                },
+                Grid:new{}
+            )
+
+            assert.are.equal(1, void:getGridX())
+            assert.are.equal(2, void:getGridY())
+        end)
+    end)
 
     describe("getSlotId", function ()
-        it("returns slot id", function ()
-            assert.are.equal(slotId, place:getSlotId())
+        it("returns nil", function ()
+            assert.are.equal(nil, void:getSlotId())
         end)
     end)
 
     describe("getGridType", function ()
         it("returns grid type", function ()
-            assert.are.equal(t.GRID_PLACE, place:getGridType())
+            assert.are.equal(t.VOID, void:getGridType())
         end)
         
     end)
 
     describe("getType", function ()
         it("returns type", function ()
-            assert.are.equal(t.PLACE, place:getType())
+            assert.are.equal(t.VOID, void:getType())
         end)
     end)
 
     describe("getGridX", function ()
         it("returns grid x", function ()
-            assert.are.equal(1, place:getGridX())
+            assert.are.equal(1, void:getGridX())
         end)
+       
     end)
 
     describe("getGridY", function ()
         it("returns grid y", function ()
-            assert.are.equal(2, place:getGridY())
+            assert.are.equal(2, void:getGridY())
         end)
     end)
 
     describe("isTrack", function ()
-        it("is not a Track", function ()
-            assert.is_false(place:isTrack())
+        it("is not a track", function ()
+            assert.is_false(void:isTrack())
         end)
     end)
 
     describe("isPlatform", function ()
-        it ("is a platform", function ()
-            assert.is_false(place:isPlatform())
+        it ("is not a platform", function ()
+            assert.is_false(void:isPlatform())
         end)
     end)
 
     describe("isPlace", function ()
         it("returns always false", function ()
-            assert.is_true(place:isPlace())
+            assert.is_false(void:isPlace())
         end)
     end)
 
     describe("isBlank", function ()
         it ("is not blank", function ()
-            assert.is_false(gridElement:isBlank())
+            assert.is_true(gridElement:isBlank())
         end)
     end)
 end)

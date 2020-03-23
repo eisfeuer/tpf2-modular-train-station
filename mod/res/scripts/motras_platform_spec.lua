@@ -1,5 +1,6 @@
 local Slot = require("motras_slot")
 local t = require("motras_types")
+local Grid = require("motras_grid")
 
 local GridElement = require("motras_grid_element")
 local Platform = require("motras_platform")
@@ -11,7 +12,7 @@ describe("Platform", function()
         gridY = 2
     })
     local slot = Slot:new{id = slotId}
-    local gridElement = GridElement:new{slot = slot}
+    local gridElement = GridElement:new{slot = slot, grid = Grid:new{}}
     local Platform = Platform:new(gridElement)
 
     describe("getSlotId", function ()
@@ -60,6 +61,12 @@ describe("Platform", function()
     describe("isPlace", function ()
         it("returns always false", function ()
             assert.is_false(Platform:isPlace())
+        end)
+    end)
+
+    describe("isBlank", function ()
+        it ("is not blank", function ()
+            assert.is_false(gridElement:isBlank())
         end)
     end)
 end)

@@ -4,10 +4,17 @@ function GridElement:new(o)
     if not (o and o.slot) then
         error("Required Property Slot is missing")
     end
+    if not (o and o.grid) then
+        error("Required Property Grid is missing")
+    end
 
     setmetatable(o, self)
     self.__index = self
     return o
+end
+
+function GridElement:getGrid()
+    return self.grid
 end
 
 function GridElement:getSlotId()
@@ -39,6 +46,10 @@ function GridElement:isPlatform()
 end
 
 function GridElement:isPlace()
+    return false
+end
+
+function GridElement:isBlank()
     return false
 end
 

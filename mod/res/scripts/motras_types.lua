@@ -1,5 +1,6 @@
 return {
     UNKNOWN = 0,
+    VOID = 0,
     -- Main Types
     GRID_ASSET = 0,
     GRID_TRACK = 1,

@@ -21,7 +21,7 @@ function Grid:set(gridElement)
     end
 
     if self.grid[gridElement:getGridX()] then
-        self.grid[gridElement:getGridY()] = gridElement
+        self.grid[gridElement:getGridX()][gridElement:getGridY()] = gridElement
     else
         self.grid[gridElement:getGridX()] = {
             [gridElement:getGridY()] = gridElement
@@ -30,7 +30,7 @@ function Grid:set(gridElement)
 end
 
 function Grid:get(gridX, gridY)
-    if self.grid[gridX] and self.grid[gridX][gridY] then
+    if self:has(gridX, gridY) then
         return self.grid[gridX][gridY]
     end
 
@@ -38,6 +38,22 @@ function Grid:get(gridX, gridY)
         gridX = gridX,
         gridY = gridY
     }, self)
+end
+
+function Grid:has(gridX, gridY)
+    return self.grid[gridX] ~= nil and self.grid[gridX][gridY] ~= nil
+end
+
+function Grid:getHorizontalDistance()
+    return self.horizontalDistance
+end
+
+function Grid:getVerticalDistance()
+    return self.verticalDistance
+end
+
+function Grid.isInBounds(gridX, gridY)
+    return math.abs(gridX) <= c.GRID_MAX_XY_POSITION and math.abs(gridY) <= c.GRID_MAX_XY_POSITION
 end
 
 return Grid

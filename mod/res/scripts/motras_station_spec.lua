@@ -1,11 +1,26 @@
 local Slot = require("motras_slot")
 local t = require("motras_types")
+local c = require("motras_constants")
 
 local Station = require("motras_station")
 
 describe("Station", function ()
     describe("initializeAndRegister", function ()
         
+        describe('new', function ()
+            it('creates station with default grid distances', function ()
+                local station = Station:new{}
+                assert.are.equal(c.DEFAULT_HORIZONTAL_GRID_DISTANCE, station.grid:getHorizontalDistance())
+                assert.are.equal(c.DEFAULT_VERTICAL_GRID_DISTANCE, station.grid:getVerticalDistance())
+            end)
+
+            it('creates station with custom grid distances', function ()
+                local station = Station:new{horizontalGridDistance = 40, verticalGridDistance = 10}
+                assert.are.equal(40, station.grid:getHorizontalDistance())
+                assert.are.equal(10, station.grid:getVerticalDistance())
+            end)
+        end)
+
         it("creates track", function ()
             local station = Station:new()
 

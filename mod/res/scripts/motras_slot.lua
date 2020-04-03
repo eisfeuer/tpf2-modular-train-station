@@ -1,5 +1,6 @@
-local NatBomb = require('natbomb')
 local t = require('motras_types')
+local c = require('motras_constants')
+local NatBomb = require('natbomb')
 
 local DIGIT_SPACES = {7, 7, 6, 4}
 
@@ -39,6 +40,26 @@ function Slot.makeId(options)
         options.assetId or 0,
         options.assetDecorationId or 0
     })
+end
+
+function Slot.getGridElementSpacing(grid)
+    return {
+        grid:getVerticalDistance() / 2 - 0.01,
+        grid:getVerticalDistance() / 2 - 0.01,
+        grid:getHorizontalDistance() / 2 - 0.01,
+        grid:getHorizontalDistance() / 2 - 0.01
+    }
+end
+
+function Slot.addGridSlotsToCollection(slotCollection, grid, slotPlacementClass)
+    for iY = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+        for iX = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+            local slotPlacementInstance = slotPlacementClass:new{grid = grid, gridX = iX, gridY = iY}
+            if slotPlacementInstance:isPassingPlacementRule() then
+                table.insert(slotCollection, slotPlacementInstance:getSlot())
+            end
+        end
+    end
 end
 
 return Slot

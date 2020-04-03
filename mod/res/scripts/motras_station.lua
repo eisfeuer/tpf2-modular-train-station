@@ -5,6 +5,7 @@ local Track = require("motras_track")
 local Platform = require("motras_platform")
 local Place = require("motras_place")
 
+local c = require("motras_constants")
 local t = require("motras_types")
 
 local Station = {}
@@ -12,7 +13,10 @@ local Station = {}
 function Station:new(o)
     o = o or {}
 
-    o.grid = Grid:new{}
+    o.grid = Grid:new{
+        horizontalDistance = o.horizontalGridDistance or c.DEFAULT_HORIZONTAL_GRID_DISTANCE,
+        verticalDistance = o.verticalGridDistance or c.DEFAULT_VERTICAL_GRID_DISTANCE
+    }
 
     setmetatable(o, self)
     self.__index = self
@@ -32,7 +36,6 @@ function Station:initializeAndRegister(slotId)
     elseif gridElement:getGridType() == t.GRID_PLACE then
         return self:registerGridElement(Place:new(gridElement))
     end
-    
 end
 
 function Station:registerGridElement(gridElement)

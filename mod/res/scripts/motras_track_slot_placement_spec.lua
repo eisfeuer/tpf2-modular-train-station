@@ -137,6 +137,23 @@ describe('TrackSlotPlacement', function ()
                 spacing = Slot.getGridElementSpacing(station.grid)
             }, trackSlotPlacement:getSlot())
         end)
+
+        it('applies custom base height and module prefix', function ()
+            local station = Station:new{horizontalGridDistance = 40, verticalGridDistance = 10, baseHeight = 3, modulePrefix = 'my_station'}
+            local trackSlotPlacement = TrackSlotPlacement:new{grid = station.grid, gridX = 1, gridY = 2}
+
+            assert.are.same({
+                id = Slot.makeId({type = t.TRACK, gridX = 1, gridY = 2}),
+                type = 'my_station_track',
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    40, 20, 3, 1,
+                },
+                spacing = Slot.getGridElementSpacing(station.grid)
+            }, trackSlotPlacement:getSlot())
+        end)
     end)
 
 end)

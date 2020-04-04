@@ -71,15 +71,31 @@ describe("Grid", function ()
     end)
 
     describe("getVerticalDistance", function ()
-        it("returns custom vertical distance", function ()
+        it("returns vertical distance", function ()
             local grid = Grid:new{verticalDistance = 25}
             assert.are.equal(25, grid:getVerticalDistance())
         end)
     end)
 
     describe("getHorizontalDistance", function ()
-        local grid = Grid:new{horizontalDistance = 15}
-        assert.are.equal(15, grid:getHorizontalDistance())
+        it("returns horizontal distance", function ()
+            local grid = Grid:new{horizontalDistance = 15}
+            assert.are.equal(15, grid:getHorizontalDistance())
+        end)
+    end)
+
+    describe("getModulePrefix", function ()
+        it("returns module prefix", function ()
+            local grid = Grid:new{modulePrefix = 'my_station'}
+            assert.are.equal('my_station', grid:getModulePrefix())
+        end)
+    end)
+
+    describe("getBaseHeight", function ()
+        it("returns base height", function ()
+            local grid = Grid:new{baseHeight = 4}
+            assert.are.equal(4, grid:getBaseHeight())
+        end)
     end)
 
     describe("isInBounds", function ()

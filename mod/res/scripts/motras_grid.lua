@@ -52,6 +52,14 @@ function Grid:getVerticalDistance()
     return self.verticalDistance
 end
 
+function Grid:getModulePrefix()
+    return self.modulePrefix
+end
+
+function Grid:getBaseHeight()
+    return self.baseHeight
+end
+
 function Grid.isInBounds(gridX, gridY)
     return math.abs(gridX) <= c.GRID_MAX_XY_POSITION and math.abs(gridY) <= c.GRID_MAX_XY_POSITION
 end

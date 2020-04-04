@@ -29,12 +29,12 @@ end
 function TrackSlotPlacement:getSlot()
     return {
         id = Slot.makeId({type = t.TRACK, gridX = self.gridX, gridY = self.gridY}),
-        type = 'motras_track',
+        type = self.grid:getModulePrefix() .. '_track',
         transf = {
             1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
-            self.gridX * self.grid:getHorizontalDistance(), self.gridY * self.grid:getVerticalDistance(), 0, 1,
+            self.gridX * self.grid:getHorizontalDistance(), self.gridY * self.grid:getVerticalDistance(), self.grid:getBaseHeight(), 1,
         },
         spacing = Slot.getGridElementSpacing(self.grid)
     }

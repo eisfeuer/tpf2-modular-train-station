@@ -15,7 +15,9 @@ function Station:new(o)
 
     o.grid = Grid:new{
         horizontalDistance = o.horizontalGridDistance or c.DEFAULT_HORIZONTAL_GRID_DISTANCE,
-        verticalDistance = o.verticalGridDistance or c.DEFAULT_VERTICAL_GRID_DISTANCE
+        verticalDistance = o.verticalGridDistance or c.DEFAULT_VERTICAL_GRID_DISTANCE,
+        baseHeight = o.baseHeight or c.DEFAULT_BASE_HEIGHT,
+        modulePrefix = o.modulePrefix or c.DEFAULT_MODULE_PREFIX
     }
 
     setmetatable(o, self)

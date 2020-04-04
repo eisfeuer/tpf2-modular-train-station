@@ -19,6 +19,26 @@ describe("Station", function ()
                 assert.are.equal(40, station.grid:getHorizontalDistance())
                 assert.are.equal(10, station.grid:getVerticalDistance())
             end)
+
+            it('creates station with default module prefix', function ()
+                local station = Station:new{}
+                assert.are.equal('motras', station.grid:getModulePrefix())
+            end)
+
+            it('creates station with custom module prefix', function ()
+                local station = Station:new{modulePrefix = 'my_station'}
+                assert.are.equal('my_station', station.grid:getModulePrefix())
+            end)
+
+            it('creates station with default base height', function ()
+                local station = Station:new{}
+                assert.are.equal(c.DEFAULT_BASE_HEIGHT, station.grid:getBaseHeight())
+            end)
+
+            it('creates station with custom base height', function ()
+                local station  = Station:new{baseHeight = 4}
+                assert.are.equal(4, station.grid:getBaseHeight())
+            end)
         end)
 
         it("creates track", function ()

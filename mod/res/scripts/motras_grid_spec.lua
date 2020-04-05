@@ -3,6 +3,7 @@ local Slot = require("motras_slot")
 local t = require("motras_types")
 local c = require("motras_constants")
 local Grid = require("motras_grid")
+local Station = require("motras_station")
 
 
 describe("Grid", function ()
@@ -108,6 +109,65 @@ describe("Grid", function ()
             assert.is_false(Grid.isInBounds(-c.GRID_MAX_XY_POSITION - 1, -c.GRID_MAX_XY_POSITION))
             assert.is_false(Grid.isInBounds(c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION + 1))
             assert.is_false(Grid.isInBounds(-c.GRID_MAX_XY_POSITION, -c.GRID_MAX_XY_POSITION - 1))
+        end)
+    end)
+
+    describe("handleModules", function ()
+        it ("handles all placed modules", function ()
+            local station = Station:new{}
+            local trackModule = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            trackModule:handle(function(result)
+                table.insert(result.models, {
+                    id = 'a_track_model.mdl',
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1
+                    }
+                })
+            end)
+
+            local platformModule = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 1}))
+            platformModule:handle(function (result)
+                table.insert(result.models, {
+                    id = 'a_platform_model.mdl',
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 5, 0, 1
+                    }
+                })
+            end)
+
+            local result = {
+                models = {}
+            }
+    
+            station.grid:handleModules(result)
+
+            assert.are.same({
+                models = {
+                    {
+                        id = 'a_track_model.mdl',
+                        transf = {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            0, 0, 0, 1
+                        },
+                    }, {
+                        id = 'a_platform_model.mdl',
+                        transf = {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            0, 5, 0, 1
+                        }
+                    }
+                }
+            }, result)
         end)
     end)
 

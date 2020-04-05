@@ -60,6 +60,28 @@ function Grid:getBaseHeight()
     return self.baseHeight
 end
 
+function Grid:each(callable)
+    self:eachPosition(function (grid, iX, iY)
+        if grid:has(iX, iY) then
+            callable(grid:get(iX, iY))
+        end
+    end)
+end
+
+function Grid:eachPosition(callable)
+    for iY = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+        for iX = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+           callable(self, iX, iY)
+        end
+    end
+end
+
+function Grid:handleModules(result)
+    self:each(function (gridElement)
+        gridElement:call(result)
+    end)
+end
+
 function Grid.isInBounds(gridX, gridY)
     return math.abs(gridX) <= c.GRID_MAX_XY_POSITION and math.abs(gridY) <= c.GRID_MAX_XY_POSITION
 end

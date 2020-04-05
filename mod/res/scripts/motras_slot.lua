@@ -52,14 +52,12 @@ function Slot.getGridElementSpacing(grid)
 end
 
 function Slot.addGridSlotsToCollection(slotCollection, grid, slotPlacementClass)
-    for iY = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
-        for iX = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
-            local slotPlacementInstance = slotPlacementClass:new{grid = grid, gridX = iX, gridY = iY}
-            if slotPlacementInstance:isPassingPlacementRule() then
-                table.insert(slotCollection, slotPlacementInstance:getSlot())
-            end
+    grid:eachPosition(function(grid, iX, iY) 
+        local slotPlacementInstance = slotPlacementClass:new{grid = grid, gridX = iX, gridY = iY}
+        if slotPlacementInstance:isPassingPlacementRule() then
+            table.insert(slotCollection, slotPlacementInstance:getSlot())
         end
-    end
+    end)
 end
 
 return Slot

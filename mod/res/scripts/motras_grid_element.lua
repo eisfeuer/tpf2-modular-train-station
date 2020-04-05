@@ -7,6 +7,9 @@ function GridElement:new(o)
     if not (o and o.grid) then
         error("Required Property Grid is missing")
     end
+    o.handleFunction = o.handleFunction or function (result)
+        
+    end
 
     setmetatable(o, self)
     self.__index = self
@@ -51,6 +54,14 @@ end
 
 function GridElement:isBlank()
     return false
+end
+
+function GridElement:handle(handleFunction)
+    self.handleFunction = handleFunction
+end
+
+function GridElement:call(result)
+    self.handleFunction(result)
 end
 
 return GridElement

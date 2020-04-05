@@ -69,4 +69,40 @@ describe("Place", function()
             assert.is_false(gridElement:isBlank())
         end)
     end)
+
+    describe("handle/call", function ()
+        it("calls handler function", function ()
+            place:handle(function(result)
+                table.insert(result.models, {
+                    id = 'a_model.mdl',
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 0, 1
+                    }
+                })
+            end)
+
+            local result = {
+                models = {}
+            }
+
+            place:call(result)
+
+            assert.are.same({
+                models = {
+                    {
+                        id = 'a_model.mdl',
+                        transf = {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 0, 1
+                        }
+                    }
+                }
+            }, result)
+        end)
+    end)
 end)

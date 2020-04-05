@@ -73,4 +73,18 @@ describe("GridElement", function()
             assert.are.equal(grid, gridElement:getGrid())
         end)
     end)
+
+    describe("call", function ()
+        it ("does not change anything when handle function is not definded", function ()
+            local result = {
+                models = {}
+            }
+
+            gridElement:call(result)
+
+            assert.are.same({
+                models = {}
+            }, result)
+        end)
+    end)
 end)

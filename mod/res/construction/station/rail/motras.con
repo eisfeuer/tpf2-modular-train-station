@@ -1,0 +1,33 @@
+local Station = require('motras_station')
+local ParamUtils = require('motras_paramutils')
+
+function data()
+    local params = {}
+    local commonApiTracks = ParamUtils.addCommonApiTrackParams(params)
+
+    return { 
+        type = 'RAIL_STATION',
+        description = {
+            name = _('motras_mod_name'),			
+            description = _('motras_mod_desc'),
+            icon = 'ui/construction/station/street/passenger_era_a.tga'
+        },
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        params = params,
+        --constructionTemplates = {},
+        updateFn = function(params)
+            local station = Station:new{
+                customTrack1 = params.motras_track_commonapi_1 and commonApiTracks[params.motras_track_commonapi_1 + 1],
+                customTrack2 = params.motras_track_commonapi_2 and commonApiTracks[params.motras_track_commonapi_2 + 1]
+            }
+            station:initializeAndRegisterAll(params.modules or {})
+
+            local result = station:getData()
+
+            return result
+        end
+    }
+end

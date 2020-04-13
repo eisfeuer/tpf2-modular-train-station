@@ -54,7 +54,7 @@ describe("slot", function ()
         end)
     end)
 
-    describe('addGridSlotsToCollection', function ()
+    describe('addGridSlotsToCollection #katze', function ()
         local station = Station:new{horizontalGridDistance = 10, verticalGridDistance = 10}
         station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
         station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0}))
@@ -194,7 +194,7 @@ describe("slot", function ()
     describe('getGridElementSpacing', function ()
         it ('returns grid element spacing', function ()
             local station = Station:new{horizontalGridDistance = 40, verticalGridDistance = 10}
-            assert.are.same({4.99, 4.99, 19.99, 19.99}, Slot.getGridElementSpacing(station.grid))
+            assert.are.same({19.99, 19.99, 4.99, 4.99}, Slot.getGridElementSpacing(station.grid))
         end)
     end)
 end)

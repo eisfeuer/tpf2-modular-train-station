@@ -29,6 +29,20 @@ describe("Grid", function ()
             grid:set(gridElement)
             assert.is_false(grid:isEmpty())
         end)
+
+        it ("checks wheter grid has no element stored 2", function ()
+            local grid = Grid:new()
+            assert.is_true(grid:isEmpty())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = 0,
+                gridY = 0
+            })}, grid = grid:new{}}
+
+            grid:set(gridElement)
+            assert.is_false(grid:isEmpty())
+        end)
     end)
 
     describe("get/set", function ()
@@ -168,6 +182,124 @@ describe("Grid", function ()
                     }
                 }
             }, result)
+        end)
+    end)
+
+    describe('getActiveGridBounds', function ()
+        it ('returns bounds of the square where all modules are placed', function ()
+        
+            local grid = Grid:new()
+
+            assert.are.same({
+                top = 0,
+                bottom = 0,
+                left = 0,
+                right = 0,
+            }, grid:getActiveGridBounds())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = 1,
+                gridY = 2
+            })}, grid = grid}
+
+            grid:set(gridElement)
+
+            assert.are.same({
+                top = 2,
+                bottom = 0,
+                left = 0,
+                right = 1,
+            }, grid:getActiveGridBounds())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = 1,
+                gridY = -3
+            })}, grid = grid}
+
+            grid:set(gridElement)
+
+            assert.are.same({
+                top = 2,
+                bottom = -3,
+                left = 0,
+                right = 1,
+            }, grid:getActiveGridBounds())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = -1,
+                gridY = -2
+            })}, grid = grid}
+            
+            grid:set(gridElement)
+
+            assert.are.same({
+                top = 2,
+                bottom = -3,
+                left = -1,
+                right = 1,
+            }, grid:getActiveGridBounds())
+
+        end)
+    end)
+
+    describe('getActiveSlotGridBounds', function ()
+        it ('returns bounds of the square where all possible slots are in', function ()        
+            local grid = Grid:new()
+
+            assert.are.same({
+                top = 1,
+                bottom = -1,
+                left = -1,
+                right = 1,
+            }, grid:getActiveGridSlotBounds())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = 1,
+                gridY = 2
+            })}, grid = grid}
+
+            grid:set(gridElement)
+
+            assert.are.same({
+                top = 3,
+                bottom = -1,
+                left = -1,
+                right = 2,
+            }, grid:getActiveGridSlotBounds())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = 1,
+                gridY = -3
+            })}, grid = grid}
+
+            grid:set(gridElement)
+
+            assert.are.same({
+                top = 3,
+                bottom = -4,
+                left = -1,
+                right = 2,
+            }, grid:getActiveGridSlotBounds())
+
+            local gridElement = GridElement:new{slot = Slot:new{id = Slot.makeId({
+                type = t.TRACK,
+                gridX = -1,
+                gridY = -2
+            })}, grid = grid}
+            
+            grid:set(gridElement)
+
+            assert.are.same({
+                top = 3,
+                bottom = -4,
+                left = -2,
+                right = 2,
+            }, grid:getActiveGridSlotBounds())
         end)
     end)
 

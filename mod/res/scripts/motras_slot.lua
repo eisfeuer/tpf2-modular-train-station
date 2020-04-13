@@ -44,15 +44,15 @@ end
 
 function Slot.getGridElementSpacing(grid)
     return {
-        grid:getVerticalDistance() / 2 - 0.01,
-        grid:getVerticalDistance() / 2 - 0.01,
         grid:getHorizontalDistance() / 2 - 0.01,
-        grid:getHorizontalDistance() / 2 - 0.01
+        grid:getHorizontalDistance() / 2 - 0.01,
+        grid:getVerticalDistance() / 2 - 0.01,
+        grid:getVerticalDistance() / 2 - 0.01,
     }
 end
 
 function Slot.addGridSlotsToCollection(slotCollection, grid, slotPlacementClass)
-    grid:eachPosition(function(grid, iX, iY) 
+    grid:eachActiveSlotPosition(function(grid, iX, iY) 
         local slotPlacementInstance = slotPlacementClass:new{grid = grid, gridX = iX, gridY = iY}
         if slotPlacementInstance:isPassingPlacementRule() then
             table.insert(slotCollection, slotPlacementInstance:getSlot())

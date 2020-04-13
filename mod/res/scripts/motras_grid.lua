@@ -6,13 +6,32 @@ local Grid = {}
 function Grid:new(o)
     o = o or {}
     o.grid = o.grid or {}
+    o.activeBounds = o.activeBounds or {
+        left = 0,
+        right = 0,
+        top = 0,
+        bottom = 0
+    }
     setmetatable(o, self)
     self.__index = self
     return o
 end
 
 function Grid:isEmpty()
-    return #self.grid == 0
+    for iX = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+        if self.grid[iX] ~= nil then
+            return false
+        end
+    end
+
+    return true
+end
+
+function Grid:updateActiveBounds(gridX, gridY)
+    self.activeBounds.left = math.min(self.activeBounds.left, gridX)
+    self.activeBounds.right = math.max(self.activeBounds.right, gridX)
+    self.activeBounds.top = math.max(self.activeBounds.top, gridY)
+    self.activeBounds.bottom = math.min(self.activeBounds.bottom, gridY)
 end
 
 function Grid:set(gridElement)
@@ -27,6 +46,8 @@ function Grid:set(gridElement)
             [gridElement:getGridY()] = gridElement
         }
     end
+
+    self:updateActiveBounds(gridElement:getGridX(), gridElement:getGridY())
 end
 
 function Grid:get(gridX, gridY)
@@ -76,14 +97,57 @@ function Grid:eachPosition(callable)
     end
 end
 
+function Grid:eachActiveSlotPosition(callable)
+    local bounds = self:getActiveGridSlotBounds()
+    for iY = bounds.bottom, bounds.top do
+        for iX = bounds.left, bounds.right do
+            callable(self, iX, iY)
+        end
+    end
+end
+
 function Grid:handleModules(result)
     self:each(function (gridElement)
         gridElement:call(result)
     end)
 end
 
+function Grid:getActiveGridBounds()
+    return self.activeBounds
+end
+
+function Grid:getActiveGridSlotBounds()
+    return {
+        left = self.activeBounds.left - 1,
+        right = self.activeBounds.right + 1,
+        top = self.activeBounds.top + 1,
+        bottom = self.activeBounds.bottom - 1
+    }
+end
+
 function Grid.isInBounds(gridX, gridY)
     return math.abs(gridX) <= c.GRID_MAX_XY_POSITION and math.abs(gridY) <= c.GRID_MAX_XY_POSITION
+end
+
+function Grid:debug()
+    for iY = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+        local infoString = ''
+        for iX = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+            local gridElement = self:get(iX, iY)
+            if gridElement:isTrack() then
+                infoString = infoString .. '='
+            elseif gridElement:isPlatform() then
+                infoString = infoString .. 'E'
+            elseif gridElement:isPlace() then
+                infoString = infoString .. 'X'
+            elseif gridElement:isBlank() then
+                infoString = infoString .. '-'
+            else
+                infoString = infoString .. '?'
+            end
+        end
+        print(infoString)
+    end
 end
 
 return Grid

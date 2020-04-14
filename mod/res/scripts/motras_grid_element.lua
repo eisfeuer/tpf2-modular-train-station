@@ -64,4 +64,16 @@ function GridElement:call(result)
     self.handleFunction(result)
 end
 
+function GridElement:getAbsoluteX()
+    return self.grid:getHorizontalDistance() * self:getGridX()
+end
+
+function GridElement:getAbsoluteY()
+    return self.grid:getVerticalDistance() * self:getGridY()
+end
+
+function GridElement:getAbsoluteZ()
+    return self.grid:getBaseHeight()
+end
+
 return GridElement

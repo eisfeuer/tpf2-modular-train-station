@@ -82,11 +82,11 @@ function Grid:getBaseHeight()
 end
 
 function Grid:each(callable)
-    self:eachPosition(function (grid, iX, iY)
-        if grid:has(iX, iY) then
-            callable(grid:get(iX, iY))
+    for iY, row in pairs(self.grid) do
+        for iX, gridElement in pairs(row) do
+            callable(gridElement, iX, iY)
         end
-    end)
+    end
 end
 
 function Grid:eachPosition(callable)

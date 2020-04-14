@@ -19,7 +19,7 @@ function data()
         },
         type = "motras_track",
         order = {
-            value = 5,
+            value = 6,
         },
         metadata = {
             passenger = true,
@@ -30,7 +30,7 @@ function data()
             track:handle(function (moduleResult)
                 local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
                 local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())
-                TrackModuleUtils.makeTrack(track, result.motras:getCustomTrack1(), false, snapLeft, snapRight)
+                TrackModuleUtils.makeTrack(track, result.motras:getCustomTrack1(), true, snapLeft, snapRight)
             end)
         end,
         getModelsFn = function()

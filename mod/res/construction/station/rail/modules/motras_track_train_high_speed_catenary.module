@@ -9,28 +9,28 @@ function data()
             categories = { "tracks", },
         },
         description = {
-            name = _("Custom Track 1"),
-		    description = _("Standard tracks with limited speed capabilities."),
-            icon = "ui/construction/station/rail/modular_station/track.tga"
+            name = _("High-speed tracks"),
+		description = _("Specialized tracks for higher speeds."),
+            icon = "ui/construction/station/rail/modular_station/high_speed.tga"
         }, 
         availability = {
             yearFrom = 0,
-            yearTo = commonapi and 0 or 1849
+            yearTo = 0
         },
         type = "motras_track",
         order = {
-            value = 5,
+            value = 4,
         },
         metadata = {
             passenger = true,
-            track = true,
+            track = true
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local track = result.motras:register(slotId)
             track:handle(function (moduleResult)
                 local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
                 local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())
-                TrackModuleUtils.makeTrack(track, result.motras:getCustomTrack1(), false, snapLeft, snapRight)
+                TrackModuleUtils.makeTrack(track, 'high_speed.lua', true, snapLeft, snapRight)
             end)
         end,
         getModelsFn = function()

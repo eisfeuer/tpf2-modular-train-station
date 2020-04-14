@@ -211,6 +211,66 @@ describe("Station", function ()
             local station = Station:new()
             assert.are.equal(station, station:getData().motras)
         end)
+
+        it ('has places edges', function ()
+            local station = Station:new()
+
+            local track1 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            local track2 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0}))
+            local track3 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 1}))
+
+            track1:handle(function (track)
+                track1:setEdges({
+                    {{-10, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                    {{ 10, 0.0, 0.0}, {20.0, 0.0, 0.0}}
+                }, {0})
+            end)
+
+            track2:handle(function (track)
+                track2:setEdges({
+                    {{ 10, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                    {{ 30, 0.0, 0.0}, {20.0, 0.0, 0.0}}
+                }, {1})
+            end)
+
+            track3:handle(function (track)
+                track3:setTrackType('high_speed.lua'):setCatenary(true):setEdges({
+                    {{-10, 5.0, 0.0}, {20.0, 0.0, 0.0}},
+                    {{ 10, 5.0, 0.0}, {20.0, 0.0, 0.0}}
+                }, {0,1})
+            end)
+
+            local data = station:getData()
+            data.terminateConstructionHook()
+
+            assert.are.same({
+                {
+                    type = 'TRACK',
+                    params = {
+                        type = 'standard.lua',
+                        catenary = false
+                    },
+                    edges = {
+                        {{ 10, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                        {{ 30, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                        {{-10, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                        {{ 10, 0.0, 0.0}, {20.0, 0.0, 0.0}}
+                    },
+                    snapNodes = {1, 2}
+                }, {
+                    type = 'TRACK',
+                    params = {
+                        type = 'high_speed.lua',
+                        catenary = true
+                    },
+                    edges = {
+                        {{-10, 5.0, 0.0}, {20.0, 0.0, 0.0}},
+                        {{ 10, 5.0, 0.0}, {20.0, 0.0, 0.0}}
+                    },
+                    snapNodes = {0,1}
+                }
+            }, data.edgeLists)
+        end)
     end)
 
     describe('getCustomTrack1', function ()

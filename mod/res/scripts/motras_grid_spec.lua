@@ -164,14 +164,6 @@ describe("Grid", function ()
             assert.are.same({
                 models = {
                     {
-                        id = 'a_track_model.mdl',
-                        transf = {
-                            1, 0, 0, 0,
-                            0, 1, 0, 0,
-                            0, 0, 1, 0,
-                            0, 0, 0, 1
-                        },
-                    }, {
                         id = 'a_platform_model.mdl',
                         transf = {
                             1, 0, 0, 0,
@@ -179,6 +171,14 @@ describe("Grid", function ()
                             0, 0, 1, 0,
                             0, 5, 0, 1
                         }
+                    }, {
+                        id = 'a_track_model.mdl',
+                        transf = {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            0, 0, 0, 1
+                        },
                     }
                 }
             }, result)

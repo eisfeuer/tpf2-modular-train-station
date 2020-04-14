@@ -5,6 +5,8 @@ local Track = require("motras_track")
 local Platform = require("motras_platform")
 local Place = require("motras_place")
 local TrackSlotPlacement = require("motras_track_slot_placement")
+local TrackUtils = require("motras_trackutils")
+local EdgeListMap = require("motras_edge_list_map")
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -33,6 +35,14 @@ function Station:processResult(result)
     table.remove(result.models, 1)
 
     self.grid:handleModules(result)
+
+    local edgeListMap = EdgeListMap:new{edgeLists = result.edgeLists}
+    self.grid:each(function (gridElement)
+        if gridElement:isTrack() then
+            local edgeList = edgeListMap:getOrCreateEdgeList(gridElement:getTrackType(), gridElement:hasCatenary())
+            TrackUtils.addEdgesToEdgeList(edgeList, gridElement:getEdges(), gridElement:getSnapNodes())
+        end
+    end)
 
     if #result.models == 0 then
         table.insert(result.models, {

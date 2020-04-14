@@ -1,6 +1,7 @@
 local Slot = require("motras_slot")
 local Grid = require("motras_grid")
 local t = require("motras_types")
+local c = require("motras_constants")
 
 local GridElement = require("motras_grid_element")
 
@@ -10,7 +11,11 @@ describe("GridElement", function()
         gridX = 1,
         gridY = 2
     })
-    local grid = Grid:new{}
+    local grid = Grid:new{
+        horizontalDistance = c.DEFAULT_HORIZONTAL_GRID_DISTANCE,
+        verticalDistance = c.DEFAULT_VERTICAL_GRID_DISTANCE,
+        baseHeight = c.DEFAULT_BASE_HEIGHT
+    }
     local slot = Slot:new{id = slotId}
     local gridElement = GridElement:new{slot = slot, grid = grid}
 
@@ -85,6 +90,24 @@ describe("GridElement", function()
             assert.are.same({
                 models = {}
             }, result)
+        end)
+    end)
+
+    describe("getAbsoluteX", function ()
+        it ('returns the local absulute x coord', function ()
+            assert.are.equal(c.DEFAULT_HORIZONTAL_GRID_DISTANCE, gridElement:getAbsoluteX())
+        end)
+    end)
+
+    describe("getAbsoluteY", function ()
+        it ('returns the local absulute x coord', function ()
+            assert.are.equal(2 * c.DEFAULT_VERTICAL_GRID_DISTANCE, gridElement:getAbsoluteY())
+        end)
+    end)
+
+    describe("getAbsoluteZ", function ()
+        it ('returns base grid height', function ()
+            assert.are.equal(c.DEFAULT_BASE_HEIGHT, gridElement:getAbsoluteZ())
         end)
     end)
 end)

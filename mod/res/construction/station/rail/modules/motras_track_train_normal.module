@@ -1,3 +1,5 @@
+local TrackModuleUtils = require('motras_trackmoduleutils')
+
 function data()
     return {
         cost = {
@@ -26,37 +28,9 @@ function data()
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local track = result.motras:register(slotId)
             track:handle(function (moduleResult)
-                local posX = transform[13]
-                local posY = transform[14]
-
-                table.insert(moduleResult.edgeLists,  { 
-                    type = "TRACK",
-                    params = {
-                        type =  "standard.lua",
-                        catenary = false,
-                    },
-                    edges = {
-                        { { posX - 18, posY, .0 }, {-2.0, .0, .0 } },
-                        { { posX - 20, posY, .0 }, {-2.0, .0, .0 } },
-
-                        { { posX - 2, posY, .0 }, {-16.0, .0, .0 } },
-                        { { posX - 18, posY,  .0 }, {-16.0, .0, .0 } },
-
-                        { { posX + 0, posY,  .0 }, {-2.0, .0, .0 } },
-                        { { posX - 2, posY,  .0 }, {-2.0, .0, .0 } },
-
-                        { { posX + 0, posY,  .0 }, {2.0, .0, .0 } },
-                        { { posX + 2, posY,  .0 }, {2.0, .0, .0 } },
-
-                        { { posX + 2, posY,  .0 }, {16.0, .0, .0 } },
-                        { { posX + 18, posY, .0 }, {16.0, .0, .0 } },
-
-                        { { posX + 18, posY, .0 }, {2.0, .0, .0 } },
-                        { { posX + 20, posY, .0 }, {2.0, .0, .0 } }
-                    },
-                    snapNodes = { },
-                    tag2nodes = { },
-                })
+                local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
+                local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())
+                TrackModuleUtils.makeTrack(track, 'standard.lua', false, snapLeft, snapRight)
             end)
         end,
         getModelsFn = function()

@@ -9,11 +9,29 @@ describe("Track", function()
     local slotId = Slot.makeId({
         type = t.TRACK,
         gridX = 1,
-        gridY = 2
+        gridY = 2,
     })
     local slot = Slot:new{id = slotId}
     local gridElement = GridElement:new{slot = slot, grid = Grid:new{}}
     local track = Track:new(gridElement)
+
+    describe('new', function ()
+        it ('has standard.lua as default track type', function ()
+            assert.are.equal('standard.lua', track:getTrackType())
+        end)
+
+        it('has no catenary as default', function ()
+            assert.is_false(track:hasCatenary())
+        end)
+
+        it('has no edges by default', function ()
+            assert.are.same({}, track:getEdges())
+        end)
+
+        it('has no smapNode by default', function ()
+            assert.are.same({}, track:getSnapNodes())
+        end)
+    end)
 
     describe("getSlotId", function ()
         it("returns slot id", function ()
@@ -25,7 +43,6 @@ describe("Track", function()
         it("returns grid type", function ()
             assert.are.equal(t.GRID_TRACK, track:getGridType())
         end)
-        
     end)
 
     describe("getType", function ()
@@ -104,6 +121,35 @@ describe("Track", function()
                     }
                 }
             }, result)
+        end)
+    end)
+
+    describe('setTrackType', function ()
+        it('sets track type', function ()
+            track:setTrackType('pneu_metro.lua')
+            assert.are.equal('pneu_metro.lua', track:getTrackType())
+        end)
+    end)
+
+    describe('setCatenary', function ()
+        it('sets catenary', function ()
+            track:setCatenary(true)
+            assert.is_true(track:hasCatenary())
+        end)
+    end)
+
+    describe('setEdges', function ()
+        it('sets edges and snap nodes', function ()
+            track:setEdges({
+                {{1.0, 0.0, 0.0}, {-2.0, 0.0, 0.0}},
+                {{-1.0, 0.0, 0.0}, {-2.0, 0.0, 0.0}},
+            }, {0})
+
+            assert.are.same({
+                {{1.0, 0.0, 0.0}, {-2.0, 0.0, 0.0}},
+                {{-1.0, 0.0, 0.0}, {-2.0, 0.0, 0.0}},
+            }, track:getEdges())
+            assert.are.same({0}, track:getSnapNodes())
         end)
     end)
 end)

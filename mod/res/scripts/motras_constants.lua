@@ -4,5 +4,6 @@ return {
     DEFAULT_HORIZONTAL_GRID_DISTANCE = 40,
     DEFAULT_MODULE_PREFIX = 'motras',
     DEFAULT_BASE_HEIGHT = 0,
-    DEFAULT_CUSTOM_TRACK_TYPE = 'standard.lua'
+    DEFAULT_CUSTOM_TRACK_TYPE = 'standard.lua',
+    DEFAULT_MODULE_TRACK_TYPE = 'standard.lua'
 }

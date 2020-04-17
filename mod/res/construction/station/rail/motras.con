@@ -18,6 +18,9 @@ function data()
         },
         params = params,
         --constructionTemplates = {},
+        -- upgradeFn = function(params)
+        --     return {}
+        -- end,
         updateFn = function(params)
             local station = Station:new{
                 customTrack1 = params.motras_track_commonapi_1 and commonApiTracks[params.motras_track_commonapi_1 + 1],

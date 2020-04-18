@@ -152,6 +152,28 @@ describe("Station", function ()
 
             assert.are.equal(track, track:getGrid():get(2,5))
         end)
+
+        it('registers module with additional data', function ()
+            local station = Station:new()
+
+            local slotId = Slot.makeId({
+                type = t.PLATFORM,
+                gridX = 2,
+                gridY = 5
+            })
+
+            station:initializeAndRegister(slotId)
+            local platform = station:register(slotId, {platformHeight = 0.96})
+
+            assert.is_true(platform:isPlatform())
+            assert.are.equal(t.PLATFORM, platform:getType())
+            assert.are.equal(2, platform:getGridX())
+            assert.are.equal(5, platform:getGridY())
+
+            assert.are.equal(platform, platform:getGrid():get(2,5))
+
+            assert.are.equal(0.96, platform:getPlatformHeight())
+        end)
     end)
 
     describe('getData', function ()

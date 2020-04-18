@@ -1,6 +1,7 @@
 local Slot = require("motras_slot")
 local t = require("motras_types")
 local Grid = require("motras_grid")
+local c = require("motras_constants")
 
 local GridElement = require("motras_grid_element")
 local Platform = require("motras_platform")
@@ -12,7 +13,7 @@ describe("Platform", function()
         gridY = 2
     })
     local slot = Slot:new{id = slotId}
-    local gridElement = GridElement:new{slot = slot, grid = Grid:new{}}
+    local gridElement = GridElement:new{slot = slot, grid = Grid:new{baseTrackHeight = c.DEFAULT_BASE_TRACK_HEIGHT, baseHeight = 0}, options = {platformHeight = 0.96}}
     local platform = Platform:new(gridElement)
 
     describe("getSlotId", function ()
@@ -103,6 +104,24 @@ describe("Platform", function()
                     }
                 }
             }, result)
+        end)
+    end)
+
+    describe("getPlatformHeight", function ()
+        it("returns platform height", function ()
+            assert.are.equal(0.96, platform:getPlatformHeight())
+        end)
+
+        it("returns default platform height", function ()
+            local gridElement1 = GridElement:new{slot = slot, grid = Grid:new{baseTrackHeight = c.DEFAULT_BASE_TRACK_HEIGHT}}
+            local platform1 = Platform:new(gridElement1)
+            assert.are.equal(c.DEFAULT_PLATFORM_HEIGHT, platform1:getPlatformHeight())
+        end)
+    end)
+
+    describe("getAbsoulutePlatformHeight", function ()
+        it("returns absolute platform height", function ()
+            assert.are.equal(0.96 + c.DEFAULT_BASE_TRACK_HEIGHT, platform:getAbsolutePlatformHeight())
         end)
     end)
 end)

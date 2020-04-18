@@ -7,6 +7,7 @@ function GridElement:new(o)
     if not (o and o.grid) then
         error("Required Property Grid is missing")
     end
+    o.options = o.options or {}
     o.handleFunction = o.handleFunction or function (result)
         
     end
@@ -74,6 +75,14 @@ end
 
 function GridElement:getAbsoluteZ()
     return self.grid:getBaseHeight()
+end
+
+function GridElement:setOptions(options)
+    self.options = options
+end
+
+function GridElement:getOption(option, default)
+    return self.options and self.options[option] or default
 end
 
 return GridElement

@@ -17,7 +17,7 @@ describe("GridElement", function()
         baseHeight = c.DEFAULT_BASE_HEIGHT
     }
     local slot = Slot:new{id = slotId}
-    local gridElement = GridElement:new{slot = slot, grid = grid}
+    local gridElement = GridElement:new{slot = slot, grid = grid, options = {platformHeight = 0.96}}
 
     describe("getSlotId", function ()
         it ("returns slot id", function ()
@@ -108,6 +108,20 @@ describe("GridElement", function()
     describe("getAbsoluteZ", function ()
         it ('returns base grid height', function ()
             assert.are.equal(c.DEFAULT_BASE_HEIGHT, gridElement:getAbsoluteZ())
+        end)
+    end)
+
+    describe("getOption", function ()
+        it ('returns option', function ()
+            assert.are.equal(0.96, gridElement:getOption('platformHeight', 0.55))
+        end)
+
+        it ('returns nil when option does not exists', function ()
+            assert.are.equal(nil, gridElement:getOption('an_option'))
+        end)
+
+        it ('returns default when option does not exists', function ()
+            assert.are.equal(42, gridElement:getOption('an_option', 42))
         end)
     end)
 end)

@@ -5,6 +5,7 @@ local Track = require("motras_track")
 local Platform = require("motras_platform")
 local Place = require("motras_place")
 local TrackSlotPlacement = require("motras_track_slot_placement")
+local PlatformSlotPlacement = require("motras_platform_slot_placement")
 local TrackUtils = require("motras_trackutils")
 local EdgeListMap = require("motras_edge_list_map")
 
@@ -22,6 +23,7 @@ function Station:new(o)
         horizontalDistance = o.horizontalGridDistance or c.DEFAULT_HORIZONTAL_GRID_DISTANCE,
         verticalDistance = o.verticalGridDistance or c.DEFAULT_VERTICAL_GRID_DISTANCE,
         baseHeight = o.baseHeight or c.DEFAULT_BASE_HEIGHT,
+        baseTrackHeight = o.baseTrackHeight or c.DEFAULT_BASE_TRACK_HEIGHT,
         modulePrefix = o.modulePrefix or c.DEFAULT_MODULE_PREFIX
     }
 
@@ -73,6 +75,7 @@ function Station:getData()
     
     --self.grid:debug()
     Slot.addGridSlotsToCollection(result.slots, self.grid, TrackSlotPlacement)
+    Slot.addGridSlotsToCollection(result.slots, self.grid, PlatformSlotPlacement)
 
     return result;
 end
@@ -92,13 +95,17 @@ function Station:initializeAndRegister(slotId)
     end
 end
 
-function Station:register(slotId)
+function Station:register(slotId, options)
     local gridElement = GridElement:new{
         slot = Slot:new{id = slotId},
         grid = self.grid
     }
 
-    return self.grid:get(gridElement:getGridX(), gridElement:getGridY())
+    local gridElement = self.grid:get(gridElement:getGridX(), gridElement:getGridY())
+    if gridElement then
+        gridElement:setOptions(options or {})
+    end
+    return gridElement
 end
 
 function Station:initializeAndRegisterAll(slots)

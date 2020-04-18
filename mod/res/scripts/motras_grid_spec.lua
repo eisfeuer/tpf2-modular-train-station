@@ -113,6 +113,13 @@ describe("Grid", function ()
         end)
     end)
 
+    describe("getBaseTrackHeight", function ()
+        it("returns base track height", function ()
+            local grid = Grid:new{baseTrackHeight = 0.5}
+            assert.are.equal(0.5, grid:getBaseTrackHeight())
+        end)
+    end)
+
     describe("isInBounds", function ()
         it("checks wheter position is in allowed bounds", function ()
             assert.is_true(Grid.isInBounds(1,2))

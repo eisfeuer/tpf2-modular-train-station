@@ -54,7 +54,7 @@ describe("slot", function ()
         end)
     end)
 
-    describe('addGridSlotsToCollection #katze', function ()
+    describe('addGridSlotsToCollection', function ()
         local station = Station:new{horizontalGridDistance = 10, verticalGridDistance = 10}
         station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
         station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0}))

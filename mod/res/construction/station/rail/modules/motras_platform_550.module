@@ -24,16 +24,15 @@ function data()
         metadata = {
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
-            print('katze')
-            local platform = result.motras:register(slotId)
-            print(require('inspect')(platform))
+            local platform = result.motras:register(slotId, {platformHeight = 0.27})
             platform:handle(function (moduleResult)
                 PlatformModuleUtils.makePlatform(
                     platform,
                     result.models,
-                    'station/rail/motras/platform_rep.mdl'
+                    'station/rail/motras/platform_rep.mdl',
+                    'station/rail/motras/platform_edge_rep.mdl',
+                    'station/rail/motras/platform_back_rep.mdl'
                 )
-                print(require('inspect')(result.models))
             end)
         end,
         getModelsFn = function()

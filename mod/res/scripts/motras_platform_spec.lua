@@ -26,7 +26,6 @@ describe("Platform", function()
         it("returns grid type", function ()
             assert.are.equal(t.GRID_PLATFORM, platform:getGridType())
         end)
-        
     end)
 
     describe("getType", function ()

@@ -81,6 +81,7 @@ function Station:getData()
 end
 
 function Station:initializeAndRegister(slotId)
+    --Slot:new{id = slotId}:debug()
     local gridElement = GridElement:new{
         slot = Slot:new{id = slotId},
         grid = self.grid

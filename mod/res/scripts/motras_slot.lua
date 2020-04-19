@@ -21,7 +21,7 @@ function Slot:new (o)
     local ids = NatBomb.explode(DIGIT_SPACES, o.id or 0)
 
     o.type = ids[1] or t.UNKNOWN
-    o.gridType = math.floor(o.type / 64)
+    o.gridType = math.floor(o.type / 32)
     o.gridX = toSignedId(ids[2])
     o.gridY = toSignedId(ids[3])
     o.assetId = ids[4] or 0
@@ -58,6 +58,15 @@ function Slot.addGridSlotsToCollection(slotCollection, grid, slotPlacementClass)
             table.insert(slotCollection, slotPlacementInstance:getSlot())
         end
     end)
+end
+
+function Slot:debug()
+    print('ID: ' .. self.id)
+    print('Type: ' .. self.type .. '(Grid Type: ' .. self.gridType .. ')')
+    print('Grid X: ' .. self.gridX)
+    print('Grid Y: ' .. self.gridY)
+    print('Asset Id: ' .. self.assetId)
+    print('Asset Decoration Id: ' .. self.assetDecorationId)
 end
 
 return Slot

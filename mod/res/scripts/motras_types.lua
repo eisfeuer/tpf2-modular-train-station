@@ -7,9 +7,9 @@ return {
     GRID_PLATFORM = 2,
     GRID_PLACE = 3,
     -- Track types
-    TRACK = 65,
+    TRACK = 33,
     -- Platform types
-    PLATFORM = 129,
+    PLATFORM = 65,
     -- Place types,
-    PLACE = 193
+    PLACE = 97
 }

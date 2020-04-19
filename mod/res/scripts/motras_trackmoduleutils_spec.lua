@@ -44,6 +44,10 @@ describe('TrackModuleUtils', function ()
             assert.are.same({
                 1, 11
             }, track:getSnapNodes())
+
+            assert.are.same({
+                2, 0, 8, 10
+            }, track:getStopNodes())
         end)
     end)
 end)

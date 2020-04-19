@@ -8,6 +8,7 @@ local TrackSlotPlacement = require("motras_track_slot_placement")
 local PlatformSlotPlacement = require("motras_platform_slot_placement")
 local TrackUtils = require("motras_trackutils")
 local EdgeListMap = require("motras_edge_list_map")
+local TerminalUtils = require("motras_terminalutils")
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -42,8 +43,14 @@ function Station:processResult(result)
     self.grid:each(function (gridElement)
         if gridElement:isTrack() then
             local edgeList = edgeListMap:getOrCreateEdgeList(gridElement:getTrackType(), gridElement:hasCatenary())
+            gridElement:setEdgeListMap(edgeListMap)
+            gridElement:setFirstNode(#edgeList.edges)
             TrackUtils.addEdgesToEdgeList(edgeList, gridElement:getEdges(), gridElement:getSnapNodes())
         end
+    end)
+
+    TerminalUtils.addTerminalsFromGrid(result.terminalGroups, result.models, self.grid, c.PASSENGER_TERMINAL_MODEL, function ()
+        return true
     end)
 
     if #result.models == 0 then

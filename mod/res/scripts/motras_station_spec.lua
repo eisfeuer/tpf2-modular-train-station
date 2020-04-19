@@ -292,6 +292,10 @@ describe("Station", function ()
                     snapNodes = {0,1}
                 }
             }, data.edgeLists)
+
+            assert.are.equal(2, track1:getFirstNode())
+            assert.are.equal(0, track2:getFirstNode())
+            assert.are.equal(0, track3:getFirstNode())
         end)
     end)
 

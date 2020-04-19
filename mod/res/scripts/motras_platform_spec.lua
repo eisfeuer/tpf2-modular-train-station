@@ -13,7 +13,9 @@ describe("Platform", function()
         gridY = 2
     })
     local slot = Slot:new{id = slotId}
-    local gridElement = GridElement:new{slot = slot, grid = Grid:new{baseTrackHeight = c.DEFAULT_BASE_TRACK_HEIGHT, baseHeight = 0}, options = {platformHeight = 0.96}}
+    local gridElement = GridElement:new{slot = slot, grid = Grid:new{
+        baseTrackHeight = c.DEFAULT_BASE_TRACK_HEIGHT, baseHeight = 0, horizontalDistance = c.DEFAULT_HORIZONTAL_GRID_DISTANCE, verticalDistance = c.DEFAULT_VERTICAL_GRID_DISTANCE
+    }, options = {platformHeight = 0.96}}
     local platform = Platform:new(gridElement)
 
     describe("getSlotId", function ()
@@ -121,6 +123,28 @@ describe("Platform", function()
     describe("getAbsoulutePlatformHeight", function ()
         it("returns absolute platform height", function ()
             assert.are.equal(0.96 + c.DEFAULT_BASE_TRACK_HEIGHT, platform:getAbsolutePlatformHeight())
+        end)
+    end)
+
+    describe("getTerminalEdgeTopTransformation", function ()
+        it ("returns the position of the terminal edge at the top", function ()
+            assert.are.same({
+                c.DEFAULT_HORIZONTAL_GRID_DISTANCE, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                platform:getAbsoluteX(), platform:getAbsoluteY() + c.PLATFORM_WAITING_EDGE_OFFSET, platform:getAbsolutePlatformHeight(), 1
+            }, platform:getTerminalEdgeTopTransformation())
+        end)
+    end)
+
+    describe("getTerminalEdgeBottomTransformation", function ()
+        it ("returns the position of the terminal edge at the bottom", function ()
+            assert.are.same({
+                -c.DEFAULT_HORIZONTAL_GRID_DISTANCE, 0, 0, 0,
+                0, -1, 0, 0,
+                0, 0, 1, 0,
+                platform:getAbsoluteX(), platform:getAbsoluteY() - c.PLATFORM_WAITING_EDGE_OFFSET, platform:getAbsolutePlatformHeight(), 1
+            }, platform:getTerminalEdgeBottomTransformation())
         end)
     end)
 end)

@@ -17,6 +17,24 @@ function PlatformClass:new(gridElement)
         return self:getAbsoluteZ() + self.grid:getBaseTrackHeight() + self:getPlatformHeight()
     end
 
+    function Platform:getTerminalEdgeTopTransformation()
+        return {
+            self.grid:getHorizontalDistance(), 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            self:getAbsoluteX(), self:getAbsoluteY() + c.PLATFORM_WAITING_EDGE_OFFSET, self:getAbsolutePlatformHeight(), 1
+        }
+    end
+
+    function Platform:getTerminalEdgeBottomTransformation()
+        return {
+            -self.grid:getHorizontalDistance(), 0, 0, 0,
+            0, -1, 0, 0,
+            0, 0, 1, 0,
+            self:getAbsoluteX(), self:getAbsoluteY() - c.PLATFORM_WAITING_EDGE_OFFSET, self:getAbsolutePlatformHeight(), 1
+        }
+    end
+
     return Platform
 end
 

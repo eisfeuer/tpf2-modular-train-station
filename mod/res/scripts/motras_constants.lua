@@ -7,5 +7,7 @@ return {
     DEFAULT_CUSTOM_TRACK_TYPE = 'standard.lua',
     DEFAULT_MODULE_TRACK_TYPE = 'standard.lua',
     DEFAULT_PLATFORM_HEIGHT = 0.55,
-    DEFAULT_BASE_TRACK_HEIGHT = 0.53
+    DEFAULT_BASE_TRACK_HEIGHT = 0.53,
+    PLATFORM_WAITING_EDGE_OFFSET = 2,
+    PASSENGER_TERMINAL_MODEL = 'station/rail/motras/path/passenger_terminal.mdl'
 }

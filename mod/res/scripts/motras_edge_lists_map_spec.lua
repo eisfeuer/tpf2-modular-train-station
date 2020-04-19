@@ -171,4 +171,61 @@ describe('EdgeListMap', function ()
         end)
     end)
 
+    describe('getIndexOfFirstNodeInEdgeList', function ()
+        it ('returs absolute index of first index in the edge list', function ()
+            local edgeList5 = {
+                type = 'TRACK',
+                params = {
+                    type = 'standard.lua',
+                    catenary = false
+                },
+                edges = {
+                    {{-10.0, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                    {{10.0, 0.0, 0.0}, {20.0, 0.0, 0.0}},
+                },
+                snapNodes = {}
+            }
+            local edgeList6 = {
+                type = 'TRACK',
+                params = {
+                    type = 'high_speed.lua',
+                    catenary = false
+                },
+                edges = {
+                    {{-10.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+                    {{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+
+                    {{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+                    {{10.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+                },
+                snapNodes = {}
+            }
+            local edgeList7 = {
+                type = 'TRACK',
+                params = {
+                    type = 'high_speed.lua',
+                    catenary = true
+                },
+                edges = {
+                    {{-10.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+                    {{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+
+                    {{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+                    {{10.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
+                },
+                snapNodes = {}
+            }
+
+            local edgeLists2 = {
+                edgeList5, edgeList6, edgeList7
+            }
+        
+            local edgeListMap2 = EdgeListMap:new{edgeLists = edgeLists2}
+
+            assert.are.equal(0, edgeListMap2:getIndexOfFirstNodeInEdgeList('standard.lua', false))
+            assert.are.equal(2, edgeListMap2:getIndexOfFirstNodeInEdgeList('high_speed.lua', false))
+            assert.are.equal(6, edgeListMap2:getIndexOfFirstNodeInEdgeList('high_speed.lua', true))
+        end)
+    end)
+
 end)

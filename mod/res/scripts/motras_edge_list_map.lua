@@ -56,4 +56,16 @@ function EdgeListMap:getEdgeLists()
     return self.edgeLists
 end
 
+function EdgeListMap:getIndexOfFirstNodeInEdgeList(trackType, hasCatenary)
+    local nodesBeforFirstNode = 0
+    for i, edgeList in ipairs(self.edgeLists) do
+        if edgeList.type == 'TRACK' and edgeList.params.type == trackType and edgeList.params.catenary == hasCatenary then
+            return nodesBeforFirstNode
+        end
+        nodesBeforFirstNode = nodesBeforFirstNode + #edgeList.edges
+    end
+
+    return 0
+end
+
 return EdgeListMap

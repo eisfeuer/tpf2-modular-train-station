@@ -39,6 +39,10 @@ function TrackClass:new(gridElement)
     end
 
     function Track:getAbsoluteStopNode(position)
+        if self.edgeListMap then
+            local firstEdgeListNode = self.edgeListMap:getIndexOfFirstNodeInEdgeList(self:getTrackType(), self:hasCatenary())
+            return self:getStopNode(position) + self:getFirstNode() + firstEdgeListNode
+        end
         return self:getStopNode(position) + self:getFirstNode()
     end
 
@@ -76,6 +80,7 @@ function TrackClass:new(gridElement)
 
     function Track:setFirstNode(firstNode)
         self.firstNode = firstNode
+        return self
     end
 
     function Track:setStopNodes(stopNodes)
@@ -83,8 +88,13 @@ function TrackClass:new(gridElement)
             error('Stop Nodes must be a table with exact 4 items')
         end
         self.stopNodes = stopNodes
+        return self
     end
 
+    function Track:setEdgeListMap(edgeListMap)
+        self.edgeListMap = edgeListMap
+        return self
+    end
 
     return Track
 end

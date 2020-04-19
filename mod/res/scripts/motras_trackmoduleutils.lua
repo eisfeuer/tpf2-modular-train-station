@@ -33,7 +33,7 @@ function TrackModuleUtils.makeTrack(track, trackType, hasCatenary, snapLeft, sna
 
         { { posX + trackLength * 0.9, posY, posZ }, {trackLength * 0.1, .0, .0 } },
         { { posX + trackLength, posY, posZ }, {trackLength * 0.1, .0, .0 } }
-    }, snapNodes)
+    }, snapNodes):setStopNodes({2, 0, 8, 10})
 end
 
 return TrackModuleUtils

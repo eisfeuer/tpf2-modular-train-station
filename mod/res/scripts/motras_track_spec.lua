@@ -1,11 +1,36 @@
 local Slot = require("motras_slot")
 local t = require("motras_types")
 local Grid = require("motras_grid")
+local EdgeListMap = require("motras_edge_list_map")
 
 local GridElement = require("motras_grid_element")
 local Track = require("motras_track")
 
 describe("Track", function()
+    local edgeLists = {{
+        type = 'TRACK',
+        params = {
+            type = 'standard.lua',
+            catenary = false
+        },
+        edges = {
+            { {-10.0, 0.0, 0.0}, {20.0, 0.0, 0.0} },
+            { { 10.0, 0.0, 0.0}, {20.0, 0.0, 0.0} }
+        },
+        snapNodes = {}
+    }, {
+        type = 'TRACK',
+        params = {
+            type = 'standard.lua',
+            catenary = true
+        },
+        edges = {
+            { {-10.0, 0.0, 0.0}, {20.0, 0.0, 0.0} },
+            { { 10.0, 0.0, 0.0}, {20.0, 0.0, 0.0} }
+        },
+        snapNodes = {}
+    }}
+
     local slotId = Slot.makeId({
         type = t.TRACK,
         gridX = 1,
@@ -14,6 +39,7 @@ describe("Track", function()
     local slot = Slot:new{id = slotId}
     local gridElement = GridElement:new{slot = slot, grid = Grid:new{}}
     local track = Track:new(gridElement)
+    track:setEdgeListMap(EdgeListMap:new{edgeLists = edgeLists})
 
     describe('new', function ()
         it ('has standard.lua as default track type', function ()
@@ -171,7 +197,9 @@ describe("Track", function()
         it ('returns top stop node when track count is odd', function ()
             track:setFirstNode(42)
             track:setStopNodes({1, 2 ,3 ,4 })
-            assert.are.equal(43, track:getAbsoluteOddTopStopNode())
+            track:setCatenary(true)
+            track:setTrackType('standard.lua')
+            assert.are.equal(45, track:getAbsoluteOddTopStopNode())
         end)
     end)
 
@@ -179,7 +207,9 @@ describe("Track", function()
         it ('returns top stop node when track count is even', function ()
             track:setFirstNode(42)
             track:setStopNodes({1, 2 ,3 ,4 })
-            assert.are.equal(44, track:getAbsoluteEvenTopStopNode())
+            track:setCatenary(true)
+            track:setTrackType('standard.lua')
+            assert.are.equal(46, track:getAbsoluteEvenTopStopNode())
         end)
     end)
 
@@ -187,7 +217,9 @@ describe("Track", function()
         it ('returns bottom stop node when track count is odd', function ()
             track:setFirstNode(42)
             track:setStopNodes({1, 2 ,3 ,4 })
-            assert.are.equal(45, track:getAbsoluteOddBottomStopNode())
+            track:setCatenary(true)
+            track:setTrackType('standard.lua')
+            assert.are.equal(47, track:getAbsoluteOddBottomStopNode())
         end)
     end)
 
@@ -195,7 +227,9 @@ describe("Track", function()
         it ('returns bottom stop node when track count is even', function ()
             track:setFirstNode(42)
             track:setStopNodes({1, 2 ,3 ,4 })
-            assert.are.equal(46, track:getAbsoluteEvenBottomStopNode())
+            track:setCatenary(true)
+            track:setTrackType('standard.lua')
+            assert.are.equal(48, track:getAbsoluteEvenBottomStopNode())
         end)
     end)
 end)

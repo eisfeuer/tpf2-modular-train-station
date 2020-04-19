@@ -184,27 +184,55 @@ function PlatformModuleUtils.makePlatform(
 
     if topNeightbor:isBlank() or topNeightbor:isPlatform() then
         if leftNeighbor:isBlank() or leftNeighbor:isTrack() then
-            table.insert(models, {
-                id = platformBackSideLeftModel,
-                transf = {
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                }
-            })
+            if not addBackEdgesOnConnect then
+                table.insert(models, {
+                    id = platformBackSideLeftModel,
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
+                    }
+                })
+            end
+        else
+            if addBackEdgesOnConnect then
+                table.insert(models, {
+                    id = platformBackSideLeftModel,
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
+                    }
+                })
+            end
         end
 
         if rightNeighbor:isBlank() or rightNeighbor:isTrack() then
-            table.insert(models, {
-                id = platformBackSideRightModel,
-                transf = {
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                }
-            })
+            if not addBackEdgesOnConnect then
+                table.insert(models, {
+                    id = platformBackSideRightModel,
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
+                    }
+                })
+            end
+        else
+            if addBackEdgesOnConnect then
+                table.insert(models, {
+                    id = platformBackSideRightModel,
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
+                    }
+                })
+            end
         end
     end
 

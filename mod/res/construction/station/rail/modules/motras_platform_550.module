@@ -24,14 +24,20 @@ function data()
         metadata = {
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
-            local platform = result.motras:register(slotId, {platformHeight = 0.27})
+            local platform = result.motras:register(slotId, {platformHeight = 0.55})
             platform:handle(function (moduleResult)
                 PlatformModuleUtils.makePlatform(
                     platform,
                     result.models,
                     'station/rail/motras/platform_rep.mdl',
                     'station/rail/motras/platform_edge_rep.mdl',
-                    'station/rail/motras/platform_back_rep.mdl'
+                    'station/rail/motras/platform_back_rep.mdl',
+                    'station/rail/motras/platform_side.mdl',
+                    'station/rail/motras/platform_edge_side_left.mdl',
+                    'station/rail/motras/platform_edge_side_right.mdl',
+                    'station/rail/motras/platform_back_side_left.mdl',
+                    'station/rail/motras/platform_back_side_right.mdl',
+                    { addBackEdgesOnConnect = true }
                 )
             end)
         end,

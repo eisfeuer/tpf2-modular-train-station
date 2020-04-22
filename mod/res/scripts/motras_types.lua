@@ -11,5 +11,13 @@ return {
     -- Platform types
     PLATFORM = 65,
     -- Place types,
-    PLACE = 97
+    PLACE = 97,
+    -- Asset Types
+    ASSET = 1,
+    DECORATION = 2,
+    ROOF = 3,
+    UNDERPASS = 4,
+    OVERPASS = 5,
+    -- Asset Decoration Types
+    ASSET_DECORATION = 17
 }

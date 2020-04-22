@@ -141,10 +141,15 @@ function Grid.isInBounds(gridX, gridY)
     return math.abs(gridX) <= c.GRID_MAX_XY_POSITION and math.abs(gridY) <= c.GRID_MAX_XY_POSITION
 end
 
-function Grid:debug()
-    for iY = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+function Grid:debug(completeGrid)
+    local startX = completeGrid and -c.GRID_MAX_XY_POSITION or self.activeBounds.left
+    local endX = completeGrid and c.GRID_MAX_XY_POSITION or self.activeBounds.right
+    local startY = completeGrid and -c.GRID_MAX_XY_POSITION or self.activeBounds.bottom
+    local endY = completeGrid and c.GRID_MAX_XY_POSITION or self.activeBounds.top
+
+    for iY = startY, endY do
         local infoString = ''
-        for iX = -c.GRID_MAX_XY_POSITION, c.GRID_MAX_XY_POSITION do
+        for iX = startX, endX do
             local gridElement = self:get(iX, iY)
             if gridElement:isTrack() then
                 infoString = infoString .. '='

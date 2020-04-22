@@ -1,5 +1,7 @@
 local Station = require('motras_station')
 local ParamUtils = require('motras_paramutils')
+local UgParamUtils = require('paramsutil')
+local Blueprint = require('motras_blueprint')
 
 function data()
     local params = {}
@@ -17,7 +19,63 @@ function data()
             yearTo = 0
         },
         params = params,
-        --constructionTemplates = {},
+        constructionTemplates = {
+            {
+                type = 'DYNAMIC',
+                constructionType = 'RAIL_STATION',
+                availability = {
+                    yearFrom = 0,
+                    yearTo = 0
+                },
+                description = {
+                    name = _('motras_base_station'),
+                    description = _('motras_base_station_desc'),
+                    icon = 'ui/construction/station/street/passenger_era_a.tga'
+                },
+                data = {
+                    params = {
+                        {
+                            key = "motras_tracks",
+                            name = _("Tracks"),
+                            values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18"), _("19"), _("20"), _("21"), _("22"), _("23"), _("24"),  _("25"), _("26"), _("27"), _("28"), _("29"), _("30"), _("31"), _("32"), _("33"), _("34") },
+                            defaultIndex = 0,
+                        },
+                        {
+                            key = "motras_length",
+                            name = _("Length"),
+                            values = { _("80m"), _("120m"), _("160m"), _("240m"), _("320m"), _("360"), _("400"), _("440"), _("480") },
+                            defaultIndex = 2,
+                        },
+                        {
+                            key = "motras_platform_width",
+                            name = _("Platform Width"),
+                            values = { _("tall"), _("wide") },
+                            defaultIndex = 0
+                        },
+                        {
+                            key = "motras_prefer_island_platforms",
+                            name = _("Prefer Island Platforms"),
+                            values = { _("No"), _("Yes") },
+                            defaultIndex = 0
+                        },
+                        UgParamUtils.makeTrackTypeParam(),
+                        UgParamUtils.makeTrackCatenaryParam(),
+                    }
+                }
+            }
+        },
+        createTemplateFn = function(params)
+            local blueprint = Blueprint:new{
+                platformCount = params.motras_tracks + 1,
+                platformSegmentCount = params.motras_length + 1,
+                preferIslandPlatforms = params.motras_prefer_island_platforms == 1,
+                platformWidth = params.motras_platform_width + 1,
+                trackModule = 'station/rail/modules/motras_track_train_normal_catenary.module',
+                platformModule = 'station/rail/modules/motras_platform_550.module'
+            }
+
+            return blueprint:toTpf2Template()
+        end,
         -- upgradeFn = function(params)
         --     return {}
         -- end,

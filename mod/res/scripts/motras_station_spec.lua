@@ -96,6 +96,68 @@ describe("Station", function ()
 
             assert.are.equal(place, place:getGrid():get(2,5))
         end)
+
+        it("creates asset and put it in the asset cache", function ()
+            local station = Station:new()
+
+            local slotId = Slot.makeId({
+                type = t.DECORATION,
+                gridX = 2,
+                gridY = 5,
+                assetId = 1
+            })
+
+            station:initializeAndRegister(slotId)
+
+            assert.are.equal(slotId, station.assetSlotCache.assetSlots[2][5][1].id)
+        end)
+
+        it("creates asset and bind it to grid element", function ()
+            local station = Station:new()
+
+            local slotId = Slot.makeId({
+                type = t.PLATFORM,
+                gridX = 2,
+                gridY = 5
+            })
+
+            local platform = station:initializeAndRegister(slotId)
+
+            local assetSlotId = Slot.makeId({
+                type = t.DECORATION,
+                gridX = 2,
+                gridY = 5,
+                assetId = 4
+            })
+
+            station:initializeAndRegister(assetSlotId)
+
+            assert.are.equal(nil, station.assetSlotCache.assetSlots[2])
+            assert.are.equal(assetSlotId, platform:getAsset(4):getSlotId())
+        end)
+
+        it("creates asset and bind it to grid element (from cache)", function ()
+            local station = Station:new()
+
+            local assetSlotId = Slot.makeId({
+                type = t.DECORATION,
+                gridX = 2,
+                gridY = 5,
+                assetId = 4
+            })
+
+            station:initializeAndRegister(assetSlotId)
+
+            local slotId = Slot.makeId({
+                type = t.PLATFORM,
+                gridX = 2,
+                gridY = 5
+            })
+
+            local platform = station:initializeAndRegister(slotId)
+
+            assert.are.equal(assetSlotId, platform:getAsset(4):getSlotId())
+        end)
     end)
 
     describe("initializeAndRegisterAll", function ()
@@ -173,6 +235,29 @@ describe("Station", function ()
             assert.are.equal(platform, platform:getGrid():get(2,5))
 
             assert.are.equal(0.96, platform:getPlatformHeight())
+        end)
+
+        it('registers asset', function ()
+            local station = Station:new()
+
+            local slotId = Slot.makeId({
+                type = t.TRACK,
+                gridX = 2,
+                gridY = 5
+            })
+            local assetSlotId = Slot.makeId({
+                type = t.DECORATION,
+                gridX = 2,
+                gridY = 5,
+                assetId = 4
+            })
+
+            station:initializeAndRegister(slotId)
+            station:initializeAndRegister(assetSlotId)
+
+            local asset = station:register(assetSlotId, {height = 20})
+
+            assert.are.equal(asset, asset:getGrid():get(2,5):getAsset(4))
         end)
     end)
 

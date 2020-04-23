@@ -14,7 +14,8 @@ describe("GridElement", function()
     local grid = Grid:new{
         horizontalDistance = c.DEFAULT_HORIZONTAL_GRID_DISTANCE,
         verticalDistance = c.DEFAULT_VERTICAL_GRID_DISTANCE,
-        baseHeight = c.DEFAULT_BASE_HEIGHT
+        baseHeight = c.DEFAULT_BASE_HEIGHT,
+        modulePrefix = 'motras'
     }
     local slot = Slot:new{id = slotId}
     local gridElement = GridElement:new{slot = slot, grid = grid, options = {platformHeight = 0.96}}
@@ -122,6 +123,84 @@ describe("GridElement", function()
 
         it ('returns default when option does not exists', function ()
             assert.are.equal(42, gridElement:getOption('an_option', 42))
+        end)
+    end)
+
+    describe("registerAsset", function ()
+        it("registers asset", function ()
+            local assetSlotId = Slot.makeId({type = t.DECORATION, gridX = 1, gridY = 2})
+            local assetSlot = Slot:new{id = assetSlotId}
+            local asset = gridElement:registerAsset(12, assetSlot, {height = 320})
+
+            assert.are.equal(assetSlotId, asset:getSlotId())
+            assert.are.equal(1, asset:getGridX())
+            assert.are.equal(2, asset:getGridY())
+        end)
+    end)
+
+    describe("hasAsset", function ()
+        it ("checks whether grid element has asset", function ()
+            assert.is_true(gridElement:hasAsset(12))
+            assert.is_true(gridElement:hasAsset(12, t.DECORATION))
+            assert.is_false(gridElement:hasAsset(14))
+            assert.is_false(gridElement:hasAsset(14, t.ROOF))
+        end)
+    end)
+
+    describe("getAsset", function ()
+        it ("returns asset", function ()
+            local assetSlotId = Slot.makeId({type = t.DECORATION, gridX = 1, gridY = 2})
+            local asset = gridElement:getAsset(12)
+
+            assert.are.equal(assetSlotId, asset:getSlotId())
+            assert.are.equal(1, asset:getGridX())
+            assert.are.equal(2, asset:getGridY())
+
+            assert.are.equal(nil, gridElement:getAsset(14))
+        end)
+    end)
+
+    describe("addAssetSlot", function ()
+        it("adds asset slot to collection (1m above the base slot)", function ()
+            local slots = {}
+
+            gridElement:addAssetSlot(slots, 3)
+
+            assert.are.same({{
+                id = Slot.makeId({type = t.ASSET, gridX = 1, gridY = 2, assetId = 3}),
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    gridElement:getAbsoluteX(), gridElement:getAbsoluteY(), 1, 1
+                },
+                type = 'motras_asset',
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            }}, slots)
+        end)
+
+        it("adds custom asset slot", function ()
+            local slots = {}
+
+            gridElement:addAssetSlot(slots, 3, {
+                assetType = t.DECORATION,
+                slotType = 'decoration',
+                position = {1, 2, 4},
+                global = false,
+                spacing = {1,1,1,1}
+            })
+
+            assert.are.same({{
+                id = Slot.makeId({type = t.DECORATION, gridX = 1, gridY = 2, assetId = 3}),
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    gridElement:getAbsoluteX() + 1, gridElement:getAbsoluteY() + 2, 4, 1
+                },
+                type = 'decoration',
+                spacing = {1, 1, 1, 1}
+            }}, slots)
         end)
     end)
 end)

@@ -9,5 +9,6 @@ return {
     DEFAULT_PLATFORM_HEIGHT = 0.55,
     DEFAULT_BASE_TRACK_HEIGHT = 0.53,
     PLATFORM_WAITING_EDGE_OFFSET = 2,
-    PASSENGER_TERMINAL_MODEL = 'station/rail/motras/path/passenger_terminal.mdl'
+    PASSENGER_TERMINAL_MODEL = 'station/rail/motras/path/passenger_terminal.mdl',
+    DEFAULT_ASSET_SLOT_SPACING = {0.1, 0.1, 0.1, 0.1},
 }

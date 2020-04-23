@@ -9,6 +9,7 @@ local PlatformSlotPlacement = require("motras_platform_slot_placement")
 local TrackUtils = require("motras_trackutils")
 local EdgeListMap = require("motras_edge_list_map")
 local TerminalUtils = require("motras_terminalutils")
+local AssetSlotCache = require("motras_asset_slot_cache")
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -27,6 +28,8 @@ function Station:new(o)
         baseTrackHeight = o.baseTrackHeight or c.DEFAULT_BASE_TRACK_HEIGHT,
         modulePrefix = o.modulePrefix or c.DEFAULT_MODULE_PREFIX
     }
+
+    o.assetSlotCache = AssetSlotCache:new{}
 
     setmetatable(o, self)
     self.__index = self
@@ -89,10 +92,21 @@ end
 
 function Station:initializeAndRegister(slotId)
     --Slot:new{id = slotId}:debug()
+    local slot = Slot:new{id = slotId}
+
+    local isAssetOrDecoration = slot.type < t.TRACK and slot.assetId > 0
+    if isAssetOrDecoration then
+        if self.grid:has(slot.gridX, slot.gridY) then
+            return self.grid:get(slot.gridX, slot.gridY):registerAsset(slot.assetId, slot)
+        end
+        return self.assetSlotCache:addAssetSlot(slot)
+    end
+
     local gridElement = GridElement:new{
-        slot = Slot:new{id = slotId},
+        slot = slot,
         grid = self.grid
     }
+    self.assetSlotCache:bindAssetSlotsToGridElement(gridElement)
 
     if gridElement:getGridType() == t.GRID_TRACK then
         return self:registerGridElement(Track:new(gridElement))
@@ -104,12 +118,18 @@ function Station:initializeAndRegister(slotId)
 end
 
 function Station:register(slotId, options)
-    local gridElement = GridElement:new{
-        slot = Slot:new{id = slotId},
-        grid = self.grid
-    }
+    local slot = Slot:new{id = slotId}
 
-    local gridElement = self.grid:get(gridElement:getGridX(), gridElement:getGridY())
+    local isAssetOrDecoration = slot.type < t.TRACK and slot.assetId > 0
+    if isAssetOrDecoration then
+        local gridElement = self.grid:get(slot.gridX, slot.gridY)
+        if gridElement then
+            return gridElement:getAsset(slot.assetId)
+        end
+        return nil
+    end
+
+    local gridElement = self.grid:get(slot.gridX, slot.gridY)
     if gridElement then
         gridElement:setOptions(options or {})
     end

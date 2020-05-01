@@ -1,7 +1,8 @@
 local ConstructionUtils = require('constructionutil')
 local Box = require("motras_box")
-local UgStationBuildingUtils = require('motras_ug_station.building_utils')
 local BuildingUtils = require('motras_buildingutils')
+local Transf = require('transf')
+local Vec3 = require('vec3')
 
 local decorationModels = {
     models = {
@@ -19,35 +20,33 @@ local decorationModels = {
     },
 }
 
-
-
 function data()
     return {
         cost = {
-            price = 18000,
+            price = 5000,
         },
         category = {
             categories = { "passenger buildings", },
         },
         description = {
-            name = _("Small main building"),
-		    description = _("Small main building with street access for passenger stations."),
-		    icon = "ui/construction/station/rail/modular_station/main_building_1_era_c.tga"
+            name = _("Small side building"),
+            description = _("Small side building with street access for passenger stations."),
+            icon = "ui/construction/station/rail/modular_station/side_building_1_era_c.tga",
         }, 
         availability = {
             yearFrom = 0,
             yearTo = 0
         },
-        type = "motras_building_1",
+        type = "motras_building_platform40m_small",
         order = {
             value = 1,
         },
         metadata = {
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
-            local asset = result.motras:register(slotId)
+            local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})
 
-            asset:handle(function (moduleResult)
+            asset:handle(function ()
                 local offset = 7.5
                 if asset:getParentGridElement():getAbsoluteY() < transform[14] then
                     offset = -7.5
@@ -58,22 +57,35 @@ function data()
 
                 local buildingModels = {
                     mainBuilding = "station/rail/era_c/station_1.mdl",
-                    connectionToLeftSmallBuilding = "station/rail/era_c/station_1_con_l_1.mdl",
-                    connectionToLeftMediumBuilding = "station/rail/era_c/station_1_con_l.mdl",
-                    connectionToLeftLargeBuilding = "station/rail/era_c/station_1_con_l.mdl",
+                    connectionToLeftSmallBuilding = "station/rail/era_c/station_1_con_r_1.mdl",
+                    connectionToLeftMediumBuilding = "station/rail/era_c/station_1_con_r.mdl",
+                    connectionToLeftLargeBuilding = "station/rail/era_c/station_1_con_r.mdl",
                     connectionToRightSmallBuilding = "station/rail/era_c/station_1_con_l_1.mdl",
-                    connectionToRightMediumBuilding = "station/rail/era_c/station_1_con_r.mdl",
-                    connectionToRightLargeBuilding = "station/rail/era_c/station_1_con_r.mdl",
-			        endingLeft = "station/rail/era_c/station_1_end_l.mdl",
-			        endingRight = "station/rail/era_c/station_1_end_r.mdll",
+                    connectionToRightMediumBuilding = "station/rail/era_c/station_1_con_l.mdl",
+                    connectionToRightLargeBuilding = "station/rail/era_c/station_1_con_l.mdl",
+			        endingLeft = "station/rail/era_c/station_1_end_r.mdl",
+			        endingRight = "station/rail/era_c/station_1_end_l.mdl",
                 }
 
-                BuildingUtils.makeConnectableBuilding()
-		        ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+                BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
+                ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
             end)
         end,
         getModelsFn = function()
-            return { }
+            return {
+                { 
+                    id = "station/rail/era_c/station_1.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+                { 
+                    id = "station/rail/era_c/station_1_end_l.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+                { 
+                    id = "station/rail/era_c/station_1_end_r.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+            }
         end
     }
 end

@@ -1,0 +1,115 @@
+local ConstructionUtils = require('constructionutil')
+local Box = require("motras_box")
+local BuildingUtils = require("motras_buildingutils")
+local Transf = require('transf')
+local Vec3 = require('vec3')
+
+local decorationModels = {
+    models = {
+        ["asset/roof/era_b_lamp_b_02.mdl"] = {
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 1.25469, -5.20000, 4.39750, 1.00000 },
+            { -1.00000, -0.00000, 0.00000, 0.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 1.25469, -18.50000, 3.63750, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -6.25279, -5.20000, 4.39750, 1.00000 },
+            { -1.00000, -0.00000, 0.00000, 0.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -4.67500, -18.50000, 3.63750, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 6.25943, -5.20000, 4.39750, 1.00000 },
+            { -1.00000, -0.00000, 0.00000, 0.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 4.67500, -18.50000, 3.63750, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -1.25000, -5.20000, 4.39750, 1.00000 },
+            { -1.00000, -0.00000, 0.00000, 0.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -1.25000, -18.50000, 3.63750, 1.00000 },
+        },
+        ["station/rail/asset/era_c_single_chair.mdl"] = {
+            { -0.00000, -1.00000, 0.00000, 0.00000, 1.00000, -0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -6.24430, -4.60000, 0.80000, 1.00000 },
+            { -0.00000, -1.00000, 0.00000, 0.00000, 1.00000, -0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 6.24430, -4.60000, 0.80000, 1.00000 },
+        },
+        ["station/rail/asset/era_c_street_pillar.mdl"] = {
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -10.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -8.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -6.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -4.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -2.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -3.00000, -18.80000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 2.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 3.00000, -18.80000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 4.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 6.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 8.00000, -22.51000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 10.00000, -22.51000, 0.00000, 1.00000 },
+        },
+        ["station/rail/asset/era_c_trashcan.mdl"] = {
+            { -0.00000, 1.00000, 0.00000, 0.00000, -1.00000, -0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 3.76910, -4.50000, 0.80000, 1.00000 },
+            { -0.00000, 1.00000, 0.00000, 0.00000, -1.00000, -0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -3.76910, -4.50000, 0.80000, 1.00000 },
+        },
+    },
+}
+
+
+
+function data()
+    return {
+        cost = {
+            price = 20000,
+        },
+        category = {
+            categories = { "passenger buildings", },
+        },
+        description = {
+            name = _("Medium main building"),
+            description = _("Medium main building with street access for passenger stations."),
+            icon = "ui/construction/station/rail/modular_station/main_building_2_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_building_platform40m_medium",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})
+
+            asset:handle(function (moduleResult)
+                local offset = 7.5
+                if asset:getParentGridElement():getAbsoluteY() < transform[14] then
+                    offset = -7.5
+                end
+                transform[14] = transform[14] + offset
+
+                BuildingUtils.makeLot(result, Box:new({ -11, -23, 0 }, { 11, 0, 4 }), transform)
+
+                local buildingModels = {
+                    mainBuilding = "station/rail/era_c/station_2_main.mdl",
+                    connectionToLeftSmallBuilding = "station/rail/era_c/station_2_main_end_r.mdl",
+                    connectionToLeftMediumBuilding = "station/rail/era_c/station_2_main_con_r_2.mdl",
+                    connectionToLeftLargeBuilding = "station/rail/era_c/station_2_main_con_r_3.mdl",
+                    connectionToRightSmallBuilding = "station/rail/era_c/station_2_main_end_l.mdl",
+                    connectionToRightMediumBuilding = "station/rail/era_c/station_2_main_con_l_2.mdl",
+                    connectionToRightLargeBuilding = "station/rail/era_c/station_2_main_con_l_3.mdl",
+			        endingLeft = "station/rail/era_c/station_2_main_end_r.mdl",
+			        endingRight = "station/rail/era_c/station_2_main_end_l.mdl",
+                }
+
+                BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
+		        ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+            end)
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/era_c/station_2_main.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+                { 
+                    id = "station/rail/era_c/station_2_main_end_l.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+                { 
+                    id = "station/rail/era_c/station_2_main_end_r.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+            }
+        end
+    }
+end

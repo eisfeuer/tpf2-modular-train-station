@@ -21,7 +21,7 @@ function Slot:new (o)
     local ids = NatBomb.explode(DIGIT_SPACES, o.id or 0)
 
     o.type = ids[1] or t.UNKNOWN
-    o.gridType = math.floor(o.type / 32)
+    o.gridType = math.floor(o.type / 16)
     o.gridX = toSignedId(ids[2])
     o.gridY = toSignedId(ids[3])
     o.assetId = ids[4] or 0

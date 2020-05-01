@@ -1,3 +1,4 @@
+local env = require('env')
 local TestUtils = {}
 
 function TestUtils.mockCommonApi(options)
@@ -14,6 +15,10 @@ function TestUtils.mockCommonApi(options)
             }
         end
     end
+end
+
+function TestUtils.loadTpf2Libs()
+    package.path = package.path .. ';' .. env.transportFever2Path .. '/?.lua'
 end
 
 function TestUtils.mockTranslations()

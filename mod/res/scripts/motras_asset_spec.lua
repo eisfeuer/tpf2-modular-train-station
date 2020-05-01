@@ -23,6 +23,12 @@ describe('Asset', function ()
         end)
     end)
 
+    describe('getId', function ()
+        it('returns asset id', function ()
+            assert.are.equal(1, asset:getId())
+        end)
+    end)
+
     describe('getType', function ()
         it ('returns type', function ()
             assert.are.equal(t.ROOF, asset:getType())

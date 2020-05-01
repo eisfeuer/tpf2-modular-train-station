@@ -8,7 +8,7 @@ function Asset:new(o)
     end
 
     o.handleFunction = function ()
-        
+
     end
 
     setmetatable(o, self)
@@ -18,6 +18,10 @@ end
 
 function Asset:getParentGridElement()
     return self.parent
+end
+
+function Asset:getId()
+    return self.slot.assetId
 end
 
 function Asset:getGrid()

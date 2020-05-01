@@ -54,6 +54,39 @@ describe("slot", function ()
         end)
     end)
 
+    describe('gridType', function ()
+        it('returns track', function ()
+            local slotId = Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0, assetId = 0, assetDecorationId = 0})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.equal(t.GRID_TRACK, slot.gridType)
+        end)
+        it('returns platform', function ()
+            local slotId = Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0, assetId = 0, assetDecorationId = 0})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.equal(t.GRID_PLATFORM, slot.gridType)
+        end)
+        it('returns place', function ()
+            local slotId = Slot.makeId({type = t.PLACE, gridX = 0, gridY = 0, assetId = 0, assetDecorationId = 0})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.equal(t.GRID_PLACE, slot.gridType)
+        end)
+        it('returns asset', function ()
+            local slotId = Slot.makeId({type = t.ASSET, gridX = 0, gridY = 0, assetId = 1, assetDecorationId = 0})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.equal(t.GRID_ASSET, slot.gridType)
+        end)
+        it('returns asset decoration', function ()
+            local slotId = Slot.makeId({type = t.ASSET_DECORATION, gridX = 0, gridY = 0, assetId = 1, assetDecorationId = 1})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.equal(t.GRID_ASSET_DECORATION, slot.gridType)
+        end)
+    end)
+
     describe('addGridSlotsToCollection', function ()
         local station = Station:new{horizontalGridDistance = 10, verticalGridDistance = 10}
         station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))

@@ -1,0 +1,51 @@
+local PlatformModuleUtils = require('motras_platformmoduleutils')
+local t = require('motras_types')
+
+function data()
+    return {
+        cost = {
+            price = 18000,
+        },
+        category = {
+            categories = { "passenger", },
+        },
+        description = {
+            name = _("platform_270"),
+		    description = _("platform_270_desc"),
+            icon = "ui/construction/station/rail/modular_station/track.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_platform",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local platform = result.motras:register(slotId, {platformHeight = 0.27})
+            PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, result.slots)
+
+            platform:handle(function (moduleResult)
+                PlatformModuleUtils.makePlatform(
+                    platform,
+                    result.models,
+                    'station/rail/motras/platform_rep.mdl',
+                    'station/rail/motras/platform_edge_rep.mdl',
+                    'station/rail/motras/platform_back_rep.mdl',
+                    'station/rail/motras/platform_side.mdl',
+                    'station/rail/motras/platform_edge_side_left.mdl',
+                    'station/rail/motras/platform_edge_side_right.mdl',
+                    'station/rail/motras/platform_back_side_left.mdl',
+                    'station/rail/motras/platform_back_side_right.mdl',
+                    { addBackEdgesOnConnect = true }
+                )
+            end)
+        end,
+        getModelsFn = function()
+            return { }
+        end
+    }
+end

@@ -58,6 +58,12 @@ function data()
                             values = { _("No"), _("Yes") },
                             defaultIndex = 0
                         },
+                        {
+                            key = "motras_platform_height",
+                            name = _("Platform Height (in mm)"),
+                            values = {_("270"), _("550")},
+                            defaultIndex = 0
+                        },
                         UgParamUtils.makeTrackTypeParam(),
                         UgParamUtils.makeTrackCatenaryParam(),
                     }
@@ -65,13 +71,18 @@ function data()
             }
         },
         createTemplateFn = function(params)
+            local platformModules = {
+                'station/rail/modules/motras_platform_270.module',
+                'station/rail/modules/motras_platform_550.module'
+            }
+
             local blueprint = Blueprint:new{
                 platformCount = params.motras_tracks + 1,
                 platformSegmentCount = params.motras_length + 1,
                 preferIslandPlatforms = params.motras_prefer_island_platforms == 1,
                 platformWidth = params.motras_platform_width + 1,
                 trackModule = 'station/rail/modules/motras_track_train_normal_catenary.module',
-                platformModule = 'station/rail/modules/motras_platform_550.module'
+                platformModule = platformModules[params.motras_platform_height + 1]
             }
 
             return blueprint:toTpf2Template()

@@ -1,3 +1,4 @@
+local Station = require("motras_station")
 local Slot = require("motras_slot")
 local Grid = require("motras_grid")
 local t = require("motras_types")
@@ -77,20 +78,6 @@ describe("GridElement", function()
     describe("getGrid", function ()
         it ("returns the grid", function ()
             assert.are.equal(grid, gridElement:getGrid())
-        end)
-    end)
-
-    describe("call", function ()
-        it ("does not change anything when handle function is not definded", function ()
-            local result = {
-                models = {}
-            }
-
-            gridElement:call(result)
-
-            assert.are.same({
-                models = {}
-            }, result)
         end)
     end)
 
@@ -201,6 +188,127 @@ describe("GridElement", function()
                 type = 'decoration',
                 spacing = {1, 1, 1, 1}
             }}, slots)
+        end)
+    end)
+
+    describe("call", function ()
+        it ("does not change anything when handle function is not definded", function ()
+            local result = {
+                models = {}
+            }
+
+            gridElement:call(result)
+
+            assert.are.same({
+                models = {}
+            }, result)
+        end)
+
+        it("calls asset handler functions", function ()
+            local result = {
+                models = {}
+            }
+
+            local asset = gridElement:getAsset(12)
+            asset:handle(function (moduleResult)
+                table.insert(moduleResult.models, {
+                    id = 'asset_model.mdl',
+                    transf = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}
+                })
+            end)
+
+            gridElement:call(result)
+
+            assert.are.same({
+                models = {{
+                    id = 'asset_model.mdl',
+                    transf = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}
+                }}
+            }, result)
+        end)
+    end)
+
+    describe('hasNeighborLeft', function ()
+        it('checks weather grid element has left neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local leftNeighbor = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = -1, gridY = 0}))
+
+            assert.is_true(testGridElement:hasNeighborLeft())
+            assert.is_false(leftNeighbor:hasNeighborLeft())
+        end)
+    end)
+
+    describe('getNeighborLeft', function ()
+        it('returns left neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local leftNeighbor = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = -1, gridY = 0}))
+
+            assert.are.equal(leftNeighbor, testGridElement:getNeighborLeft())
+        end)
+    end)
+
+    describe('hasNeighborRight', function ()
+        it('checks weather grid element has right neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local rightNeighbor = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 1, gridY = 0}))
+
+            assert.is_true(testGridElement:hasNeighborRight())
+            assert.is_false(rightNeighbor:hasNeighborRight())
+        end)
+    end)
+
+    describe('getNeighborRight', function ()
+        it('returns right neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local rightNeighbor = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 1, gridY = 0}))
+
+            assert.are.equal(rightNeighbor, testGridElement:getNeighborRight())
+        end)
+    end)
+
+    describe('hasNeighborTop', function ()
+        it('checks weather grid element has top neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local neightborTop = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 1}))
+
+            assert.is_true(testGridElement:hasNeighborTop())
+            assert.is_false(neightborTop:hasNeighborTop())
+        end)
+    end)
+
+    describe('getNeighborTop', function ()
+        it('returns top neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local neighborTop = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 1}))
+
+            assert.are.equal(neighborTop, testGridElement:getNeighborTop())
+        end)
+    end)
+
+    describe('hasNeighborBottom', function ()
+        it('checks weather grid element has bottom neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local neightborBottom = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = -1}))
+
+            assert.is_true(testGridElement:hasNeighborBottom())
+            assert.is_false(neightborBottom:hasNeighborBottom())
+        end)
+    end)
+
+    describe('getNeighborBottom', function ()
+        it('returns bottom neighbor', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local neighborBottom = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = -1}))
+
+            assert.are.equal(neighborBottom, testGridElement:getNeighborBottom())
         end)
     end)
 end)

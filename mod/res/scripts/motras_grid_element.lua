@@ -1,5 +1,6 @@
 local Asset = require('motras_asset')
 local Slot = require('motras_slot')
+local MatrixUtils = require('motras_matrixutils')
 local c = require('motras_constants')
 local t = require('motras_types')
 
@@ -69,6 +70,9 @@ end
 
 function GridElement:call(result)
     self.handleFunction(result)
+    for assetId, asset in pairs(self.assets) do
+        asset:call(result)
+    end
 end
 
 function GridElement:getAbsoluteX()
@@ -138,17 +142,55 @@ function GridElement:addAssetSlot(slotCollection, assetId, options)
         end
     end
 
+    local transformation = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        position[1], position[2], position[3], 1
+    }
+
+    if options.rotation then
+        transformation = MatrixUtils.rotateAroundZAxis(options.rotation, transformation)
+    end
+
     table.insert(slotCollection, {
         id = assetSlotId,
-        transf = {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            position[1], position[2], position[3], 1
-        },
+        transf = transformation,
         type = options.slotType or self.grid:getModulePrefix() .. '_asset',
         spacing = options.spacing or c.DEFAULT_ASSET_SLOT_SPACING
     })
+end
+
+function GridElement:hasNeighborLeft()
+    return self:getGrid():has(self:getGridX() - 1, self:getGridY())
+end
+
+function GridElement:getNeighborLeft()
+    return self:getGrid():get(self:getGridX() - 1, self:getGridY())
+end
+
+function GridElement:hasNeighborRight()
+    return self:getGrid():has(self:getGridX() + 1, self:getGridY())
+end
+
+function GridElement:getNeighborRight()
+    return self:getGrid():get(self:getGridX() + 1, self:getGridY())
+end
+
+function GridElement:hasNeighborTop()
+    return self:getGrid():has(self:getGridX(), self:getGridY() + 1)
+end
+
+function GridElement:getNeighborTop()
+    return self:getGrid():get(self:getGridX(), self:getGridY() + 1)
+end
+
+function GridElement:hasNeighborBottom()
+    return self:getGrid():has(self:getGridX(), self:getGridY() - 1)
+end
+
+function GridElement:getNeighborBottom()
+    return self:getGrid():get(self:getGridX(), self:getGridY() - 1)
 end
 
 return GridElement

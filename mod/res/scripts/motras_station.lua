@@ -78,6 +78,7 @@ function Station:getData()
     result.terminalGroups = {}
     result.terrainAlignmentLists = {}
     result.groundFaces = {}
+    result.colliders = {}
 
     result.terminateConstructionHook = function ()
         self:processResult(result)
@@ -91,11 +92,10 @@ function Station:getData()
 end
 
 function Station:initializeAndRegister(slotId)
-    --Slot:new{id = slotId}:debug()
     local slot = Slot:new{id = slotId}
+    --slot:debug()
 
-    local isAssetOrDecoration = slot.type < t.TRACK and slot.assetId > 0
-    if isAssetOrDecoration then
+    if slot.gridType == t.GRID_ASSET and  slot.assetId > 0 then
         if self.grid:has(slot.gridX, slot.gridY) then
             return self.grid:get(slot.gridX, slot.gridY):registerAsset(slot.assetId, slot)
         end
@@ -120,11 +120,14 @@ end
 function Station:register(slotId, options)
     local slot = Slot:new{id = slotId}
 
-    local isAssetOrDecoration = slot.type < t.TRACK and slot.assetId > 0
-    if isAssetOrDecoration then
+    if slot.gridType == t.GRID_ASSET and  slot.assetId > 0 then
         local gridElement = self.grid:get(slot.gridX, slot.gridY)
         if gridElement then
-            return gridElement:getAsset(slot.assetId)
+            local asset = gridElement:getAsset(slot.assetId)
+            if options then
+                asset:setOptions(options)
+            end
+            return asset
         end
         return nil
     end
@@ -138,7 +141,6 @@ end
 
 function Station:initializeAndRegisterAll(slots)
     for slotId, module in pairs(slots) do
-        --print(slotId)
         self:initializeAndRegister(slotId)
     end
 end

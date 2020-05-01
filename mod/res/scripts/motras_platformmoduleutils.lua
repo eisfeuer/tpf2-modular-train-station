@@ -1,4 +1,5 @@
 local c = require('motras_constants')
+local t = require('motras_types')
 
 local PlatformModuleUtils = {}
 
@@ -288,6 +289,190 @@ function PlatformModuleUtils.makePlatform(
                 })
             end
         end
+    end
+end
+
+function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
+    if not (platform:isPlatform() or platform:isPlace()) then
+        error('Building slots can only placed on platforms or places')
+    end
+
+    if not platform:hasNeighborTop() then
+        platform:addAssetSlot(slots, 1, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {-15, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 2, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {-5, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 3, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {5, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 4, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {15, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+
+        platform:addAssetSlot(slots, 5, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {-20, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+        platform:addAssetSlot(slots, 6, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {-10, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+        platform:addAssetSlot(slots, 7, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {0, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+        platform:addAssetSlot(slots, 8, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {10, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+
+        platform:addAssetSlot(slots, 9, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {-20, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+        platform:addAssetSlot(slots, 10, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {-10, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+        platform:addAssetSlot(slots, 11, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {0, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+        platform:addAssetSlot(slots, 12, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {10, 10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+    end
+
+    if not platform:hasNeighborBottom() then
+        platform:addAssetSlot(slots, 13, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {15, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 14, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {5, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 15, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {-5, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 16, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_small',
+            position = {-15, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+
+        platform:addAssetSlot(slots, 17, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {20, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+        platform:addAssetSlot(slots, 18, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {10, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+        platform:addAssetSlot(slots, 19, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {0, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+        platform:addAssetSlot(slots, 20, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_medium',
+            position = {-10, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_MEDIUM_SPACING
+        })
+
+        platform:addAssetSlot(slots, 21, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {20, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+        platform:addAssetSlot(slots, 22, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {10, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+        platform:addAssetSlot(slots, 23, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {0, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
+        platform:addAssetSlot(slots, 24, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_large',
+            position = {-10, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+        })
     end
 end
 

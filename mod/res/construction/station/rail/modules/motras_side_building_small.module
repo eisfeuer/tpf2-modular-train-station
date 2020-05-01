@@ -1,0 +1,79 @@
+local ConstructionUtils = require('constructionutil')
+local Box = require("motras_box")
+local UgStationBuildingUtils = require('motras_ug_station.building_utils')
+local BuildingUtils = require('motras_buildingutils')
+
+local decorationModels = {
+    models = {
+        ["station/rail/asset/era_c_street_pillar.mdl"] = {
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -5.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -3.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, -11.05000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -1.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 1.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 2.50000, -11.05000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -2.50000, -11.05000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 3.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 5.00000, -16.30000, 0.00000, 1.00000 },
+        },
+    },
+}
+
+
+
+function data()
+    return {
+        cost = {
+            price = 18000,
+        },
+        category = {
+            categories = { "passenger buildings", },
+        },
+        description = {
+            name = _("Small main building"),
+		    description = _("Small main building with street access for passenger stations."),
+		    icon = "ui/construction/station/rail/modular_station/main_building_1_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_building_1",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+
+            asset:handle(function (moduleResult)
+                local offset = 7.5
+                if asset:getParentGridElement():getAbsoluteY() < transform[14] then
+                    offset = -7.5
+                end
+                transform[14] = transform[14] + offset
+
+                BuildingUtils.makeLot(result, Box:new({ -6, -17, 0 }, { 6, 0, 4 }), transform)
+
+                local buildingModels = {
+                    mainBuilding = "station/rail/era_c/station_1.mdl",
+                    connectionToLeftSmallBuilding = "station/rail/era_c/station_1_con_l_1.mdl",
+                    connectionToLeftMediumBuilding = "station/rail/era_c/station_1_con_l.mdl",
+                    connectionToLeftLargeBuilding = "station/rail/era_c/station_1_con_l.mdl",
+                    connectionToRightSmallBuilding = "station/rail/era_c/station_1_con_l_1.mdl",
+                    connectionToRightMediumBuilding = "station/rail/era_c/station_1_con_r.mdl",
+                    connectionToRightLargeBuilding = "station/rail/era_c/station_1_con_r.mdl",
+			        endingLeft = "station/rail/era_c/station_1_end_l.mdl",
+			        endingRight = "station/rail/era_c/station_1_end_r.mdll",
+                }
+
+                BuildingUtils.makeConnectableBuilding()
+		        ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+            end)
+        end,
+        getModelsFn = function()
+            return { }
+        end
+    }
+end

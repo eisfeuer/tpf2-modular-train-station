@@ -1,0 +1,70 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { -0.18999980390072, 2.5, 1.2000000476837, },
+		bbMin = { -14.989999771118, -2.5, -4.8000030517578, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 7.4000000953674, 2.5, 3.0000014305115, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", "station/rail/era_c/era_c_trainstation_borders_1.mtl", "station/rail/era_b/station_floor_1.mtl", "station/rail/era_c/era_c_trainstation_wall_white.mtl", "station/rail/era_c/era_c_trainstation_wall_grey.mtl", "station/rail/era_c/era_c_trainstation_roof_white.mtl", "station/rail/era_c/era_c_trainstation_assets.mtl", },
+						mesh = "station/rail/motras/stairs_small_lod0.msh",
+						name = "stairs_small_concrete",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 199.63557434082,
+		},
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", "station/rail/era_c/era_c_trainstation_borders_1.mtl", "station/rail/era_b/station_floor_1.mtl", "station/rail/era_c/era_c_trainstation_wall_white.mtl", "station/rail/era_c/era_c_trainstation_roof_white.mtl", },
+						mesh = "station/rail/motras/stairs_small_lod1.msh",
+						name = "stairs_small_concrete_lod1",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 199.63557434082,
+			visibleTo = 598.90673828125,
+		},
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", "station/rail/era_c/era_c_trainstation_borders_1.mtl", "station/rail/era_b/station_floor_1.mtl", "station/rail/era_c/era_c_trainstation_wall_white.mtl", "station/rail/era_c/era_c_trainstation_roof_white.mtl", },
+						mesh = "station/rail/motras/stairs_small_lod2.msh",
+						name = "stairs_small_concrete_lod2",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 598.90673828125,
+			visibleTo = 1796.7202148438,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

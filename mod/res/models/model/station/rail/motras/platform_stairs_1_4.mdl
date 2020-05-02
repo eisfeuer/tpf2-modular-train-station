@@ -1,0 +1,36 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { -10, -1.5149998664856, 0, },
+		bbMin = { -19.809999465942, -2.5, 0, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 4.9049997329712, 0.4925000667572, 0, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_floor_1.mtl", },
+						mesh = "station/rail/motras/platform_stairs_1_4_lod0.msh",
+						name = "platform_stairs_1_4",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 650.56634521484,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

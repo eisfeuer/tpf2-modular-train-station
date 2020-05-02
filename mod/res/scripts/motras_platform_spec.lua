@@ -126,25 +126,56 @@ describe("Platform", function()
         end)
     end)
 
-    describe("getTerminalEdgeTopTransformation", function ()
-        it ("returns the position of the terminal edge at the top", function ()
+    describe("getGlobalTransformationBasedOnPlatformTop", function ()
+        it ("gets global position from a position local from the top mid of the platform module", function ()
             assert.are.same({
-                c.DEFAULT_HORIZONTAL_GRID_DISTANCE, 0, 0, 0,
+                1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY() + c.PLATFORM_WAITING_EDGE_OFFSET, platform:getAbsolutePlatformHeight(), 1
-            }, platform:getTerminalEdgeTopTransformation())
+                platform:getAbsoluteX() - 1, platform:getAbsoluteY() + 1, platform:getAbsolutePlatformHeight() + 2, 1
+            }, platform:getGlobalTransformationBasedOnPlatformTop({x = -1, y = 1, z = 2}))
         end)
     end)
 
-    describe("getTerminalEdgeBottomTransformation", function ()
-        it ("returns the position of the terminal edge at the bottom", function ()
+    describe("handleTerminals / callTerminalHandling", function ()
+        it ('handles default terminal handling', function ()
+            local stuff = {}
+
+            local addTerminalFunc = function (model, transformation, terminalId)
+                stuff.model = model
+                stuff.transformation = transformation
+                stuff.terminalId = terminalId
+            end
+
+            platform:callTerminalHandling(addTerminalFunc, -1, false)
+
             assert.are.same({
-                -c.DEFAULT_HORIZONTAL_GRID_DISTANCE, 0, 0, 0,
-                0, -1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY() - c.PLATFORM_WAITING_EDGE_OFFSET, platform:getAbsolutePlatformHeight(), 1
-            }, platform:getTerminalEdgeBottomTransformation())
+                model = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                transformation = platform:getGlobalTransformationBasedOnPlatformTop({
+                    x = 0, y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET, z = 0
+                }),
+                terminalId = 0
+            }, stuff)
+        end)
+        it ('handles terminals', function ()
+            local stuff = {}
+
+            local addTerminalFunc = function (model, transformation, terminalId)
+                stuff.model = model
+                stuff.transformation = transformation
+                stuff.terminalId = terminalId
+            end
+
+            platform:handleTerminals(function (addTerminalFunc)
+                addTerminalFunc('a_terminal_model', platform:getGlobalTransformationBasedOnPlatformTop({x = 0, y = 2.5, z = 0}), 1)
+            end)
+            platform:callTerminalHandling(addTerminalFunc, 1, true)
+            
+            assert.are.same({
+                model = 'a_terminal_model',
+                transformation = platform:getGlobalTransformationBasedOnPlatformTop({x = 0, y = 2.5, z = 0}),
+                terminalId = 1
+            }, stuff)
         end)
     end)
 end)

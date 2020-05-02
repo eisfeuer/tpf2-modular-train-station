@@ -26,7 +26,7 @@ local function getVehicleNodeOverride(track, isEven, platformIsOverTrack)
     return track:getAbsoluteOddBottomStopNode()
 end
 
-function TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatforms)
+function TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatforms)
     local TRACK = 1
     local PLATFORM = 2
 
@@ -46,29 +46,35 @@ function TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracks
         vehicleNodeOverride = getVehicleNodeOverride(trackWithStopNode, isEven, platformIsOverTrack)
     }
 
-    for i, trackAndPlatform in pairs(tracksAndPlatforms) do
-        local platform = trackAndPlatform[PLATFORM]
-        table.insert(terminalGroup.terminals, {#models, 0})
+    local addTerminalFunc = function (terminalModel, transformation, terminalId)
+        terminalId = terminalId or 0
+
+        table.insert(terminalGroup.terminals, {#models, terminalId})
         table.insert(models, {
             id = terminalModel,
-            transf = platformIsOverTrack and platform:getTerminalEdgeBottomTransformation() or platform:getTerminalEdgeTopTransformation()
+            transf = transformation
         })
+    end
+
+    for i, trackAndPlatform in pairs(tracksAndPlatforms) do
+        local platform = trackAndPlatform[PLATFORM]
+        platform:callTerminalHandling(addTerminalFunc, platformIsOverTrack and -1 or 1, platformIsOverTrack)
     end
 
     table.insert(terminalGroups, terminalGroup)
 end
 
-function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid, terminalModel, matchFunc)
+function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid)
     local tracksAndPlatformsTop = {}
     local tracksAndPlatformsBottom = {}
 
     grid:eachActivePosition(function (gridElement, iX, iY) 
-        if gridElement:isTrack() and matchFunc(gridElement) then
+        if gridElement:isTrack() then
             local topNeighborGridElement = grid:get(iX, iY + 1)
             if topNeighborGridElement:isPlatform() then
                 table.insert(tracksAndPlatformsTop, {gridElement, topNeighborGridElement})
             else
-                TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatformsTop)
+                TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsTop)
                 tracksAndPlatformsTop = {}
             end
 
@@ -76,20 +82,20 @@ function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid, termin
             if bottomNeighborGridElement:isPlatform() then
                 table.insert(tracksAndPlatformsBottom, {gridElement, bottomNeighborGridElement})
             else
-                TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatformsBottom)
+                TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsBottom)
                 tracksAndPlatformsBottom = {}
             end
         else
-            TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatformsTop)
+            TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsTop)
             tracksAndPlatformsTop = {}
-            TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatformsBottom)
+            TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsBottom)
             tracksAndPlatformsBottom = {}
         end
 
         if iX == grid.activeBounds.right then
-            TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatformsTop)
+            TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsTop)
             tracksAndPlatformsTop = {}
-            TerminalUtils.addTerminal(terminalGroups, models, terminalModel, tracksAndPlatformsBottom)
+            TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsBottom)
             tracksAndPlatformsBottom = {}
         end
 

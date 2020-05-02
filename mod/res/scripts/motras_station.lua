@@ -52,9 +52,7 @@ function Station:processResult(result)
         end
     end)
 
-    TerminalUtils.addTerminalsFromGrid(result.terminalGroups, result.models, self.grid, c.PASSENGER_TERMINAL_MODEL, function ()
-        return true
-    end)
+    TerminalUtils.addTerminalsFromGrid(result.terminalGroups, result.models, self.grid)
 
     if #result.models == 0 then
         table.insert(result.models, {

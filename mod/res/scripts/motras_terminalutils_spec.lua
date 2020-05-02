@@ -81,7 +81,7 @@ describe('TerminalUtils', function ()
             }
             local terminalGroups = {}
 
-            TerminalUtils.addTerminal(terminalGroups, models, 'terminal_model.lua', {
+            TerminalUtils.addTerminal(terminalGroups, models, {
                 {track1, topPlatform1}, {track2, topPlatform2}, {track3, topPlatform3}
             })
 
@@ -91,16 +91,16 @@ describe('TerminalUtils', function ()
                     transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = topPlatform1:getTerminalEdgeBottomTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = topPlatform1:getGlobalTransformationBasedOnPlatformTop({y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = topPlatform2:getTerminalEdgeBottomTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = topPlatform2:getGlobalTransformationBasedOnPlatformTop({y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = topPlatform3:getTerminalEdgeBottomTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = topPlatform3:getGlobalTransformationBasedOnPlatformTop({y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 }
             }, models)
 
@@ -121,7 +121,7 @@ describe('TerminalUtils', function ()
             }
             local terminalGroups = {}
 
-            TerminalUtils.addTerminal(terminalGroups, models, 'terminal_model.lua', {
+            TerminalUtils.addTerminal(terminalGroups, models, {
                 {track1, btmPlatform1}, {track2, btmPlatform2}, {track3, btmPlatform3}, {track4, btmPlatform4}
             })
 
@@ -131,20 +131,20 @@ describe('TerminalUtils', function ()
                     transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = btmPlatform1:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform1:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = btmPlatform2:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform2:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = btmPlatform3:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform3:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.lua',
-                    transf = btmPlatform4:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform4:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 }
             }, models)
 
@@ -167,9 +167,7 @@ describe('TerminalUtils', function ()
             }
             local terminalGroups = {}
 
-            TerminalUtils.addTerminalsFromGrid(terminalGroups, models, station.grid, 'terminal_model.mdl', function (track)
-                return true
-            end)
+            TerminalUtils.addTerminalsFromGrid(terminalGroups, models, station.grid)
 
             assert.are.same({
                 {
@@ -177,32 +175,32 @@ describe('TerminalUtils', function ()
                     transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = topPlatform1:getTerminalEdgeBottomTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = topPlatform1:getGlobalTransformationBasedOnPlatformTop({y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = topPlatform2:getTerminalEdgeBottomTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = topPlatform2:getGlobalTransformationBasedOnPlatformTop({y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = topPlatform3:getTerminalEdgeBottomTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = topPlatform3:getGlobalTransformationBasedOnPlatformTop({y = -c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = btmPlatform1:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform1:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = btmPlatform2:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform2:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = btmPlatform3:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform3:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 },
                 {
-                    id = 'terminal_model.mdl',
-                    transf = btmPlatform4:getTerminalEdgeTopTransformation()
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = btmPlatform4:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
                 }
             }, models)
 

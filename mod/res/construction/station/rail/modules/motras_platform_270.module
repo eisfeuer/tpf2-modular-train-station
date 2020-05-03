@@ -29,6 +29,7 @@ function data()
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local platform = result.motras:register(slotId, {platformHeight = 0.27})
             PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, result.slots)
+            PlatformModuleUtils.addUnderpassSlots(platform, result.slots)
 
             platform:handle(function (moduleResult)
                 local boundingBox = Box:new(
@@ -38,10 +39,25 @@ function data()
 
                 table.insert(result.terrainAlignmentLists, { type = "EQUAL", faces = { boundingBox:getGroundFace() } })
 
+                local platformRep = PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
+                }, 'station/rail/motras/platform_stairs_main.mdl'):addOuterLeftSegment(
+                    'station/rail/motras/platform_stairs_1_1.mdl', 'station/rail/motras/platform_stairs_1_2.mdl', 'station/rail/motras/platform_stairs_1_3.mdl', 'station/rail/motras/platform_stairs_1_4.mdl'
+                ):addInnerLeftSegment(
+                    'station/rail/motras/platform_stairs_2_1.mdl', 'station/rail/motras/platform_stairs_2_2.mdl', 'station/rail/motras/platform_stairs_2_3.mdl', 'station/rail/motras/platform_stairs_2_4.mdl'
+                ):addInnerRightSegment(
+                    'station/rail/motras/platform_stairs_3_1.mdl', 'station/rail/motras/platform_stairs_3_2.mdl', 'station/rail/motras/platform_stairs_3_3.mdl', 'station/rail/motras/platform_stairs_3_4.mdl'
+                ):addOuterRightSegment(
+                    'station/rail/motras/platform_stairs_4_1.mdl', 'station/rail/motras/platform_stairs_4_2.mdl', 'station/rail/motras/platform_stairs_4_3.mdl', 'station/rail/motras/platform_stairs_4_4.mdl'
+                )
+
                 PlatformModuleUtils.makePlatform(
                     platform,
                     result.models,
-                    'station/rail/motras/platform_rep.mdl',
+                    platformRep,
                     'station/rail/motras/platform_edge_rep.mdl',
                     'station/rail/motras/platform_back_rep.mdl',
                     'station/rail/motras/platform_side.mdl',

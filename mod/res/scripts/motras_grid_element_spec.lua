@@ -162,7 +162,8 @@ describe("GridElement", function()
                     gridElement:getAbsoluteX(), gridElement:getAbsoluteY(), 1, 1
                 },
                 type = 'motras_asset',
-                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING,
+                shape = 0
             }}, slots)
         end)
 
@@ -174,7 +175,8 @@ describe("GridElement", function()
                 slotType = 'decoration',
                 position = {1, 2, 4},
                 global = false,
-                spacing = {1,1,1,1}
+                spacing = {1,1,1,1},
+                shape = 2
             })
 
             assert.are.same({{
@@ -186,7 +188,8 @@ describe("GridElement", function()
                     gridElement:getAbsoluteX() + 1, gridElement:getAbsoluteY() + 2, 4, 1
                 },
                 type = 'decoration',
-                spacing = {1, 1, 1, 1}
+                spacing = {1, 1, 1, 1},
+                shape = 2
             }}, slots)
         end)
     end)

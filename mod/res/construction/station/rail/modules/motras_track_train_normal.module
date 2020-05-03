@@ -23,7 +23,7 @@ function data()
         },
         metadata = {
             passenger = true,
-            track = true
+            --track = true
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local track = result.motras:register(slotId)

@@ -157,7 +157,8 @@ function GridElement:addAssetSlot(slotCollection, assetId, options)
         id = assetSlotId,
         transf = transformation,
         type = options.slotType or self.grid:getModulePrefix() .. '_asset',
-        spacing = options.spacing or c.DEFAULT_ASSET_SLOT_SPACING
+        spacing = options.spacing or c.DEFAULT_ASSET_SLOT_SPACING,
+        shape = options.shape or 0
     })
 end
 

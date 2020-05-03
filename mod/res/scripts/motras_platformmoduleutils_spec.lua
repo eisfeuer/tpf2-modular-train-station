@@ -93,6 +93,21 @@ describe('PlatformModuleUtils', function ()
             }}, models)
         end)
 
+        it('handles platform surface', function ()
+            local station1 = Station:new{}
+            local platform = station1:initializeAndRegister(platformModuleSlotId)
+            local platformSerface = PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, transfCenter, 'mainModel.mdl')
+
+            local models = {}
+            PlatformModuleUtils.makePlatform(platform, models, platformSerface)
+
+            assert.are.same({{
+                id = 'mainModel.mdl',
+                transf = transfCenter
+            }}, models)
+
+        end)
+
         describe('makes platform with 2 params', function ()
             local station1 = Station:new{}
 
@@ -906,6 +921,72 @@ describe('PlatformModuleUtils', function ()
             })
 
             assert.are.same(expectedSlots, slots)
+        end)
+    end)
+
+    describe('makePlatformSurfaceWithUnderpathHoles', function ()
+        it ('creates platform surface model', function ()
+            local station = Station:new()
+            local platform = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local transformation = {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            }
+
+            local platformSurface = PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, transformation, 'main_models.mdl')
+
+            assert.are.equal(platform, platformSurface.platform)
+            assert.are.equal(transformation, platformSurface.transformation)
+            assert.are.equal('main_models.mdl', platformSurface.mainPart)
+            assert.are.equal(c.PLATFORM_40M_SMALL_UNDERPATH_SLOT_IDS, platformSurface.smallUnderpassAssetIds)
+            assert.are.equal(c.PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS, platformSurface.largeUnderpassAssetIds)
+        end)
+    end)
+
+    describe('makeUnderpassSlots', function ()
+        it ('adds slots for small underpath when platform has no neighbor platform', function ()
+            local expectedSlots = {}
+            local slots = {}
+
+            local station = Station:new()
+            local platform = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+
+            platform:addAssetSlot(expectedSlots, 25, {
+                assetType = t.BUILDING,
+                slotType = 'motras_underpath_small',
+                position = {-10, -10, 0},
+                rotation = 0,
+                shape = 3
+                --spacing = c.UNDERPASS_SMALL_SPACING
+            })
+            platform:addAssetSlot(expectedSlots, 26, {
+                assetType = t.BUILDING,
+                slotType = 'motras_underpath_small',
+                position = {-10, -10, 0},
+                rotation = 0,
+                shape = 3
+                --spacing = c.UNDERPASS_SMALL_SPACING
+            })
+            platform:addAssetSlot(expectedSlots, 27, {
+                assetType = t.BUILDING,
+                slotType = 'motras_underpath_small',
+                position = {-10, -10, 0},
+                rotation = 0,
+                shape = 3
+                --spacing = c.UNDERPASS_SMALL_SPACING
+            })
+            platform:addAssetSlot(expectedSlots, 28, {
+                assetType = t.BUILDING,
+                slotType = 'motras_underpath_small',
+                position = {-10, -10, 0},
+                rotation = 0,
+                shape = 3
+                --spacing = c.UNDERPASS_SMALL_SPACING
+            })
+
+            
         end)
     end)
 end)

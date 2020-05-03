@@ -1,3 +1,4 @@
+local PlatformSurface = require('motras_platform_surface')
 local c = require('motras_constants')
 local t = require('motras_types')
 
@@ -16,15 +17,19 @@ function PlatformModuleUtils.makePlatform(
     platformBackSideRightModel,
     options
 )
-    table.insert(models, {
-        id = platformRepModel,
-        transf = {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
-        }
-    })
+    if type(platformRepModel) == 'table' then
+        platformRepModel:addToModels(models)
+    else
+        table.insert(models, {
+            id = platformRepModel,
+            transf = {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
+            }
+        })
+    end
 
     if not platformEdgeRepModel then
         return
@@ -474,6 +479,51 @@ function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
             spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
         })
     end
+end
+
+function PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, transformation, mainModel)
+    return PlatformSurface:new{
+        platform = platform,
+        transformation = transformation,
+        mainPart = mainModel,
+        smallUnderpassAssetIds = c.PLATFORM_40M_SMALL_UNDERPATH_SLOT_IDS,
+        largeUnderpassAssetIds = c.PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS
+    }
+end
+
+function PlatformModuleUtils.addUnderpassSlots(platform, slots)
+    platform:addAssetSlot(slots, 25, {
+        assetType = t.UNDERPASS,
+        slotType = 'motras_underpass_small',
+        position = {-17, 0, platform:getAbsolutePlatformHeight() + 1},
+        rotation = 180,
+        shape = 1
+        --spacing = c.UNDERPASS_SMALL_SPACING
+    })
+    platform:addAssetSlot(slots, 26, {
+        assetType = t.UNDERPASS,
+        slotType = 'motras_underpass_small',
+        position = {-3, 0, platform:getAbsolutePlatformHeight() + 1},
+        rotation = 0,
+        shape = 1
+        --spacing = c.UNDERPASS_SMALL_SPACING
+    })
+    platform:addAssetSlot(slots, 27, {
+        assetType = t.UNDERPASS,
+        slotType = 'motras_underpass_small',
+        position = {3, 0, platform:getAbsolutePlatformHeight() + 1},
+        rotation = 180,
+        shape = 1
+        --spacing = c.UNDERPASS_SMALL_SPACING
+    })
+    platform:addAssetSlot(slots, 28, {
+        assetType = t.UNDERPASS,
+        slotType = 'motras_underpass_small',
+        position = {17, 0, platform:getAbsolutePlatformHeight() + 1},
+        rotation = 0,
+        shape = 1
+        --spacing = c.UNDERPASS_SMALL_SPACING
+    })
 end
 
 return PlatformModuleUtils

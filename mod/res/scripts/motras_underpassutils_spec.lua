@@ -48,6 +48,25 @@ describe('UnderpassUtils', function ()
             }, models)
         end)
 
+        it ('adds only one path model', function ()
+            local station = Station:new{}
+            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
+            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}))
+            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}), {platformHeight = 0.96})
+            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 3, assetId = 28}))
+
+            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 25}))
+            local stairs2 = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 28}))
+
+            local models = {}
+            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
+            UnderpassUtils.addUnderpassLaneToModels(stairs2, models)
+            assertAreSameModels({
+                PathUtils.makePassengerPathModel({0, 0, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {0, 15, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
+            }, models)
+        end)
+
         it ('adds connection at the platform mid (from large to small)', function ()
             local station = Station:new{}
             station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))

@@ -17,14 +17,15 @@ function PlatformClass:new(gridElement)
         return self:getAbsoluteZ() + self.grid:getBaseTrackHeight() + self:getPlatformHeight()
     end
 
-    function Platform:getGlobalTransformationBasedOnPlatformTop(position)
+    function Platform:getGlobalTransformationBasedOnPlatformTop(position, rotationFactor)
+        rotationFactor = rotationFactor or 1
         local posX = position.x or 0
         local posY = position.y or 0
         local posZ = position.z or 0
 
         return {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
+            rotationFactor, 0, 0, 0,
+            0, rotationFactor, 0, 0,
             0, 0, 1, 0,
             self:getAbsoluteX() + posX, self:getAbsoluteY() + posY, self:getAbsolutePlatformHeight() + posZ, 1
         }

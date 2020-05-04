@@ -67,16 +67,36 @@ function data()
                     'station/rail/motras/platform_back_side_right.mdl',
                     { addBackEdgesOnConnect = true }
                 )
+            end)
+            
+            platform:handleTerminals(function (addTerminal, directionFactor)
+                local passengerTerminalModel = 'station/rail/motras/path/passenger_terminal_10m.mdl'
+                local hasNoTrackOnOppositeSide = not platform:getGrid():get(platform:getGridX(), platform:getGridY() - directionFactor):isTrack()
 
-                table.insert(result.models, {
-                    id =  'station/rail/motras/path/passenger_platform_40m.mdl',
-                    transf = {
-                        1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
+                if not platform:hasAsset(25) then
+                    addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -15, y =  1.5 * directionFactor}, directionFactor), 0)
+                    if hasNoTrackOnOppositeSide then
+                        addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -15, y =  -1.5 * directionFactor}, directionFactor), 0)
+                    end
+                end
+                if not platform:hasAsset(26) then
+                    addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -5, y =  1.5 * directionFactor}, directionFactor), 0)
+                    if hasNoTrackOnOppositeSide then
+                        addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -5, y =  -1.5 * directionFactor}, directionFactor), 0)
+                    end
+                end
+                if not platform:hasAsset(27) then
+                    addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 5, y =  1.5 * directionFactor}, directionFactor), 0)
+                    if hasNoTrackOnOppositeSide then
+                        addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 5, y =  -1.5 * directionFactor}, directionFactor), 0)
+                    end
+                end
+                if not platform:hasAsset(28) then
+                    addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 15, y =  1.5 * directionFactor}, directionFactor), 0)
+                    if hasNoTrackOnOppositeSide then
+                        addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 15, y =  -1.5 * directionFactor}, directionFactor), 0)
+                    end
+                end
             end)
         end,
         getModelsFn = function()

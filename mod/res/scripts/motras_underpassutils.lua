@@ -1,5 +1,6 @@
 local c = require('motras_constants')
 local PathUtils = require('motras_pathutils')
+local UnderpassEntry = require('motras_underpass_entry')
 
 local UnderpassUtils = {}
 
@@ -23,13 +24,10 @@ local function findMatchingUnderpassAndGetLength(underpassModule, needsLeftNeigh
     return nil
 end
 
-local function isInSegment(segmentId, underpassId, smallUnderpassIds, largeUnderpassIds)
-    return underpassId == smallUnderpassIds[segmentId] or underpassId == largeUnderpassIds[segmentId]
-end
-
-local function getUnderpass(gridElement, segmentId, neighbor, neighborSegmentId, smallUnderpassIds, largeUnderpassIds)
+local function getUnderpass(gridElement, segmentId, neighbor, neighborSegmentId, underpassEntry)
     if gridElement:isPlatform() then
-        local underpass = gridElement:getAsset(largeUnderpassIds[segmentId]) or gridElement:getAsset(smallUnderpassIds[segmentId])
+        local underpass = gridElement:getAsset(underpassEntry:getLargeUnderpassIdInSection(segmentId))
+            or gridElement:getAsset(underpassEntry:getSmallUnderpassIdInSection(segmentId))
         if underpass then
             return underpass
         end
@@ -39,74 +37,49 @@ local function getUnderpass(gridElement, segmentId, neighbor, neighborSegmentId,
         return nil
     end
 
-    return neighbor:getAsset(largeUnderpassIds[neighborSegmentId]) or neighbor:getAsset(smallUnderpassIds[neighborSegmentId])
-end
-
-local function isLargeUnderpass(underpassId, largeUnderpassIds)
-    for i, id in ipairs(largeUnderpassIds) do
-        if underpassId == id then
-            return true
-        end
-    end
-
-    return false
-end
-
-local function getXOffset(underpassModule, smallUnderpassIds, largeUnderpassIds)
-    local underpassId = underpassModule:getId()
-
-    if isInSegment(2, underpassId, smallUnderpassIds, largeUnderpassIds) then
-        return -underpassModule:getGrid():getHorizontalDistance() / 2
-    end
-
-    if isInSegment(3, underpassId, smallUnderpassIds, largeUnderpassIds) then
-        return underpassModule:getGrid():getHorizontalDistance() / 2
-    end
-
-    return 0
-end
-
-local function getYOffset(underpassId, largeUnderpassIds, verticalDistance)
-    return isLargeUnderpass(underpassId, largeUnderpassIds) and (verticalDistance / 2) or 0
+    return neighbor:getAsset(underpassEntry:getLargeUnderpassIdInSection(neighborSegmentId))
+        or neighbor:getAsset(underpassEntry:getSmallUnderpassIdInSection(neighborSegmentId))
 end
 
 function UnderpassUtils.addUnderpassLaneToModels(underpassModule, models, smallUnderpassIds, largeUnderpassIds)
-    smallUnderpassIds = smallUnderpassIds or c.PLATFORM_40M_SMALL_UNDERPATH_SLOT_IDS
-    largeUnderpassIds = largeUnderpassIds or c.PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS
-    local verticalDistance = underpassModule:getGrid():getVerticalDistance()
-    local underpassId = underpassModule:getId()
-    local targetUnderpassModule = nil
+    local underpassEntry = UnderpassEntry:new{
+        underpassModule = underpassModule,
+        smallUnderpassIds = smallUnderpassIds,
+        largeUnderpassIds = largeUnderpassIds
+    }
 
-    if isInSegment(1, underpassId, smallUnderpassIds, largeUnderpassIds) or isInSegment(4, underpassId, smallUnderpassIds, largeUnderpassIds) then
-        targetUnderpassModule = findMatchingUnderpassAndGetLength(underpassModule, false, false, function (gridElement)
-            if not gridElement:isPlatform() then
-                return nil
-            end
+    if underpassEntry:isMainEntry() then
+        underpassEntry:addEntryConnectionLaneToModelsIfNecessary(models)
+    
+        local targetUnderpassModule = nil
+        local size, section = underpassEntry:getSizeAndSection()
 
-            return gridElement:getAsset(largeUnderpassIds[1]) or gridElement:getAsset(largeUnderpassIds[4]) or gridElement:getAsset(smallUnderpassIds[1]) or gridElement:getAsset(smallUnderpassIds[4]) 
-        end)
-    elseif isInSegment(2, underpassId, smallUnderpassIds, largeUnderpassIds) then
-        targetUnderpassModule = findMatchingUnderpassAndGetLength(underpassModule, true, false, function (gridElement, leftNeighbor)
-            return getUnderpass(gridElement, 2, leftNeighbor, 3, smallUnderpassIds, largeUnderpassIds)
-        end)
-    elseif isInSegment(3, underpassId, smallUnderpassIds, largeUnderpassIds) then
-        targetUnderpassModule = findMatchingUnderpassAndGetLength(underpassModule, false, true, function (gridElement, leftNeighbor, rightNeighbor)
-            return getUnderpass(gridElement, 3, rightNeighbor, 2, smallUnderpassIds, largeUnderpassIds)
-        end)
-    end
+        if section == 1 or section == 4 then
+            targetUnderpassModule = findMatchingUnderpassAndGetLength(underpassModule, false, false, function (gridElement)
+                if not gridElement:isPlatform() then
+                    return nil
+                end
 
-    if targetUnderpassModule then
-        local xPos = underpassModule:getParentGridElement():getAbsoluteX() + getXOffset(underpassModule, smallUnderpassIds, largeUnderpassIds)
+                return gridElement:getAsset(underpassEntry:getLargeUnderpassIdInSection(1))
+                    or gridElement:getAsset(underpassEntry:getLargeUnderpassIdInSection(4))
+                    or gridElement:getAsset(underpassEntry:getSmallUnderpassIdInSection(1))
+                    or gridElement:getAsset(underpassEntry:getSmallUnderpassIdInSection(4)) 
+            end)
+        elseif section == 2 then
+            targetUnderpassModule = findMatchingUnderpassAndGetLength(underpassModule, true, false, function (gridElement, leftNeighbor)
+                return getUnderpass(gridElement, 2, leftNeighbor, 3, underpassEntry)
+            end)
+        elseif section == 3 then
+            targetUnderpassModule = findMatchingUnderpassAndGetLength(underpassModule, false, true, function (gridElement, leftNeighbor, rightNeighbor)
+                return getUnderpass(gridElement, 3, rightNeighbor, 2, underpassEntry)
+            end)
+        end
 
-        table.insert(models, PathUtils.makePassengerPathModel({
-            x = xPos,
-            y = underpassModule:getParentGridElement():getAbsoluteY() - getYOffset(underpassId, largeUnderpassIds, verticalDistance),
-            z = underpassModule:getOption('underpassFloorHeight', 0) + underpassModule:getParentGridElement():getAbsolutePlatformHeight()
-        }, {
-            x = xPos,
-            y = targetUnderpassModule:getParentGridElement():getAbsoluteY() - getYOffset(targetUnderpassModule:getId(), largeUnderpassIds, verticalDistance),
-            z = targetUnderpassModule:getOption('underpassFloorHeight', 0) + targetUnderpassModule:getParentGridElement():getAbsolutePlatformHeight()
-        }))
+        if targetUnderpassModule then
+            local targetUnderpassEntry = UnderpassEntry:new{underpassModule = targetUnderpassModule}
+
+            table.insert(models, PathUtils.makePassengerPathModel(underpassEntry:getLaneStartPoint(), targetUnderpassEntry:getLaneEndPoint()))
+        end
     end
 end
 

@@ -1,0 +1,62 @@
+local Box = require("motras_box")
+local Transf = require "transf"
+local Vec3 = require "vec3"
+local Modulesutil = require "modulesutil"
+local UnderpassUtils = require("motras_underpassutils")
+
+function data()
+    return {
+        cost = {
+            price = 0,
+        },
+        category = {
+            categories = { "misc", },
+        },
+        description = {
+            name = _("Passenger underpass"),
+            description = _("Underpass for passenger platforms."),
+            icon = "ui/construction/station/rail/modular_station/platform_passenger_stairs_era_c.tga"
+        },
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_underpass_large",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId, {underpassFloorHeight = -4.8})
+
+            asset:handle(function (moduleResult)
+                local stairsTransformation = Transf.mul(transform, Transf.transl(Vec3.new(3, 0, -1)))
+            
+                local stairsHoleGroundFace = Box:new({-7.0, -2.515, 0.0}, {2.81, 2.515, 1.0}):getGroundFace()
+                Modulesutil.TransformFaces(transform, stairsHoleGroundFace)
+                table.insert(result.groundFaces, {  
+                    face = stairsHoleGroundFace,
+                    modes = {
+                        {
+                            type = "FILL",
+                            key = "hole.lua"
+                        }
+                    }
+                })
+
+                table.insert(result.models, {
+                    id = 'station/rail/motras/stairs_large.mdl',
+                    transf = stairsTransformation
+                })
+
+                UnderpassUtils.addUnderpassLaneToModels(asset, result.models)
+            end)
+        end,
+        getModelsFn = function()
+            return {
+               
+            }
+        end
+    }
+end

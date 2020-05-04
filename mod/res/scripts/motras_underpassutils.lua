@@ -1,4 +1,3 @@
-local c = require('motras_constants')
 local PathUtils = require('motras_pathutils')
 local UnderpassEntry = require('motras_underpass_entry')
 

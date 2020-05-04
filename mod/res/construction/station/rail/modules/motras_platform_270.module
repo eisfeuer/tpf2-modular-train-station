@@ -3,6 +3,14 @@ local t = require('motras_types')
 local Box = require('motras_box')
 local Transf = require('transf')
 
+local function hasNoLargeUnderpassAtSlot(slotId, platform, oppositeNeighbor)
+    if not oppositeNeighbor:isPlatform() then
+        return true 
+    end
+    
+    return not (platform:hasAsset(slotId) or oppositeNeighbor:hasAsset(slotId))
+end
+
 function data()
     return {
         cost = {
@@ -71,29 +79,30 @@ function data()
             
             platform:handleTerminals(function (addTerminal, directionFactor)
                 local passengerTerminalModel = 'station/rail/motras/path/passenger_terminal_10m.mdl'
-                local hasNoTrackOnOppositeSide = not platform:getGrid():get(platform:getGridX(), platform:getGridY() - directionFactor):isTrack()
+                local oppositeNeighbor = platform:getGrid():get(platform:getGridX(), platform:getGridY() - directionFactor)
+                local hasNoTrackOnOppositeSide = not oppositeNeighbor:isTrack()
 
                 if not platform:hasAsset(25) then
                     addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -15, y =  1.5 * directionFactor}, directionFactor), 0)
-                    if hasNoTrackOnOppositeSide then
+                    if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(29, platform, oppositeNeighbor) then
                         addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -15, y =  -1.5 * directionFactor}, directionFactor), 0)
                     end
                 end
                 if not platform:hasAsset(26) then
                     addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -5, y =  1.5 * directionFactor}, directionFactor), 0)
-                    if hasNoTrackOnOppositeSide then
+                    if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(30, platform, oppositeNeighbor) then
                         addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -5, y =  -1.5 * directionFactor}, directionFactor), 0)
                     end
                 end
                 if not platform:hasAsset(27) then
                     addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 5, y =  1.5 * directionFactor}, directionFactor), 0)
-                    if hasNoTrackOnOppositeSide then
+                    if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(31, platform, oppositeNeighbor) then
                         addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 5, y =  -1.5 * directionFactor}, directionFactor), 0)
                     end
                 end
                 if not platform:hasAsset(28) then
                     addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 15, y =  1.5 * directionFactor}, directionFactor), 0)
-                    if hasNoTrackOnOppositeSide then
+                    if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(32, platform, oppositeNeighbor) then
                         addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 15, y =  -1.5 * directionFactor}, directionFactor), 0)
                     end
                 end

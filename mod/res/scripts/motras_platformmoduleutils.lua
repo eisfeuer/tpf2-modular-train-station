@@ -524,6 +524,43 @@ function PlatformModuleUtils.addUnderpassSlots(platform, slots)
         shape = 1
         --spacing = c.UNDERPASS_SMALL_SPACING
     })
+
+    if platform:getNeighborBottom():isPlatform() then
+        local verticalDistance = platform:getGrid():getVerticalDistance()
+
+        platform:addAssetSlot(slots, 29, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_large',
+            position = {-17, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 180,
+            shape = 1
+            --spacing = c.UNDERPASS_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 30, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_large',
+            position = {-3, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 0,
+            shape = 1
+            --spacing = c.UNDERPASS_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 31, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_large',
+            position = {3, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 180,
+            shape = 1
+            --spacing = c.UNDERPASS_SMALL_SPACING
+        })
+        platform:addAssetSlot(slots, 32, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_large',
+            position = {17, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 0,
+            shape = 1
+            --spacing = c.UNDERPASS_SMALL_SPACING
+        })
+    end
 end
 
 return PlatformModuleUtils

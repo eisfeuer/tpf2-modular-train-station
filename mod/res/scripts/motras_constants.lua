@@ -16,5 +16,9 @@ return {
     BUILDING_PLATFORM40M_LARGE_SPACING = { 20, 20, 10, 5},
     PLATFORM_40M_SMALL_UNDERPATH_SLOT_IDS = { 25, 26, 27, 28},
     PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS = { 29, 30, 31, 32},
+    BUILDING_PLATFORM40M_UNDERPASS_ENTRY_SLOT_IDS = { 33, 34, 35, 36, 37, 38 },
     PASSENGER_PATH_MODEL = 'station/rail/motras/path/passenger_path.mdl',
+    DEFAULT_UNDERPASS_Z = -4.8,
+    DEFAULT_UNDERPASS_GRID_START_MODEL = 'station/rail/motras/path/underpass_grid_start.mdl',
+    DEFAULT_UNDERPASS_GRID_REPEAT_MODEL = 'station/rail/motras/path/underpass_grid_repeat.mdl',
 }

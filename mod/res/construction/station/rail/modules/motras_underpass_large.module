@@ -3,6 +3,7 @@ local Transf = require "transf"
 local Vec3 = require "vec3"
 local Modulesutil = require "modulesutil"
 local UnderpassUtils = require("motras_underpassutils")
+local PathUtils = require("motras_pathutils")
 
 function data()
     return {
@@ -50,7 +51,17 @@ function data()
                     transf = stairsTransformation
                 })
 
-                UnderpassUtils.addUnderpassLaneToModels(asset, result.models)
+                local zOffset = asset:getGrid():getUnderpassZ()- asset:getParentGridElement():getAbsolutePlatformHeight()
+                table.insert(result.models, PathUtils.makePassengerPathModel(
+                    {x = -10.7, y = -1.5, z = -4.8},
+                    {x = -20.0, y = 0.0, z = zOffset},
+                    stairsTransformation
+                ))
+                table.insert(result.models, PathUtils.makePassengerPathModel(
+                    {x = -10.7, y = 1.5, z = -4.8},
+                    {x = -20.0, y = 0.0, z = zOffset},
+                    stairsTransformation
+                ))
             end)
         end,
         getModelsFn = function()

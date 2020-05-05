@@ -1,4 +1,5 @@
 local Slot = require("motras_slot")
+local UnderpassUtils = require("motras_underpassutils")
 local t = require("motras_types")
 local c = require("motras_constants")
 
@@ -262,7 +263,7 @@ describe("Station", function ()
     end)
 
     describe('getData', function ()
-        it('has question mark as model when station has no models  #katze', function ()
+        it('has question mark as model when station has no models', function ()
             local station1 = Station:new()
             local data = station1:getData()
             data.terminateConstructionHook()
@@ -294,10 +295,13 @@ describe("Station", function ()
             data = station3:getData()
             data.terminateConstructionHook()
 
-            assert.are.same({{
+            local expectedModels = {{
                 id = 'a_model.mdl',
                 transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }
-            }}, data.models)
+            }}
+            UnderpassUtils.addUnderpassLaneGridToModels(station3.grid, expectedModels)
+
+            assert.are.same(expectedModels, data.models)
         end)
 
         it ('has terminateConstructionHook', function ()

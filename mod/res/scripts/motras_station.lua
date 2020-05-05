@@ -10,6 +10,7 @@ local TrackUtils = require("motras_trackutils")
 local EdgeListMap = require("motras_edge_list_map")
 local TerminalUtils = require("motras_terminalutils")
 local AssetSlotCache = require("motras_asset_slot_cache")
+local UnderpassUtils = require("motras_underpassutils")
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -26,7 +27,10 @@ function Station:new(o)
         verticalDistance = o.verticalGridDistance or c.DEFAULT_VERTICAL_GRID_DISTANCE,
         baseHeight = o.baseHeight or c.DEFAULT_BASE_HEIGHT,
         baseTrackHeight = o.baseTrackHeight or c.DEFAULT_BASE_TRACK_HEIGHT,
-        modulePrefix = o.modulePrefix or c.DEFAULT_MODULE_PREFIX
+        modulePrefix = o.modulePrefix or c.DEFAULT_MODULE_PREFIX,
+        underpassZ = o.underpassZ or c.DEFAULT_UNDERPASS_Z,
+        underpassRepeatModel = c.underpassRepeatModel or c.DEFAULT_UNDERPASS_GRID_REPEAT_MODEL,
+        underpassStartModel = c.underpassStartModel or c.DEFAULT_UNDERPASS_GRID_START_MODEL
     }
 
     o.assetSlotCache = AssetSlotCache:new{}
@@ -59,6 +63,8 @@ function Station:processResult(result)
             id = 'asset/icon/marker_question.mdl',
             transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }
         })
+    else
+        UnderpassUtils.addUnderpassLaneGridToModels(self.grid, result.models)
     end
 end
 

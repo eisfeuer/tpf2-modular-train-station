@@ -85,6 +85,18 @@ function Grid:getBaseTrackHeight()
     return self.baseTrackHeight
 end
 
+function Grid:getUnderpassZ()
+    return self.underpassZ
+end
+
+function Grid:getUnderpassRepeatModel()
+    return self.underpassRepeatModel
+end
+
+function Grid:getUnderpassStartModel()
+    return self.underpassStartModel
+end
+
 function Grid:each(callable)
     for iY, row in pairs(self.grid) do
         for iX, gridElement in pairs(row) do

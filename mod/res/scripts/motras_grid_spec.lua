@@ -120,6 +120,27 @@ describe("Grid", function ()
         end)
     end)
 
+    describe("getUnderpassZ", function ()
+        it ("returns underpass grid z position", function ()
+            local grid = Grid:new{underpassZ = -7}
+            assert.are.equal(-7, grid:getUnderpassZ())
+        end)
+    end)
+
+    describe("getUnderpassRepeatModel", function ()
+        it ("returns underpass repeat model", function ()
+            local grid = Grid:new{underpassRepeatModel = 'underpass_rep.mdl'}
+            assert.are.equal('underpass_rep.mdl', grid:getUnderpassRepeatModel())
+        end)
+    end)
+
+    describe("getUnderpassStartModel", function ()
+        it ("returns underpass start model", function ()
+            local grid = Grid:new{underpassStartModel = 'underpass_start.mdl'}
+            assert.are.equal('underpass_start.mdl', grid:getUnderpassStartModel())
+        end)
+    end)
+
     describe("isInBounds", function ()
         it("checks wheter position is in allowed bounds", function ()
             assert.is_true(Grid.isInBounds(1,2))

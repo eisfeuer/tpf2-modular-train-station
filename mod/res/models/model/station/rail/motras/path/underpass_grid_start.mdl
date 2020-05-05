@@ -1,0 +1,42 @@
+function data()
+    return {
+        boundingInfo = {
+            bbMax = { 0.01, 0.01, 0.01, },
+            bbMin = { -0.01, -0.01, -0.01, },
+        },
+        collider = {
+            params = {
+
+            },
+            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+            type = "MESH",
+        },
+        lods = {
+            {
+                node = {
+                    name = "RootNode",
+                    transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+                },
+                static = false,
+                visibleFrom = 0,
+                visibleTo = 1,
+            },
+        },
+        metadata = {
+            transportNetworkProvider = {
+                laneLists = {{
+                    nodes = {
+                        -- path left
+                        { { -20.0, -2.5, 0.0}, {0.0, 2.5, 0.0}, 2.4 },
+                        { { -20.0, 0.0, 0.0}, {0.0, 2.5, 0.0}, 2.4 },
+
+                        { { -20.0, 0.0, 0.0}, {0.0, 2.5, 0.0}, 2.4 },
+                        { { -20.0, 2.5, 0.0}, {0.0, 2.5, 0.0}, 2.4 },
+                    },
+                    transportModes = {"PERSON"},
+                }},
+            }
+        },
+        version = 1,
+    }
+end

@@ -18,138 +18,65 @@ local function assertAreSameModels(expected, passedIn)
 end
 
 describe('UnderpassUtils', function ()
-    describe('addUnderpassLaneToModels', function ()
-        it ('adds no model when no platform is above', function ()
+
+    describe('addUnderpassLaneGridToModels', function ()
+        it ('adds underpass lane grid to models', function ()
             local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 14}))
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 25}))
-            
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-
-            assert.are.same({}, models)
-        end)
-
-        it ('adds connection at the platform mid (two small stairs)', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 3, assetId = 28}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 25}))
+            local track1 = station:initializeAndRegister(Slot.makeId{type = t.TRACK, gridX = 0, gridY = 0})
+            local track2 = station:initializeAndRegister(Slot.makeId{type = t.TRACK, gridX = 1, gridY = 1})
 
             local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({0, 0, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {0, 15, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
-        end)
+            UnderpassUtils.addUnderpassLaneGridToModels(station.grid, models)
 
-        it ('adds only one path model', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 3, assetId = 28}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 25}))
-            local stairs2 = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 28}))
-
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            UnderpassUtils.addUnderpassLaneToModels(stairs2, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({0, 0, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {0, 15, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
-        end)
-
-        it ('adds connection at the platform mid (from large to small)', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 3, assetId = 25}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 29}))
-
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({0, -2.5, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {0, 15.0, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
-        end)
-
-        it ('adds connection at the platform mid (from small to large)', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 3, assetId = 29}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 25}))
-
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({0, 0, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {0, 12.5, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
-        end)
-
-        it ('adds connection at the platform mid (from large to large)', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 3, assetId = 29}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 29}))
-
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({0, -2.5, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {0, 12.5, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
-        end)
-
-        it ('adds connection at the left platform ending', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = -1, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = -1, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = -1, gridY = 3, assetId = 27}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 26}))
-
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({-20, 0, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {-20, 15, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
-        end)
-
-        it ('adds connection at the left platform ending', function ()
-            local station = Station:new{}
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}), {platformHeight = 0.76})
-            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 1, gridY = 3}))
-            station:register(Slot.makeId({type = t.PLATFORM, gridX = 1, gridY = 3}), {platformHeight = 0.96})
-            station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 1, gridY = 3, assetId = 26}))
-
-            local stairs = station:initializeAndRegister(Slot.makeId({type = t.UNDERPASS, gridX = 0, gridY = 0, assetId = 27}))
-
-            local models = {}
-            UnderpassUtils.addUnderpassLaneToModels(stairs, models)
-            assertAreSameModels({
-                PathUtils.makePassengerPathModel({20, 0, 0.76 + c.DEFAULT_BASE_TRACK_HEIGHT}, {20, 15, 0.96 + c.DEFAULT_BASE_TRACK_HEIGHT})
-            }, models)
+            assert.are.same({{
+                id = c.DEFAULT_UNDERPASS_GRID_START_MODEL,
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track1:getAbsoluteX(), track1:getAbsoluteY(), station.grid:getUnderpassZ(), 1
+                }
+            }, {
+                id = c.DEFAULT_UNDERPASS_GRID_REPEAT_MODEL,
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track1:getAbsoluteX(), track1:getAbsoluteY(), station.grid:getUnderpassZ(), 1
+                }
+            }, {
+                id = c.DEFAULT_UNDERPASS_GRID_REPEAT_MODEL,
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track2:getAbsoluteX(), track1:getAbsoluteY(), station.grid:getUnderpassZ(), 1
+                }
+            }, {
+                id = c.DEFAULT_UNDERPASS_GRID_START_MODEL,
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track1:getAbsoluteX(), track2:getAbsoluteY(), station.grid:getUnderpassZ(), 1
+                }
+            }, {
+                id = c.DEFAULT_UNDERPASS_GRID_REPEAT_MODEL,
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track1:getAbsoluteX(), track2:getAbsoluteY(), station.grid:getUnderpassZ(), 1
+                }
+            }, {
+                id = c.DEFAULT_UNDERPASS_GRID_REPEAT_MODEL,
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track2:getAbsoluteX(), track2:getAbsoluteY(), station.grid:getUnderpassZ(), 1
+                }
+            }}, models)
         end)
     end)
 end)

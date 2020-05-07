@@ -96,6 +96,34 @@ function TrackClass:new(gridElement)
         return self
     end
 
+    function Track:getTagNodes()
+        if not self.edges or #self.edges == 0 then
+            return {}
+        end
+
+        local tagNodes = {}
+
+        for i = 0, #self.edges - 1 do
+            table.insert(tagNodes, i)
+        end
+
+        return tagNodes
+    end
+
+    function Track:getAbsoluteTagNodes()
+        local tagNodes = {}
+
+        for key, value in pairs(self:getTagNodes()) do
+            table.insert(tagNodes, value + self:getFirstNode())
+        end
+
+        return tagNodes
+    end
+
+    function Track:getTagNodesKey()
+        return '__module_' .. self:getSlotId()
+    end
+
     return Track
 end
 

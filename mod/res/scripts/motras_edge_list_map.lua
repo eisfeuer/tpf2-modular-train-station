@@ -43,7 +43,8 @@ function EdgeListMap:getOrCreateEdgeList(trackType, hasCatenary)
             catenary = hasCatenary
         },
         edges = {},
-        snapNodes = {}
+        snapNodes = {},
+        tag2nodes = {},
     }
 
     table.insert(self.edgeLists, newEdgeList)

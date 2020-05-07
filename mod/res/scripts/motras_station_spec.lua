@@ -367,7 +367,11 @@ describe("Station", function ()
                         {{-10, 0.0, 0.0}, {20.0, 0.0, 0.0}},
                         {{ 10, 0.0, 0.0}, {20.0, 0.0, 0.0}}
                     },
-                    snapNodes = {1, 2}
+                    snapNodes = {1, 2},
+                    tag2nodes = {
+                        [track1:getTagNodesKey()] = {2, 3},
+                        [track2:getTagNodesKey()] = {0, 1}
+                    },
                 }, {
                     type = 'TRACK',
                     params = {
@@ -378,7 +382,10 @@ describe("Station", function ()
                         {{-10, 5.0, 0.0}, {20.0, 0.0, 0.0}},
                         {{ 10, 5.0, 0.0}, {20.0, 0.0, 0.0}}
                     },
-                    snapNodes = {0,1}
+                    snapNodes = {0,1},
+                    tag2nodes = {
+                        [track3:getTagNodesKey()] = {0, 1}
+                    },
                 }
             }, data.edgeLists)
 

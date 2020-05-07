@@ -1,4 +1,8 @@
 local PlatformSurface = require('motras_platform_surface')
+local Box = require('motras_box')
+local ModuleUtils = require('modulesutil')
+local Transf = require('transf')
+
 local c = require('motras_constants')
 local t = require('motras_types')
 
@@ -389,6 +393,14 @@ function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
             rotation = 180,
             spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
         })
+
+        platform:addAssetSlot(slots, 35, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_access',
+            position = {0, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
     end
 
     if not platform:hasNeighborBottom() then
@@ -478,6 +490,14 @@ function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
             rotation = 0,
             spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
         })
+
+        platform:addAssetSlot(slots, 36, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_access',
+            position = {0, -10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
     end
 end
 
@@ -489,6 +509,66 @@ function PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, tra
         smallUnderpassAssetIds = c.PLATFORM_40M_SMALL_UNDERPATH_SLOT_IDS,
         largeUnderpassAssetIds = c.PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS
     }
+end
+
+function PlatformModuleUtils.makeLot(result, platform, options)
+    options = options or {}
+    local halfVerticalDistance = platform:getGrid():getVerticalDistance() / 2
+    local halfHorizontalDistance = platform:getGrid():getHorizontalDistance() / 2
+    local boundingBox = Box:new(
+        {platform:getAbsoluteX() - halfHorizontalDistance, platform:getAbsoluteY() - halfVerticalDistance, platform:getGrid():getBaseHeight()},
+        {platform:getAbsoluteX() + halfHorizontalDistance, platform:getAbsoluteY() + halfVerticalDistance, platform:getAbsolutePlatformHeight() + 0.2}
+    )
+
+    local terrainAlignmentLists = {
+        { type = "EQUAL", faces = { boundingBox:getGroundFace() } },
+    }
+    
+    local mainGroundFace = boundingBox:getGroundFace()
+    local forecourtGroundFace = Box:new(
+        {boundingBox.pointNeg[1] - 1, boundingBox.pointNeg[2] - 1, boundingBox.pointNeg[3]},
+        {boundingBox.pointPos[1] + 1, boundingBox.pointPos[2] + 1, boundingBox.pointPos[3]}
+    ):getGroundFace()
+    
+    for i = 1, #terrainAlignmentLists do
+        local t = terrainAlignmentLists[i]
+        table.insert(result.terrainAlignmentLists, t)
+    end
+
+    table.insert(result.groundFaces, {  
+        face = mainGroundFace,
+        modes = {
+            {
+                type = "FILL",
+                key = options.mainFill or "shared/asphalt_01.gtex.lua"
+            },
+            {
+                type = "STROKE_OUTER",
+                key = options.mainStroke or "street_border.lua"
+            },
+        },
+    })
+    table.insert(result.groundFaces, {  
+        face = forecourtGroundFace,
+        modes = {
+            {
+                type = "FILL",
+                key = options.forecourtFill or "shared/gravel_03.gtex.lua"
+            },
+            {
+                type = "STROKE_OUTER",
+                key = options.forecourtStroke or "street_border.lua"
+            },
+        },
+    })
+
+    table.insert(result.colliders, { 
+        type = "BOX",
+        transf = Transf.transl(boundingBox:getCenterPointAsVec3()),
+        params = {
+            halfExtents = boundingBox:getHalfExtends(),
+        }
+    })
 end
 
 function PlatformModuleUtils.addUnderpassSlots(platform, slots)

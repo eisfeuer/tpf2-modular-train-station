@@ -1,3 +1,7 @@
+local Box = require('motras_box')
+local ModuleUtils = require('modulesutil')
+local Transf = require('transf')
+
 local TrackModuleUtils = {}
 
 function TrackModuleUtils.makeTrack(track, trackType, hasCatenary, snapLeft, snapRight)
@@ -34,6 +38,66 @@ function TrackModuleUtils.makeTrack(track, trackType, hasCatenary, snapLeft, sna
         { { posX + trackLength * 0.9, posY, posZ }, {trackLength * 0.1, .0, .0 } },
         { { posX + trackLength, posY, posZ }, {trackLength * 0.1, .0, .0 } }
     }, snapNodes):setStopNodes({2, 0, 8, 10})
+end
+
+function TrackModuleUtils.makeLot(result, track, options)
+    options = options or {}
+    local halfVerticalDistance = track:getGrid():getVerticalDistance() / 2
+    local halfHorizontalDistance = track:getGrid():getHorizontalDistance() / 2
+    local boundingBox = Box:new(
+        {track:getAbsoluteX() - halfHorizontalDistance, track:getAbsoluteY() - halfVerticalDistance, track:getGrid():getBaseHeight()},
+        {track:getAbsoluteX() + halfHorizontalDistance, track:getAbsoluteY() + halfVerticalDistance, track:getGrid():getBaseTrackHeight()}
+    )
+
+    local terrainAlignmentLists = {
+        { type = "EQUAL", faces = { boundingBox:getGroundFace() } },
+    }
+    
+    local mainGroundFace = boundingBox:getGroundFace()
+    local forecourtGroundFace = Box:new(
+        {boundingBox.pointNeg[1] - 1, boundingBox.pointNeg[2] - 1, boundingBox.pointNeg[3]},
+        {boundingBox.pointPos[1] + 1, boundingBox.pointPos[2] + 1, boundingBox.pointPos[3]}
+    ):getGroundFace()
+    
+    for i = 1, #terrainAlignmentLists do
+        local t = terrainAlignmentLists[i]
+        table.insert(result.terrainAlignmentLists, t)
+    end
+
+    table.insert(result.groundFaces, {  
+        face = mainGroundFace,
+        modes = {
+            {
+                type = "FILL",
+                key = options.mainFill or "shared/asphalt_01.gtex.lua"
+            },
+            {
+                type = "STROKE_OUTER",
+                key = options.mainStroke or "street_border.lua"
+            },
+        },
+    })
+    table.insert(result.groundFaces, {  
+        face = forecourtGroundFace,
+        modes = {
+            {
+                type = "FILL",
+                key = options.forecourtFill or "shared/gravel_03.gtex.lua"
+            },
+            {
+                type = "STROKE_OUTER",
+                key = options.forecourtStroke or "street_border.lua"
+            },
+        },
+    })
+
+    table.insert(result.colliders, { 
+        type = "BOX",
+        transf = Transf.transl(boundingBox:getCenterPointAsVec3()),
+        params = {
+            halfExtents = boundingBox:getHalfExtends(),
+        }
+    })
 end
 
 return TrackModuleUtils

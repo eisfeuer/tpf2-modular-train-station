@@ -12,7 +12,8 @@ describe('TrackUtils', function ()
                     { { 2, 2.0, 0.0 }, {-16.0, 0.0, 0.0 } },
                     { { 18, 2.0,  0.0 }, {-16.0, 0.0, 0.0 } },
                 },
-                snapNodes = {0}
+                snapNodes = {0},
+                tag2nodes = {}
             }
 
             TrackUtils = TrackUtils.addEdgesToEdgeList(edgeList, {
@@ -21,7 +22,7 @@ describe('TrackUtils', function ()
 
                 { {10.0, 6.0, 0.0}, {-20.0, 0.0, 0.0} },
                 { {-10.0, 6.0, 0.0}, {-20.0, 0.0, 0.0} },
-            }, {0, 2})
+            }, {0, 2}, '__1234', {0, 1, 2, 3})
 
             assert.are.same({
                 edges = {
@@ -37,7 +38,10 @@ describe('TrackUtils', function ()
                     { {10.0, 6.0, 0.0}, {-20.0, 0.0, 0.0} },
                     { {-10.0, 6.0, 0.0}, {-20.0, 0.0, 0.0} },
                 },
-                snapNodes = {0, 4, 6}
+                snapNodes = {0, 4, 6},
+                tag2nodes = {
+                    __1234 = {4, 5, 6, 7}
+                }
             }, edgeList)
         end)
     end)

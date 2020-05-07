@@ -8,7 +8,8 @@ describe('EdgeListMap', function ()
             catenary = false
         },
         edges = {},
-        snapNodes = {}
+        snapNodes = {},
+        tag2nodes = {},
     }
 
     local edgeList2 = {
@@ -18,7 +19,8 @@ describe('EdgeListMap', function ()
             catenary = true
         },
         edges = {},
-        snapNodes = {}
+        snapNodes = {},
+        tag2nodes = {},
     }
 
     local edgeList3 = {
@@ -28,7 +30,8 @@ describe('EdgeListMap', function ()
             catenary = false
         },
         edges = {},
-        snapNodes = {}
+        snapNodes = {},
+        tag2nodes = {},
     }
 
     local edgeList4 = {
@@ -38,7 +41,8 @@ describe('EdgeListMap', function ()
             tram = 'ELECTRIC'
         },
         edges = {},
-        snapNodes = {}
+        snapNodes = {},
+        tag2nodes = {},
     }
 
     local edgeLists = {
@@ -61,7 +65,8 @@ describe('EdgeListMap', function ()
                         catenary = false
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'TRACK',
                     params = {
@@ -69,7 +74,8 @@ describe('EdgeListMap', function ()
                         catenary = true
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'TRACK',
                     params = {
@@ -77,7 +83,8 @@ describe('EdgeListMap', function ()
                         catenary = false
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'STREET',
                     params = {
@@ -85,7 +92,8 @@ describe('EdgeListMap', function ()
                         tram = 'ELECTRIC'
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }
             }, edgeLists)
         end)
@@ -98,7 +106,8 @@ describe('EdgeListMap', function ()
                     catenary = true
                 },
                 edges = {},
-                snapNodes = {}
+                snapNodes = {},
+                tag2nodes = {},
             }, edgeListMap:getOrCreateEdgeList('high_speed.lua', true))
 
             assert.are.same({
@@ -108,7 +117,8 @@ describe('EdgeListMap', function ()
                     catenary = false
                 },
                 edges = {},
-                snapNodes = {}
+                snapNodes = {},
+                tag2nodes = {},
             }, edgeListMap:getOrCreateEdgeList('monorail.lua', false))
 
             assert.are.same({
@@ -119,7 +129,8 @@ describe('EdgeListMap', function ()
                         catenary = false
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'TRACK',
                     params = {
@@ -127,7 +138,8 @@ describe('EdgeListMap', function ()
                         catenary = true
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'TRACK',
                     params = {
@@ -135,7 +147,8 @@ describe('EdgeListMap', function ()
                         catenary = false
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'STREET',
                     params = {
@@ -143,7 +156,8 @@ describe('EdgeListMap', function ()
                         tram = 'ELECTRIC'
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'TRACK',
                     params = {
@@ -151,7 +165,8 @@ describe('EdgeListMap', function ()
                         catenary = true
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }, {
                     type = 'TRACK',
                     params = {
@@ -159,7 +174,8 @@ describe('EdgeListMap', function ()
                         catenary = false
                     },
                     edges = {},
-                    snapNodes = {}
+                    snapNodes = {},
+                    tag2nodes = {},
                 }
             }, edgeLists)
         end)
@@ -183,7 +199,8 @@ describe('EdgeListMap', function ()
                     {{-10.0, 0.0, 0.0}, {20.0, 0.0, 0.0}},
                     {{10.0, 0.0, 0.0}, {20.0, 0.0, 0.0}},
                 },
-                snapNodes = {}
+                snapNodes = {},
+                tag2nodes = {},
             }
             local edgeList6 = {
                 type = 'TRACK',
@@ -198,7 +215,8 @@ describe('EdgeListMap', function ()
                     {{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
                     {{10.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
                 },
-                snapNodes = {}
+                snapNodes = {},
+                tag2nodes = {},
             }
             local edgeList7 = {
                 type = 'TRACK',
@@ -213,7 +231,8 @@ describe('EdgeListMap', function ()
                     {{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
                     {{10.0, 0.0, 0.0}, {10.0, 0.0, 0.0}},
                 },
-                snapNodes = {}
+                snapNodes = {},
+                tag2nodes = {},
             }
 
             local edgeLists2 = {

@@ -833,6 +833,14 @@ describe('PlatformModuleUtils', function ()
                 spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
             })
 
+            platform:addAssetSlot(expectedSlots, 35, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {0, 10, 0},
+                rotation = 180,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+
             platform:addAssetSlot(expectedSlots, 13, {
                 assetType = t.BUILDING,
                 slotType = 'motras_building_platform40m_small',
@@ -918,6 +926,14 @@ describe('PlatformModuleUtils', function ()
                 position = {-10, -10, 0},
                 rotation = 0,
                 spacing = c.BUILDING_PLATFORM40M_LARGE_SPACING
+            })
+
+            platform:addAssetSlot(expectedSlots, 36, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {0, -10, 0},
+                rotation = 0,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
             })
 
             assert.are.same(expectedSlots, slots)

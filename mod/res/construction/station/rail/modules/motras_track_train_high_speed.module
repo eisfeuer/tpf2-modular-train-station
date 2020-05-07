@@ -22,8 +22,12 @@ function data()
             value = 3,
         },
         metadata = {
-            passenger = true,
-            --track = true
+            motras = {
+                electrified = false,
+                highspeed = true,
+                toggleElectrificationTo = "station/rail/modules/motras_track_train_high_speed_catenary.module",
+                toggleHighspeedTo = "station/rail/modules/motras_track_train_normal.module"
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local track = result.motras:register(slotId)

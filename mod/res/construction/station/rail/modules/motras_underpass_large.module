@@ -34,7 +34,7 @@ function data()
             asset:handle(function (moduleResult)
                 local stairsTransformation = Transf.mul(transform, Transf.transl(Vec3.new(3, 0, -1)))
             
-                local stairsHoleGroundFace = Box:new({-7.0, -2.515, 0.0}, {2.81, 2.515, 1.0}):getGroundFace()
+                local stairsHoleGroundFace = Box:new({-7.0, -2.8, 0.0}, {2.81, 2.8, 1.0}):getGroundFace()
                 Modulesutil.TransformFaces(transform, stairsHoleGroundFace)
                 table.insert(result.groundFaces, {  
                     face = stairsHoleGroundFace,
@@ -53,12 +53,12 @@ function data()
 
                 local zOffset = asset:getGrid():getUnderpassZ()- asset:getParentGridElement():getAbsolutePlatformHeight()
                 table.insert(result.models, PathUtils.makePassengerPathModel(
-                    {x = -10.7, y = -1.5, z = -4.8},
+                    {x = -12.7, y = -1.5, z = -4.8},
                     {x = -20.0, y = 0.0, z = zOffset},
                     stairsTransformation
                 ))
                 table.insert(result.models, PathUtils.makePassengerPathModel(
-                    {x = -10.7, y = 1.5, z = -4.8},
+                    {x = -12.7, y = 1.5, z = -4.8},
                     {x = -20.0, y = 0.0, z = zOffset},
                     stairsTransformation
                 ))

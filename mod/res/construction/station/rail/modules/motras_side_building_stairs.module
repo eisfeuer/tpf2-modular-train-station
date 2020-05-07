@@ -1,0 +1,54 @@
+local ConstructionUtils = require('constructionutil')
+local Box = require("motras_box")
+local BuildingUtils = require('motras_buildingutils')
+local Transf = require('transf')
+local Vec3 = require('vec3')
+
+function data()
+    return {
+        cost = {
+            price = 700,
+        },
+        category = {
+            categories = { "passenger buildings", },
+        },
+        description = {
+            name = _("Side entrance"),
+            description = _("Street access for passengers and cargo."),
+            icon = "ui/construction/station/rail/modular_station/stairs.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_building_platform40m_access",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+
+            asset:handle(function ()
+                local offset = 7.5
+                if asset:getParentGridElement():getAbsoluteY() < transform[14] then
+                    offset = -7.5
+                end
+                transform[14] = transform[14] + offset
+
+                BuildingUtils.makeLot(result, Box:new({ -6, -2, 0 }, { 6, 0, 4 }), transform)
+
+                table.insert(result.models, {
+                    id = "station/rail/era_a/stairs.mdl",
+                    transf = transform
+                })
+            end)
+        end,
+        getModelsFn = function()
+            return {
+             
+            }
+        end
+    }
+end

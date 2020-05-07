@@ -38,6 +38,22 @@ function data()
             local platform = result.motras:register(slotId, {platformHeight = 0.27})
             PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, result.slots)
             PlatformModuleUtils.addUnderpassSlots(platform, result.slots)
+            platform:addAssetSlot(result.slots, 33, {
+                assetType = t.ROOF,
+                slotType = 'motras_roof_small',
+                position = {0, 0, 1},
+                rotation = 0,
+                spacing = {10, 10, 2.5, 2.5}
+            })
+            -- platform:addAssetSlot(result.slots, 34, {
+            --     assetType = t.ROOF,
+            --     slotType = 'motras_roof_small',
+            --     position = {0, 0, 1},
+            --     rotation = 0,
+            --     spacing = {10, 10, 2.5, 2.5}
+            -- })
+
+            PlatformModuleUtils.makeLot(result, platform)
 
             platform:handle(function (moduleResult)
                 local boundingBox = Box:new(

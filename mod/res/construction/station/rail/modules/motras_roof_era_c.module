@@ -1,0 +1,57 @@
+local Transf = require('transf')
+
+function data()
+    return {
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0,
+        },
+        cost = {
+            price = 0,
+        },
+        category = {
+            categories = { "misc", },
+        },
+        description = {
+            name = _("Platform roof"),
+            description = _("Decorative.\nRoof for passenger platforms."),
+            icon = "ui/construction/station/rail/modular_station/platform_passenger_roof_era_c.tga"
+        },
+        -- buildMode = "MULTI",
+        type = "motras_roof_small",
+        order = {
+            value = 805,
+        },
+        metadata = {
+            platform_roof = true,
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+            asset:handle(function (moduleResult)
+                local roofTransformation = Transf.mul(transform, Transf.transl({x = -20, y = 0, z = -1}))
+
+                table.insert(result.models, {
+                    id = "station/rail/era_c/perron_5_roof.mdl",
+                    transf = roofTransformation
+                })
+
+                if not asset:getParentGridElement():getNeighborLeft():hasAsset(33) then
+                    table.insert(result.models, {
+                        id = "station/rail/era_c/perron_5_roof_end.mdl",
+                        transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 0, y = 0, z = 0}))
+                    })
+                end
+
+                if not asset:getParentGridElement():getNeighborRight():hasAsset(33) then
+                    table.insert(result.models, {
+                        id = "station/rail/era_c/perron_5_roof_end.mdl",
+                        transf = Transf.mul(roofTransformation, Transf.transl({x = 40, y = 0, z = 0}))
+                    })
+                end
+            end)
+        end,
+        getModelsFn = function()
+            return { }
+        end
+    }
+end

@@ -52,7 +52,7 @@ function Station:processResult(result)
             local edgeList = edgeListMap:getOrCreateEdgeList(gridElement:getTrackType(), gridElement:hasCatenary())
             gridElement:setEdgeListMap(edgeListMap)
             gridElement:setFirstNode(#edgeList.edges)
-            TrackUtils.addEdgesToEdgeList(edgeList, gridElement:getEdges(), gridElement:getSnapNodes())
+            TrackUtils.addEdgesToEdgeList(edgeList, gridElement:getEdges(), gridElement:getSnapNodes(), gridElement:getTagNodesKey(), gridElement:getTagNodes())
         end
     end)
 

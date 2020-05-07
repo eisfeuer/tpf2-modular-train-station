@@ -1,0 +1,118 @@
+local ConstructionUtils = require('constructionutil')
+local Box = require("motras_box")
+local BuildingUtils = require('motras_buildingutils')
+local Transf = require('transf')
+local Vec3 = require('vec3')
+local Modulesutil = require('modulesutil')
+local PathUtils = require('motras_pathutils')
+
+local decorationModels = {
+    models = {
+        ["station/rail/asset/era_c_street_pillar.mdl"] = {
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -5.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -3.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -1.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 1.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 3.00000, -16.30000, 0.00000, 1.00000 },
+            { 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 5.00000, -16.30000, 0.00000, 1.00000 },
+        },
+    },
+}
+
+function data()
+    return {
+        cost = {
+            price = 5000,
+        },
+        category = {
+            categories = { "passenger buildings", },
+        },
+        description = {
+            name = _("Passenger underpass"),
+            description = _("Underpass for passenger platforms."),
+            icon = "ui/construction/station/rail/modular_station/platform_passenger_stairs_era_c.tga"
+        },
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_building_platform40m_small",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})
+
+            asset:handle(function ()
+                local offset = 7.5
+                if asset:getParentGridElement():getAbsoluteY() < transform[14] then
+                    offset = -7.5
+                end
+                transform[14] = transform[14] + offset
+
+                BuildingUtils.makeLot(result, Box:new({ -6, -17, 0 }, { 6, 0, 4 }), transform)
+
+                local stairsTransformation = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2 , Vec3.new(0, -12.5, 0.001)))
+            
+                local stairsHoleGroundFace = Box:new({-9.9, -2.53, 0.0}, {-0.19, 2.54, 1.0}):getGroundFace()
+                Modulesutil.TransformFaces(stairsTransformation, stairsHoleGroundFace)
+
+                table.insert(result.groundFaces, {  
+                    face = stairsHoleGroundFace,
+                    modes = {
+                        {
+                            type = "FILL",
+                            key = "hole.lua"
+                        }
+                    }
+                })
+
+                table.insert(result.models, {
+                    id = 'station/rail/motras/stairs_large.mdl',
+                    transf = stairsTransformation
+                })
+
+                local zOffset = asset:getGrid():getUnderpassZ() - 0.001
+                table.insert(result.models, PathUtils.makePassengerPathModel(
+                    {x = -12.7, y = -1.5, z = -4.8},
+                    {x = -15.0, y = -5.0, z = zOffset},
+                    stairsTransformation
+                ))
+                table.insert(result.models, PathUtils.makePassengerPathModel(
+                    {x = -12.7, y = 1.5, z = -4.8},
+                    {x = -15.0, y = -5.0, z = zOffset},
+                    stairsTransformation
+                ))
+                table.insert(result.models, PathUtils.makePassengerPathModel(
+                    {x = -12.7, y = -1.5, z = -4.8},
+                    {x = -15.0, y = 5.0, z = zOffset},
+                    stairsTransformation
+                ))
+                table.insert(result.models, PathUtils.makePassengerPathModel(
+                    {x = -12.7, y = 1.5, z = -4.8},
+                    {x = -15.0, y = 5.0, z = zOffset},
+                    stairsTransformation
+                ))
+                ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+            end)
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/era_c/station_1.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+                { 
+                    id = "station/rail/era_c/station_1_end_l.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+                { 
+                    id = "station/rail/era_c/station_1_end_r.mdl",
+                    transf = Transf.transl(Vec3.new(15,0,0)),
+                },
+            }
+        end
+    }
+end

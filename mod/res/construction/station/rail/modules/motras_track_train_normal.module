@@ -22,12 +22,18 @@ function data()
             value = 1,
         },
         metadata = {
-            passenger = true,
-            --track = true
+            motras = {
+                electrified = false,
+                highspeed = false,
+                toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                toggleHighspeedTo = "station/rail/modules/motras_track_train_high_speed.module"
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local track = result.motras:register(slotId)
             track:handle(function (moduleResult)
+                TrackModuleUtils.makeLot(result, track)
+
                 local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
                 local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())
                 TrackModuleUtils.makeTrack(track, 'standard.lua', false, snapLeft, snapRight)

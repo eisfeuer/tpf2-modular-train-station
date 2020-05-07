@@ -2,6 +2,7 @@ local Station = require('motras_station')
 local ParamUtils = require('motras_paramutils')
 local UgParamUtils = require('paramsutil')
 local Blueprint = require('motras_blueprint')
+local TrackUpgradeUtils = require('motras_trackupgradeutils')
 
 function data()
     local params = {}
@@ -87,9 +88,9 @@ function data()
 
             return blueprint:toTpf2Template()
         end,
-        -- upgradeFn = function(params)
-        --     return {}
-        -- end,
+        upgradeFn = function(params)
+            return TrackUpgradeUtils.upgradeFromParams(params)
+        end,
         updateFn = function(params)
             local station = Station:new{
                 customTrack1 = params.motras_track_commonapi_1 and commonApiTracks[params.motras_track_commonapi_1 + 1],

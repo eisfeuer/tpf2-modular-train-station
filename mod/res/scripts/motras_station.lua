@@ -11,6 +11,7 @@ local EdgeListMap = require("motras_edge_list_map")
 local TerminalUtils = require("motras_terminalutils")
 local AssetSlotCache = require("motras_asset_slot_cache")
 local UnderpassUtils = require("motras_underpassutils")
+local AssetDecorationSlotCache = require('motras_asset_decoration_slot_cache')
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -34,6 +35,7 @@ function Station:new(o)
     }
 
     o.assetSlotCache = AssetSlotCache:new{}
+    o.assetDecorationSlotCache = AssetDecorationSlotCache:new{}
 
     setmetatable(o, self)
     self.__index = self
@@ -99,9 +101,22 @@ function Station:initializeAndRegister(slotId)
     local slot = Slot:new{id = slotId}
     --slot:debug()
 
+    if slot.gridType == t.GRID_ASSET_DECORATION and slot.assetDecorationId > 0 then
+        if self.grid:has(slot.gridX, slot.gridY) then
+            local gridElement = self.grid:get(slot.gridX, slot.gridY)
+            if gridElement:hasAsset(slot.assetId) then
+                return gridElement:getAsset(slot.assetId):registerDecoration(slot.assetDecorationId, slot)
+            end
+            return self.assetDecorationSlotCache:addAssetDecorationSlotToCache(slot)
+        end
+        return self.assetDecorationSlotCache:addAssetDecorationSlotToCache(slot)
+    end
+
     if slot.gridType == t.GRID_ASSET and  slot.assetId > 0 then
         if self.grid:has(slot.gridX, slot.gridY) then
-            return self.grid:get(slot.gridX, slot.gridY):registerAsset(slot.assetId, slot)
+            local asset = self.grid:get(slot.gridX, slot.gridY):registerAsset(slot.assetId, slot)
+            self.assetDecorationSlotCache:bindAssetDecorationSlotsToAsset(asset)
+            return asset
         end
         return self.assetSlotCache:addAssetSlot(slot)
     end
@@ -110,7 +125,7 @@ function Station:initializeAndRegister(slotId)
         slot = slot,
         grid = self.grid
     }
-    self.assetSlotCache:bindAssetSlotsToGridElement(gridElement)
+    self.assetSlotCache:bindAssetSlotsToGridElement(gridElement, self.assetDecorationSlotCache)
 
     if gridElement:getGridType() == t.GRID_TRACK then
         return self:registerGridElement(Track:new(gridElement))
@@ -123,6 +138,21 @@ end
 
 function Station:register(slotId, options)
     local slot = Slot:new{id = slotId}
+
+    if slot.gridType == t.GRID_ASSET_DECORATION and  slot.assetId > 0 then
+        local gridElement = self.grid:get(slot.gridX, slot.gridY)
+        if not gridElement:isBlank() then
+            local asset = gridElement:getAsset(slot.assetId)
+            if asset then
+                local assetDecoration = asset:getDecoration(slot.assetDecorationId)
+                if options then
+                    assetDecoration:setOptions(options)
+                end
+                return assetDecoration
+            end
+        end
+        return nil
+    end
 
     if slot.gridType == t.GRID_ASSET and  slot.assetId > 0 then
         local gridElement = self.grid:get(slot.gridX, slot.gridY)

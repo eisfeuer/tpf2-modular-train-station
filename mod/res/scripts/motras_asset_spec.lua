@@ -10,6 +10,8 @@ describe('Asset', function ()
     local platform = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 2, gridY = 4}))
     local assetSlot = Slot:new{id = Slot.makeId({type = t.ROOF, gridX = 2, gridY = 4, assetId = 1})}
     local asset = Asset:new{slot = assetSlot, parent = platform, options = {height = 23}}
+    local decorationAssetSlot = Slot:new{id = Slot.makeId({type = t.ASSET_DECORATION, gridX = 2, gridY = 4, assetId = 1, assetDecorationId = 2 })}
+    local decoration = asset:registerDecoration(2, decorationAssetSlot, {anOption = 'value'})
 
     describe('getParentGridElement', function ()
         it('returns parent grid element', function ()
@@ -50,6 +52,33 @@ describe('Asset', function ()
     describe('getGridY', function ()
         it('returns grid y', function ()
             assert.are.equal(4, asset:getGridY())
+        end)
+    end)
+
+    describe("getOption", function ()
+        it ('returns option', function ()
+            assert.are.equal(23, asset:getOption('height', 34))
+        end)
+
+        it ('returns nil when option does not exists', function ()
+            assert.are.equal(nil, asset:getOption('an_option'))
+        end)
+
+        it ('returns default when option does not exists', function ()
+            assert.are.equal(42, asset:getOption('an_option', 42))
+        end)
+    end)
+
+    describe("registerDecoration / getDecoration / hasDecoration", function ()
+        it("registers asset", function ()
+            assert.is_true(asset:hasDecoration(2))
+            assert.are.equal(decorationAssetSlot.id, asset:getDecoration(2):getSlotId())
+            assert.are.equal("value", asset:getDecoration(2):getOption('anOption'))
+        end)
+
+        it("returns nil when no asset is at given slot", function ()
+            assert.is_nil(asset:getDecoration(3))
+            assert.is_false(asset:hasDecoration(3))
         end)
     end)
 
@@ -99,19 +128,47 @@ describe('Asset', function ()
                 }
             }, result)
         end)
-    end)
 
-    describe("getOption", function ()
-        it ('returns option', function ()
-            assert.are.equal(23, asset:getOption('height', 34))
-        end)
+        it('calls handler function of decorations', function ()
+            decoration:handle(function(result)
+                table.insert(result.models, {
+                    id = 'a_deco_model.mdl',
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 0, 1
+                    }
+                })
+            end)
 
-        it ('returns nil when option does not exists', function ()
-            assert.are.equal(nil, asset:getOption('an_option'))
-        end)
+            local result = {
+                models = {}
+            }
 
-        it ('returns default when option does not exists', function ()
-            assert.are.equal(42, asset:getOption('an_option', 42))
+            asset:call(result)
+
+            assert.are.same({
+                models = {
+                    {
+                        id = 'a_model.mdl',
+                        transf = {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 0, 1
+                        }
+                    }, {
+                        id = 'a_deco_model.mdl',
+                        transf = {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 0, 1
+                        }
+                    }
+                }
+            }, result)
         end)
     end)
 

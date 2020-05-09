@@ -27,9 +27,12 @@ function AssetSlotCache:getAllAssetSlotsForGridElement(gridElement)
     return (self.assetSlots[gridX] and self.assetSlots[gridX][gridY]) or {}
 end
 
-function AssetSlotCache:bindAssetSlotsToGridElement(gridElement)
+function AssetSlotCache:bindAssetSlotsToGridElement(gridElement, assetDecorationSlotCache)
     for i, assetSlot in ipairs(self:getAllAssetSlotsForGridElement(gridElement)) do
-        gridElement:registerAsset(assetSlot.assetId, assetSlot)
+        local asset = gridElement:registerAsset(assetSlot.assetId, assetSlot)
+        if assetDecorationSlotCache then
+            assetDecorationSlotCache:bindAssetDecorationSlotsToAsset(asset)
+        end
     end
 end
 

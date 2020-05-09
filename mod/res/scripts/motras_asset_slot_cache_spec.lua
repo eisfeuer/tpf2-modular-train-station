@@ -1,6 +1,3 @@
-local TestUtils = require('motras_testutils')
-TestUtils.loadTpf2Libs()
-
 local Slot = require('motras_slot')
 local t = require('motras_types')
 local Station = require('motras_station')

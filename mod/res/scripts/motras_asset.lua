@@ -1,4 +1,8 @@
 local AssetDecoration = require('motras_asset_decoration')
+local Slot = require('motras_slot')
+local t = require('motras_types')
+local c = require('motras_constants')
+local MatrixUtils = require('motras_matrixutils')
 
 local Asset = {}
 
@@ -83,6 +87,54 @@ end
 
 function Asset:getDecoration(assetDecorationId)
     return self.decorations[assetDecorationId]
+end
+
+function Asset:addDecorationSlot(slotCollection, assetDecorationId, options)
+    if not slotCollection then
+        error('slot collection parameter is required (normally result.slots)')
+    end
+    if not assetDecorationId then
+        error('asset id parameter is required')
+    end
+
+    options = options or {}
+    local assetDecorationSlotId = Slot.makeId({
+        type = options.assetType or t.ASSET_DECORATION,
+        gridX = self:getGridX(),
+        gridY = self:getGridY(),
+        assetId = self:getId(),
+        assetDecorationId = assetDecorationId
+    })
+
+    local position = options.position or {0, 0, 0}
+
+    local parent = self:getParentGridElement()
+
+    if not options.global then
+        position = {position[1] + parent:getAbsoluteX(), position[2] + parent:getAbsoluteY(), position[3] + parent:getAbsoluteZ()}
+        if not options.position then
+            position[3] = position[3] + 2
+        end
+    end
+
+    local transformation = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        position[1], position[2], position[3], 1
+    }
+
+    if options.rotation then
+        transformation = MatrixUtils.rotateAroundZAxis(options.rotation, transformation)
+    end
+
+    table.insert(slotCollection, {
+        id = assetDecorationSlotId,
+        transf = transformation,
+        type = options.slotType or self:getGrid():getModulePrefix() .. '_asset_decoration',
+        spacing = options.spacing or c.DEFAULT_ASSET_SLOT_SPACING,
+        shape = options.shape or 0
+    })
 end
 
 return Asset

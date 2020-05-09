@@ -1,6 +1,7 @@
 local Station = require('motras_station')
 local Slot = require('motras_slot')
 local t = require('motras_types')
+local c = require('motras_constants')
 
 local Asset = require('motras_asset')
 
@@ -169,6 +170,55 @@ describe('Asset', function ()
                     }
                 }
             }, result)
+        end)
+    end)
+
+    describe("addDecorationSlot", function ()
+        it("adds asset slot to collection (2m above the base slot)", function ()
+            local slots = {}
+
+            asset:addDecorationSlot(slots, 3)
+            local gridElement = asset:getParentGridElement()
+
+            assert.are.same({{
+                id = Slot.makeId({type = t.ASSET_DECORATION, gridX = 2, gridY = 4, assetId = 1, assetDecorationId = 3}),
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    gridElement:getAbsoluteX(), gridElement:getAbsoluteY(), 2, 1
+                },
+                type = 'motras_asset_decoration',
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING,
+                shape = 0
+            }}, slots)
+        end)
+
+        it("adds custom asset slot", function ()
+            local slots = {}
+            local gridElement = asset:getParentGridElement()
+
+            asset:addDecorationSlot(slots, 3, {
+                assetType = t.ASSET_DECORATION,
+                slotType = 'decoration',
+                position = {1, 2, 4},
+                global = false,
+                spacing = {1,1,1,1},
+                shape = 2
+            })
+
+            assert.are.same({{
+                id = Slot.makeId({type = t.ASSET_DECORATION, gridX = 2, gridY = 4, assetId = 1, assetDecorationId = 3}),
+                transf = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    gridElement:getAbsoluteX() + 1, gridElement:getAbsoluteY() + 2, 4, 1
+                },
+                type = 'decoration',
+                spacing = {1, 1, 1, 1},
+                shape = 2
+            }}, slots)
         end)
     end)
 

@@ -1,0 +1,82 @@
+local Transf = require("transf")
+
+function data()
+    return {
+        cost = {
+            price = 10000,
+        },
+        category = {
+            categories = { "decoration", },
+        },
+        description = {
+            name = _("Platform Lamps"),
+		    description = _("Small main building with street access for passenger stations."),
+		    icon = "ui/construction/station/rail/motras/decoration_lamps_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_decoration_lamps",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local decoration = result.motras:register(slotId)
+
+            decoration:handle(function ()
+                local leftNeightbor = decoration:getParentGridElement():getNeighborLeft()
+
+                if leftNeightbor:isPlatform() and not leftNeightbor:hasAsset(33) then
+                    table.insert(result.models, {
+                        id = "station/rail/asset/cargo_lamps.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = -20.0, y = 0.0, z = -5}))
+                    })
+                end
+                table.insert(result.models, {
+                    id = "station/rail/asset/cargo_lamps.mdl",
+                    transf = Transf.mul(transform, Transf.transl({x = -10.0, y = 0.0, z = -5}))
+                })
+                table.insert(result.models, {
+                    id = "station/rail/asset/cargo_lamps.mdl",
+                    transf = Transf.mul(transform, Transf.transl({x = 0.0, y = 0.0, z = -5}))
+                })
+                table.insert(result.models, {
+                    id = "station/rail/asset/cargo_lamps.mdl",
+                    transf = Transf.mul(transform, Transf.transl({x = 10.0, y = 0.0, z = -5}))
+                })
+            end)
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/asset/cargo_lamps.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        -10, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/asset/cargo_lamps.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/asset/cargo_lamps.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        10, 0, 0, 1
+                    },
+                },
+            }
+        end
+    }
+end

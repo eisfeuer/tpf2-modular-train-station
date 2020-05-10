@@ -71,6 +71,17 @@ function data()
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})
+            asset:addDecorationSlot(result.slots, 1, {
+                position = {0.0, -3.545, 6.62002},
+                slotType = 'motras_wall_mounted_decoration',
+                transformation = transform
+            })
+            asset:addDecorationSlot(result.slots, 2, {
+                position = {0.0, -0.63000, 6.62002},
+                slotType = 'motras_wall_mounted_decoration',
+                transformation = transform,
+                rotation = 180
+            })
 
             asset:handle(function (moduleResult)
                 local offset = 7.5

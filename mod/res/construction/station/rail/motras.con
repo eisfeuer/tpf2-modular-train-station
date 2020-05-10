@@ -42,32 +42,32 @@ local function placeStairs(platformBlueprint, platformLength, platformWidth)
         if platformBlueprint:getGridX() == 0 then
             if widePlatform and platformBlueprint:isIslandPlatform() then
                 if platformBlueprint:hasIslandPlatformSlots() then
-                    platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 31)
+                    platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 31)
                 end
             else
-                platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 27)
+                platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 27)
             end
         end
 
         if platformBlueprint:getGridX() == 1 then
             if widePlatform and platformBlueprint:isIslandPlatform() then
                 if platformBlueprint:hasIslandPlatformSlots() then
-                    platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 30)
+                    platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 30)
                 end
             else
-                platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 26)
+                platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 26)
             end
         end
     else
         if platformBlueprint:getGridX() == 0 then
             if widePlatform and platformBlueprint:isIslandPlatform() then
                 if platformBlueprint:hasIslandPlatformSlots() then
-                    platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 29)
-                    platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 32)
+                    platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 29)
+                    platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 32)
                 end
             else
-                platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 25)
-                platformBlueprint:addAssetToTemplate(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 28)
+                platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 25)
+                platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 28)
             end
         end
     end
@@ -78,21 +78,24 @@ local function placeRoof(platformBlueprint, platformLength)
 
     if platformBlueprint:getGridX() == 0 and platformLength % 2 == 1 then
         if platformLength > 4 then
-            platformBlueprint:addAssetToTemplate(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33)
+            platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33)
         else
-            platformBlueprint:addAssetToTemplate(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33)
+            platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 5)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 6)
+            end)
         end
 
         return
     end
 
     if hasDistanceFromCenter(platformLength, platformBlueprint:getGridX(), math.floor(halfLength * 0.4)) then
-        platformBlueprint:addAssetToTemplate(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33)
+        platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33)
         return
     end
 
     if hasDistanceFromCenter(platformLength, platformBlueprint:getGridX(), math.ceil(platformLength < 6 and halfLength * 0.5 or halfLength * 0.6)) then
-        platformBlueprint:addAssetToTemplate(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33)
+        platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33)
         return
     end
 end
@@ -100,7 +103,7 @@ end
 local function placeBuildingFromList(platformBlueprint, buildingList, index)
     for i, building in ipairs(buildingList[index]) do
         if platformBlueprint:getGridX() == building.gridX then
-            platformBlueprint:addAssetToTemplate(t.BUILDING, building.module, building.slot)
+            platformBlueprint:addAsset(t.BUILDING, building.module, building.slot)
         end
     end
 end

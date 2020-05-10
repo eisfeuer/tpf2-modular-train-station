@@ -15,7 +15,7 @@ function data()
         description = {
             name = _("Passenger underpass"),
             description = _("Underpass for passenger platforms."),
-            icon = "ui/construction/station/rail/modular_station/platform_passenger_stairs_era_c.tga"
+            icon = "ui/construction/station/rail/motras/underpass_small_era_c.tga"
         },
         availability = {
             yearFrom = 0,

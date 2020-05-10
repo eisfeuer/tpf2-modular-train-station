@@ -144,7 +144,7 @@ function Station:register(slotId, options)
         if not gridElement:isBlank() then
             local asset = gridElement:getAsset(slot.assetId)
             if asset then
-                local assetDecoration = asset:getDecoration(slot.assetDecorationId)
+                local assetDecoration = asset:getDecoration(slot.assetDecorationId, slot.type)
                 if options then
                     assetDecoration:setOptions(options)
                 end

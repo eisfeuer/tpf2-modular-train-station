@@ -8,7 +8,7 @@ local Slot = require('motras_slot')
 local AssetBlueprint = require('motras_asset_blueprint')
 
 describe('AssetBlueprint', function ()
-    describe('addAssetToTemplate', function ()
+    describe('addAsset', function ()
         it ('adds asset to template', function ()
             local blueprint = Blueprint:new{}
 
@@ -18,10 +18,29 @@ describe('AssetBlueprint', function ()
                 gridY = -1
             }
 
-            assetBlueprint:addAssetToTemplate(t.DECORATION, 'asset.module', 4)
+            assetBlueprint:addAsset(t.DECORATION, 'asset.module', 4)
 
             assert.are.same({
                 [Slot.makeId({type = t.DECORATION, gridX = 2, gridY = -1, assetId = 4})] = 'asset.module'
+            }, blueprint:toTpf2Template())
+        end)
+
+        it ('adds asset with decoration to template', function ()
+            local blueprint = Blueprint:new{}
+
+            local assetBlueprint = AssetBlueprint:new{
+                blueprint = blueprint,
+                gridX = 2,
+                gridY = -1
+            }
+
+            assetBlueprint:addAsset(t.DECORATION, 'asset.module', 4, function (decorationBlueprint)
+                decorationBlueprint:decorate(t.ASSET_DECORATION, 'clock.module', 2)
+            end)
+
+            assert.are.same({
+                [Slot.makeId({type = t.DECORATION, gridX = 2, gridY = -1, assetId = 4})] = 'asset.module',
+                [Slot.makeId({type = t.ASSET_DECORATION, gridX = 2, gridY = -1, assetId = 4, assetDecorationId = 2})] = 'clock.module'
             }, blueprint:toTpf2Template())
         end)
     end)

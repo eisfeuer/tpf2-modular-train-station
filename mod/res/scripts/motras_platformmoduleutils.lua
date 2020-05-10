@@ -572,73 +572,179 @@ function PlatformModuleUtils.makeLot(result, platform, options)
 end
 
 function PlatformModuleUtils.addUnderpassSlots(platform, slots)
-    platform:addAssetSlot(slots, 25, {
-        assetType = t.UNDERPASS,
-        slotType = 'motras_underpass_small',
-        position = {-17, 0, platform:getAbsolutePlatformHeight() + 1},
-        rotation = 180,
-        shape = 1
-        --spacing = c.UNDERPASS_SMALL_SPACING
-    })
-    platform:addAssetSlot(slots, 26, {
-        assetType = t.UNDERPASS,
-        slotType = 'motras_underpass_small',
-        position = {-3, 0, platform:getAbsolutePlatformHeight() + 1},
-        rotation = 0,
-        shape = 1
-        --spacing = c.UNDERPASS_SMALL_SPACING
-    })
-    platform:addAssetSlot(slots, 27, {
-        assetType = t.UNDERPASS,
-        slotType = 'motras_underpass_small',
-        position = {3, 0, platform:getAbsolutePlatformHeight() + 1},
-        rotation = 180,
-        shape = 1
-        --spacing = c.UNDERPASS_SMALL_SPACING
-    })
-    platform:addAssetSlot(slots, 28, {
-        assetType = t.UNDERPASS,
-        slotType = 'motras_underpass_small',
-        position = {17, 0, platform:getAbsolutePlatformHeight() + 1},
-        rotation = 0,
-        shape = 1
-        --spacing = c.UNDERPASS_SMALL_SPACING
-    })
+    if (not platform:hasAsset(37) or platform:hasAsset(41)) then
+        platform:addAssetSlot(slots, 25, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_small',
+            position = {-17, 0, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 180,
+            shape = 1,
+            spacing = {7, 3, 1.5, 1.5}
+        })
+    end
+    if not (platform:hasAsset(38) or platform:hasAsset(42)) then
+        platform:addAssetSlot(slots, 26, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_small',
+            position = {-3, 0, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 0,
+            shape = 1,
+            spacing = {7, 3, 1.5, 1.5}
+        })
+    end
+    if not (platform:hasAsset(39) or platform:hasAsset(43)) then
+        platform:addAssetSlot(slots, 27, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_small',
+            position = {3, 0, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 180,
+            shape = 1,
+            spacing = {7, 3, 1.5, 1.5}
+        })
+    end
+    if not (platform:hasAsset(40) or platform:hasAsset(44)) then
+        platform:addAssetSlot(slots, 28, {
+            assetType = t.UNDERPASS,
+            slotType = 'motras_underpass_small',
+            position = {17, 0, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 0,
+            shape = 1,
+            spacing = {7, 3, 1.5, 1.5}
+        })
+    end
 
     if platform:getNeighborBottom():isPlatform() then
         local verticalDistance = platform:getGrid():getVerticalDistance()
 
-        platform:addAssetSlot(slots, 29, {
-            assetType = t.UNDERPASS,
-            slotType = 'motras_underpass_large',
-            position = {-17, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
-            rotation = 180,
-            shape = 1
-            --spacing = c.UNDERPASS_SMALL_SPACING
-        })
-        platform:addAssetSlot(slots, 30, {
-            assetType = t.UNDERPASS,
-            slotType = 'motras_underpass_large',
-            position = {-3, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+        if not platform:hasAsset(41) then
+            platform:addAssetSlot(slots, 29, {
+                assetType = t.UNDERPASS,
+                slotType = 'motras_underpass_large',
+                position = {-17, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 180,
+                shape = 1,
+                spacing = c.UNDERPASS_SMALL_SPACING
+            })
+        end
+        if not platform:hasAsset(42) then
+            platform:addAssetSlot(slots, 30, {
+                assetType = t.UNDERPASS,
+                slotType = 'motras_underpass_large',
+                position = {-3, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 0,
+                shape = 1,
+                spacing = c.UNDERPASS_SMALL_SPACING
+            })
+        end
+        if not platform:hasAsset(43) then
+            platform:addAssetSlot(slots, 31, {
+                assetType = t.UNDERPASS,
+                slotType = 'motras_underpass_large',
+                position = {3, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 180,
+                shape = 1,
+                spacing = c.UNDERPASS_SMALL_SPACING
+            })
+        end
+        if not platform:hasAsset(44) then
+            platform:addAssetSlot(slots, 32, {
+                assetType = t.UNDERPASS,
+                slotType = 'motras_underpass_large',
+                position = {17, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 0,
+                shape = 1,
+                spacing = c.UNDERPASS_SMALL_SPACING
+            })
+        end
+    end
+end
+
+function PlatformModuleUtils.addDecorationSlots(platform, slots)
+    if not platform:hasAsset(25) then
+        platform:addAssetSlot(slots, 37, {
+            assetType = t.DECORATION,
+            slotType = 'motras_decoration_asset',
+            position = {-15, 0, 1},
             rotation = 0,
-            shape = 1
-            --spacing = c.UNDERPASS_SMALL_SPACING
+            spacing = {4, 4, 2, 2}
         })
-        platform:addAssetSlot(slots, 31, {
-            assetType = t.UNDERPASS,
-            slotType = 'motras_underpass_large',
-            position = {3, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
-            rotation = 180,
-            shape = 1
-            --spacing = c.UNDERPASS_SMALL_SPACING
-        })
-        platform:addAssetSlot(slots, 32, {
-            assetType = t.UNDERPASS,
-            slotType = 'motras_underpass_large',
-            position = {17, -verticalDistance / 2, platform:getAbsolutePlatformHeight() + 1},
+    end
+    if not platform:hasAsset(26) then
+        platform:addAssetSlot(slots, 38, {
+            assetType = t.DECORATION,
+            slotType = 'motras_decoration_asset',
+            position = {-5, 0, 1},
             rotation = 0,
-            shape = 1
-            --spacing = c.UNDERPASS_SMALL_SPACING
+            spacing = {4, 4, 2, 2}
+        })
+    end
+    if not platform:hasAsset(27) then
+        platform:addAssetSlot(slots, 39, {
+            assetType = t.DECORATION,
+            slotType = 'motras_decoration_asset',
+            position = {5, 0, 1},
+            rotation = 0,
+            spacing = {4, 4, 2, 2}
+        })
+    end
+    if not platform:hasAsset(28) then
+        platform:addAssetSlot(slots, 40, {
+            assetType = t.DECORATION,
+            slotType = 'motras_decoration_asset',
+            position = {15, 0, 1},
+            rotation = 0,
+            spacing = {4, 4, 2, 2}
+        })
+    end
+
+    if platform:getNeighborBottom():isPlatform() then
+        local verticalHalfDistance = -platform:getGrid():getVerticalDistance() / 2
+
+        if not (platform:hasAsset(25) or platform:hasAsset(29))then
+            platform:addAssetSlot(slots, 41, {
+                assetType = t.DECORATION,
+                slotType = 'motras_decoration_asset',
+                position = {-15, verticalHalfDistance, 1},
+                rotation = 0,
+                spacing = {4, 4, 2, 2}
+            })
+        end
+        if not (platform:hasAsset(26) or platform:hasAsset(30)) then
+            platform:addAssetSlot(slots, 42, {
+                assetType = t.DECORATION,
+                slotType = 'motras_decoration_asset',
+                position = {-5, verticalHalfDistance, 1},
+                rotation = 0,
+                spacing = {4, 4, 2, 2}
+            })
+        end
+        if not (platform:hasAsset(27) or platform:hasAsset(31)) then
+            platform:addAssetSlot(slots, 43, {
+                assetType = t.DECORATION,
+                slotType = 'motras_decoration_asset',
+                position = {5, verticalHalfDistance, 1},
+                rotation = 0,
+                spacing = {4, 4, 2, 2}
+            })
+        end
+        if not (platform:hasAsset(28) or platform:hasAsset(32)) then
+            platform:addAssetSlot(slots, 44, {
+                assetType = t.DECORATION,
+                slotType = 'motras_decoration_asset',
+                position = {15, verticalHalfDistance, 1},
+                rotation = 0,
+                spacing = {4, 4, 2, 2}
+            })
+        end
+    end
+
+    if not platform:hasAsset(33) then
+        platform:addAssetSlot(slots, 45, {
+            assetType = t.DECORATION,
+            slotType = 'motras_decoration_lamps',
+            position = {0, 0, 5},
+            rotation = 0,
+            spacing = {20, 20, 2.5, 2.5}
         })
     end
 end

@@ -213,7 +213,7 @@ describe('Asset', function ()
                     1, 0, 0, 0,
                     0, 1, 0, 0,
                     0, 0, 1, 0,
-                    gridElement:getAbsoluteX() + 1, gridElement:getAbsoluteY() + 2, 4, 1
+                    1, 2, 4, 1
                 },
                 type = 'decoration',
                 spacing = {1, 1, 1, 1},

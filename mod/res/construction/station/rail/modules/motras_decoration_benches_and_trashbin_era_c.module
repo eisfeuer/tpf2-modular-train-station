@@ -1,0 +1,74 @@
+local Transf = require("transf")
+
+function data()
+    return {
+        cost = {
+            price = 10000,
+        },
+        category = {
+            categories = { "decoration", },
+        },
+        description = {
+            name = _("Benches and Trash Bin"),
+		    description = _("Small main building with street access for passenger stations."),
+		    icon = "ui/construction/station/rail/motras/decoration_benches_and_trashbin_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_decoration_asset",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local decoration = result.motras:register(slotId)
+
+            decoration:handle(function ()
+                table.insert(result.models, {
+                    id = "station/rail/asset/era_c_double_chair.mdl",
+                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -2, y = 0, z = -0.2}))
+                })
+                table.insert(result.models, {
+                    id = "station/rail/asset/era_c_double_chair.mdl",
+                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 2, y = 0, z = -0.2}))
+                })
+                table.insert(result.models, {
+                    id = "station/rail/asset/era_c_trashcan.mdl",
+                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 0, z = -0.2}))
+                })
+            end)
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/asset/era_c_double_chair.mdl",
+                    transf = {
+                        0, -1, 0, 0,
+                        1, 0, 0, 0,
+                        0, 0, 1, 0,
+                        -2, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/asset/era_c_double_chair.mdl",
+                    transf = {
+                        0, -1, 0, 0,
+                        1, 0, 0, 0,
+                        0, 0, 1, 0,
+                        2, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/asset/era_b_trashcan.mdl",
+                    transf = {
+                        0, -1, 0, 0,
+                        1, 0, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1
+                    },
+                },
+            }
+        end
+    }
+end

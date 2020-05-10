@@ -3,6 +3,7 @@ local Slot = require('motras_slot')
 local t = require('motras_types')
 local c = require('motras_constants')
 local MatrixUtils = require('motras_matrixutils')
+local Transf = require('transf')
 
 local Asset = {}
 
@@ -57,8 +58,10 @@ end
 
 function Asset:call(result)
     self.handleFunction(result)
-    for assetDecorationId, decoration in pairs(self.decorations) do
-        decoration:call(result)
+    for decorationType, decorationIdList in pairs(self.decorations) do
+        for assetDecorationId, decoration in pairs(decorationIdList) do
+            decoration:call(result)
+        end
     end
 end
 
@@ -71,22 +74,29 @@ function Asset:getOption(option, default)
 end
 
 function Asset:registerDecoration(assetDecorationId, assetDecorationSlot, options)
-    if self.decorations[assetDecorationId] then
+    local decorationType = assetDecorationSlot.type
+
+    if not self.decorations[decorationType] then
+        self.decorations[decorationType] = {}
+    end
+
+    if self.decorations[decorationType][assetDecorationId] then
         error('Decoration slot ' .. assetDecorationId .. ' is occupied')
     end
 
     local decoration = AssetDecoration:new{slot = assetDecorationSlot, parent = self, options = options}
-    self.decorations[assetDecorationId] = decoration
+    self.decorations[decorationType][assetDecorationId] = decoration
     
     return decoration
 end
 
-function Asset:hasDecoration(assetDecorationId)
-    return self:getDecoration(assetDecorationId) ~= nil
+function Asset:hasDecoration(assetDecorationId, decorationType)
+    return self:getDecoration(assetDecorationId, decorationType) ~= nil
 end
 
-function Asset:getDecoration(assetDecorationId)
-    return self.decorations[assetDecorationId]
+function Asset:getDecoration(assetDecorationId, decorationType)
+    decorationType = decorationType or t.ASSET_DECORATION
+    return self.decorations[decorationType] and self.decorations[decorationType][assetDecorationId]
 end
 
 function Asset:addDecorationSlot(slotCollection, assetDecorationId, options)
@@ -99,34 +109,24 @@ function Asset:addDecorationSlot(slotCollection, assetDecorationId, options)
 
     options = options or {}
     local assetDecorationSlotId = Slot.makeId({
-        type = options.assetType or t.ASSET_DECORATION,
+        type = options.assetDecorationType or t.ASSET_DECORATION,
         gridX = self:getGridX(),
         gridY = self:getGridY(),
         assetId = self:getId(),
         assetDecorationId = assetDecorationId
     })
 
-    local position = options.position or {0, 0, 0}
-
     local parent = self:getParentGridElement()
+    local position = options.position or {parent:getAbsoluteX(), parent:getAbsoluteY(), parent:getAbsoluteZ() + 2}
 
-    if not options.global then
-        position = {position[1] + parent:getAbsoluteX(), position[2] + parent:getAbsoluteY(), position[3] + parent:getAbsoluteZ()}
-        if not options.position then
-            position[3] = position[3] + 2
-        end
-    end
-
-    local transformation = {
+    local transformation = options.transformation or {
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
-        position[1], position[2], position[3], 1
+        0, 0, 0, 1
     }
 
-    if options.rotation then
-        transformation = MatrixUtils.rotateAroundZAxis(options.rotation, transformation)
-    end
+    transformation = Transf.mul(transformation, Transf.rotZTransl(math.rad(options.rotation or 0), {x = position[1], y = position[2], z = position[3]}))
 
     table.insert(slotCollection, {
         id = assetDecorationSlotId,

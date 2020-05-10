@@ -1,4 +1,5 @@
 local Slot = require('motras_slot')
+local DecorationBlueprint = require("motras_decoration_blueprint")
 
 local AssetBlueprint = {}
 
@@ -9,9 +10,12 @@ function AssetBlueprint:new(o)
     return o
 end
 
-function AssetBlueprint:addAssetToTemplate(slotType, moduleName, assetId)
+function AssetBlueprint:addAsset(slotType, moduleName, assetId, decorationFunc)
     local slotId = Slot.makeId({type = slotType, gridX = self:getGridX(), gridY = self:getGridY(), assetId = assetId})
     self.blueprint:addModuleToTemplate(slotId, moduleName)
+    if decorationFunc then
+        decorationFunc(DecorationBlueprint:new{assetBlueprint = self, assetId = assetId})
+    end
 end
 
 function AssetBlueprint:getGridX()
@@ -40,6 +44,10 @@ end
 
 function AssetBlueprint:isIslandPlatform()
     return not self:isSidePlatform()
+end
+
+function AssetBlueprint:getBlueprint()
+    return self.blueprint
 end
 
 return AssetBlueprint

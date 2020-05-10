@@ -209,7 +209,7 @@ describe('Blueprint', function ()
     describe('decorateEachPlatform', function ()
         it ('decorates all platform modules', function ()
             local blueprint1 = Blueprint:new{}:decorateEachPlatform(function (platformBlueprint)
-                platformBlueprint:addAssetToTemplate(t.DECORATION, 'bench.module', 7)
+                platformBlueprint:addAsset(t.DECORATION, 'bench.module', 7)
             end):createStation({
                 platformCount = 1,
                 platformSegmentCount = 1,
@@ -230,7 +230,7 @@ describe('Blueprint', function ()
     describe('decorateEachTrack', function ()
         it ('decorates all track modules', function ()
             local blueprint1 = Blueprint:new{}:decorateEachTrack(function (trackBlueprint)
-                trackBlueprint:addAssetToTemplate(t.DECORATION, 'sign.module', 7)
+                trackBlueprint:addAsset(t.DECORATION, 'sign.module', 7)
             end):createStation({
                 platformCount = 1,
                 platformSegmentCount = 1,

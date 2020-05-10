@@ -1,0 +1,50 @@
+local Transf = require("transf")
+
+function data()
+    return {
+        cost = {
+            price = 10000,
+        },
+        category = {
+            categories = { "decoration", },
+        },
+        description = {
+            name = _("Small main building"),
+		    description = _("Small main building with street access for passenger stations."),
+		    icon = "ui/construction/station/rail/modular_station/main_building_1_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_wall_mounted_decoration",
+        order = {
+            value = 1,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local decoration = result.motras:register(slotId)
+
+            decoration:handle(function ()
+                table.insert(result.models, {
+                    id = "station/rail/asset/era_c_big_clock.mdl",
+                    transf = Transf.mul(transform, Transf.scale({x = 0.5, y = 0.5, z = 0.5}))
+                })
+            end)
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/asset/era_c_big_clock.mdl",
+                    transf = {
+                        0.5, 0, 0, 0,
+                        0, 0.5, 0, 0,
+                        0, 0, 0.5, 0,
+                        0, 0, 0, 1
+                    },
+                },
+            }
+        end
+    }
+end

@@ -749,4 +749,8 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
     end
 end
 
+function PlatformModuleUtils.addRoofSlots(platform, slots)
+    
+end
+
 return PlatformModuleUtils

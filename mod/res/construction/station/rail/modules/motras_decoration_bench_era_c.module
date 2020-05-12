@@ -28,13 +28,12 @@ function data()
             local gridElement = asset:getParentGridElement()
             
             asset:handle(function ()
-                if asset:getId() >= 41 or asset:getId() <= 44 then
+                if asset:getId() >= 41 and asset:getId() <= 44 then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_double_chair.mdl",
                         transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 0, z = -0.2}))
                     })   
-                end
-                if not gridElement:hasNeighborTop() and gridElement:getNeighborBottom():isTrack() then
+                elseif not gridElement:hasNeighborTop() and gridElement:getNeighborBottom():isTrack() then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_single_chair.mdl",
                         transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 2.1, z = -0.2}))

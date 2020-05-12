@@ -16,45 +16,58 @@ function data()
                 node = {
                     children = {
                         { 
-                            materials = { "station/rail/cargo/cargo_assets_1.mtl", },
-								mesh = "station/rail/asset/cargo_lamps/lamps_lod0.msh",
-								name = "lamps",
-                            transf = {
-                                1, 0, 0, 0,
-                                0, 1, 0, 0,
-                                0, 0, 1, 0,
-                                -15, 0, 0, 1
-                            },
-                        }, { 
-                            materials = { "station/rail/cargo/cargo_assets_1.mtl", },
-								mesh = "station/rail/asset/cargo_lamps/lamps_lod0.msh",
-								name = "lamps",
-                            transf = {
-                                1, 0, 0, 0,
-                                0, 1, 0, 0,
-                                0, 0, 1, 0,
-                                -5, 0, 0, 1
-                            },
-                        }, { 
-                            materials = { "station/rail/cargo/cargo_assets_1.mtl", },
-								mesh = "station/rail/asset/cargo_lamps/lamps_lod0.msh",
-								name = "lamps",
-                            transf = {
-                                1, 0, 0, 0,
-                                0, 1, 0, 0,
-                                0, 0, 1, 0,
-                                5, 0, 0, 1
-                            },
-                        }, { 
-                            materials = { "station/rail/cargo/cargo_assets_1.mtl", },
-								mesh = "station/rail/asset/cargo_lamps/lamps_lod0.msh",
-								name = "lamps",
-                            transf = {
-                                1, 0, 0, 0,
-                                0, 1, 0, 0,
-                                0, 0, 1, 0,
-                                15, 0, 0, 1
-                            },
+                            materials = { "station/rail/era_c/era_c_trainstation_floor_1.mtl", },
+                            mesh = "station/rail/motras/platform_rep_lod0_lod0.msh",
+                            name = "platform_rep",
+                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.55, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", "station/rail/era_c/era_c_trainstation_floor_1.mtl", },
+                            mesh = "station/rail/motras/platform_edge_rep_lod0.msh",
+                            name = "platform_edge_rep",
+                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 2.5, 0.549, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", "station/rail/era_c/era_c_trainstation_floor_1.mtl", },
+                            mesh = "station/rail/motras/platform_edge_rep_lod0.msh",
+                            name = "platform_edge_rep",
+                            transf = { -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0.5, 0, 0, -2.5, 0.549, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+                            mesh = "station/rail/motras/platform_edge_side_left_lod0.msh",
+                            name = "platform_edge_side_left_lod0",
+                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0, 20, -2.5, 0.55, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+                            mesh = "station/rail/motras/platform_edge_side_left_lod0.msh",
+                            name = "platform_edge_side_left_lod0",
+                            transf = { -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0.5, 0, -20, 2.5, 0.55, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+                            mesh = "station/rail/motras/platform_edge_side_right_lod0.msh",
+                            name = "platform_edge_side_right_lod0",
+                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0, 20, 2.5, 0.55, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+                            mesh = "station/rail/motras/platform_edge_side_right_lod0.msh",
+                            name = "platform_edge_side_right_lod0",
+                            transf = { -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0.5, 0, -20, -2.5, 0.55, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+                            mesh = "station/rail/motras/platform_side_lod0.msh",
+                            name = "platform_side_lod0",
+                            transf = { -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0.5, 0, 20, 0, 0.55, 1, },
+                        },
+                        {
+                            materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+                            mesh = "station/rail/motras/platform_side_lod0.msh",
+                            name = "platform_side_lod0",
+                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0, -20, 0, 0.55, 1, },
                         },
                     },
                     name = "RootNode",

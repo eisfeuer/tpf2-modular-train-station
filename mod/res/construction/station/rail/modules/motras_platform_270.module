@@ -22,7 +22,7 @@ function data()
         description = {
             name = _("platform_270"),
 		    description = _("platform_270_desc"),
-            icon = "ui/construction/station/rail/modular_station/track.tga"
+            icon = "ui/construction/station/rail/motras/platform_270_era_c.tga"
         }, 
         availability = {
             yearFrom = 0,

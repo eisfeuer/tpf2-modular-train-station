@@ -8,6 +8,14 @@ local t = require('motras_types')
 
 local PlatformModuleUtils = {}
 
+local function hasNoLargeUnderpassAtSlot(slotId, platform, oppositeNeighbor)
+    if not oppositeNeighbor:isPlatform() then
+        return true 
+    end
+    
+    return not (platform:hasAsset(slotId) or oppositeNeighbor:hasAsset(slotId))
+end
+
 function PlatformModuleUtils.makePlatform(
     platform,
     models,
@@ -750,6 +758,101 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
 end
 
 function PlatformModuleUtils.addRoofSlots(platform, slots)
+    if not platform:hasAsset(45) then
+        platform:addAssetSlot(slots, 33, {
+            assetType = t.ROOF,
+            slotType = 'motras_roof_small',
+            position = {0, 0, 5},
+            rotation = 0,
+            spacing = {20, 20, 2.5, 2.5}
+        })
+    -- platform:addAssetSlot(slots, 34, {
+    --     assetType = t.ROOF,
+    --     slotType = 'motras_roof_small',
+    --     position = {0, 0, 1},
+    --     rotation = 0,
+    --     spacing = {10, 10, 2.5, 2.5}
+    -- })
+    end
+end
+
+function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag, slotId, addModelFn, params)
+    PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, result.slots)
+    PlatformModuleUtils.addUnderpassSlots(platform, result.slots)
+
+    PlatformModuleUtils.addDecorationSlots(platform, result.slots)
+    PlatformModuleUtils.addRoofSlots(platform, result.slots)
+
+    platform:handle(function (moduleResult)
+        PlatformModuleUtils.makeLot(result, platform)
+
+        local boundingBox = Box:new(
+            {platform:getAbsoluteX() - 20, platform:getAbsoluteY() - 2.5, 0},
+            {platform:getAbsoluteX() + 20, platform:getAbsoluteY() + 2.5, platform:getAbsolutePlatformHeight()}
+        )
+
+        table.insert(result.terrainAlignmentLists, { type = "EQUAL", faces = { boundingBox:getGroundFace() } })
+
+        local platformRep = PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, {
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
+        }, 'station/rail/motras/platform_stairs_main.mdl'):addOuterLeftSegment(
+            'station/rail/motras/platform_stairs_1_1.mdl', 'station/rail/motras/platform_stairs_1_2.mdl', 'station/rail/motras/platform_stairs_1_3.mdl', 'station/rail/motras/platform_stairs_1_4.mdl'
+        ):addInnerLeftSegment(
+            'station/rail/motras/platform_stairs_2_1.mdl', 'station/rail/motras/platform_stairs_2_2.mdl', 'station/rail/motras/platform_stairs_2_3.mdl', 'station/rail/motras/platform_stairs_2_4.mdl'
+        ):addInnerRightSegment(
+            'station/rail/motras/platform_stairs_3_1.mdl', 'station/rail/motras/platform_stairs_3_2.mdl', 'station/rail/motras/platform_stairs_3_3.mdl', 'station/rail/motras/platform_stairs_3_4.mdl'
+        ):addOuterRightSegment(
+            'station/rail/motras/platform_stairs_4_1.mdl', 'station/rail/motras/platform_stairs_4_2.mdl', 'station/rail/motras/platform_stairs_4_3.mdl', 'station/rail/motras/platform_stairs_4_4.mdl'
+        )
+
+        PlatformModuleUtils.makePlatform(
+            platform,
+            result.models,
+            platformRep,
+            'station/rail/motras/platform_edge_rep.mdl',
+            'station/rail/motras/platform_back_rep.mdl',
+            'station/rail/motras/platform_side.mdl',
+            'station/rail/motras/platform_edge_side_left.mdl',
+            'station/rail/motras/platform_edge_side_right.mdl',
+            'station/rail/motras/platform_back_side_left.mdl',
+            'station/rail/motras/platform_back_side_right.mdl',
+            { addBackEdgesOnConnect = true }
+        )
+    end)
+    
+    platform:handleTerminals(function (addTerminal, directionFactor)
+        local passengerTerminalModel = 'station/rail/motras/path/passenger_terminal_10m.mdl'
+        local oppositeNeighbor = platform:getGrid():get(platform:getGridX(), platform:getGridY() - directionFactor)
+        local hasNoTrackOnOppositeSide = not oppositeNeighbor:isTrack()
+
+        if not platform:hasAsset(25) then
+            addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -15, y =  1.5 * directionFactor}, directionFactor), 0)
+            if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(29, platform, oppositeNeighbor) then
+                addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -15, y =  -1.5 * directionFactor}, directionFactor), 0)
+            end
+        end
+        if not platform:hasAsset(26) then
+            addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -5, y =  1.5 * directionFactor}, directionFactor), 0)
+            if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(30, platform, oppositeNeighbor) then
+                addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = -5, y =  -1.5 * directionFactor}, directionFactor), 0)
+            end
+        end
+        if not platform:hasAsset(27) then
+            addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 5, y =  1.5 * directionFactor}, directionFactor), 0)
+            if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(31, platform, oppositeNeighbor) then
+                addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 5, y =  -1.5 * directionFactor}, directionFactor), 0)
+            end
+        end
+        if not platform:hasAsset(28) then
+            addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 15, y =  1.5 * directionFactor}, directionFactor), 0)
+            if hasNoTrackOnOppositeSide and hasNoLargeUnderpassAtSlot(32, platform, oppositeNeighbor) then
+                addTerminal(passengerTerminalModel, platform:getGlobalTransformationBasedOnPlatformTop({x = 15, y =  -1.5 * directionFactor}, directionFactor), 0)
+            end
+        end
+    end)
     
 end
 

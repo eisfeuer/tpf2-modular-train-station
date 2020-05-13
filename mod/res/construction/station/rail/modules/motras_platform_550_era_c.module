@@ -1,0 +1,34 @@
+local PlatformModuleUtils = require('motras_platformmoduleutils')
+
+function data()
+    return {
+        cost = {
+            price = 18000,
+        },
+        category = {
+            categories = { "passenger", },
+        },
+        description = {
+            name = _("platform"),
+		    description = _("550mm"),
+            icon = "ui/construction/station/rail/motras/platform_550_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        type = "motras_platform",
+        order = {
+            value = 10550,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local platform = result.motras:register(slotId, {platformHeight = 0.55})
+            PlatformModuleUtils.makePlatformModule(platform, result, transform, tag, slotId, addModelFn, params)
+        end,
+        getModelsFn = function()
+            return { }
+        end
+    }
+end

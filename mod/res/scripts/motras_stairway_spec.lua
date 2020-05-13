@@ -116,7 +116,7 @@ describe('Stairway', function ()
             local stairway = Stairway:new{
                 height = 0.36,
                 stepWidth = 0.3,
-                stopModel = 'step.mdl'
+                stepModel = 'step.mdl'
             }
 
             local transf = {

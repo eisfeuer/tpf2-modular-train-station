@@ -3,6 +3,8 @@ local Box = require("motras_box")
 local BuildingUtils = require('motras_buildingutils')
 local Transf = require('transf')
 local Vec3 = require('vec3')
+local Stairway = require('motras_stairway')
+local PathUtils = require('motras_pathutils')
 
 local decorationModels = {
     models = {
@@ -69,6 +71,31 @@ function data()
 
                 BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
                 ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+
+                local platformHeight = asset:getParentGridElement():getPlatformHeight()
+                if platformHeight > 0.275 then
+                    local stairway = Stairway:new{
+                        height = platformHeight - 0.27,
+                        stepWidth = 0.29,
+                        stepModel = "station/rail/motras/stairs_step_10m.mdl"
+                    }
+
+                    local stairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 0, y = 0, z = 0.8}))
+
+                    stairway:addStepsToModels(result.models, stairsTransformation)
+                    stairway:addPathToModels(result.models, 0, stairsTransformation, 0, 2.5)
+                end
+
+                if platformHeight < 0.265 then
+                    table.insert(result.models, {
+                        id = "station/rail/motras/stairs_step_10m.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = 0, y = -0.289, z = 0.81}))
+                    })
+                end
+
+                local platformTransformation = Transf.mul(transform, Transf.transl({x = 0, y = 0, z = asset:getParentGridElement():getAbsolutePlatformHeight()}))
+                table.insert(result.models, PathUtils.makePassengerPathModel({-5.0, 1.5, 0.0}, {0.0, 0.0, 0.0}, platformTransformation))
+                table.insert(result.models, PathUtils.makePassengerPathModel({0.0, 0.0, 0.0}, {5.0, 1.5, 0.0}, platformTransformation))
             end)
         end,
         getModelsFn = function()

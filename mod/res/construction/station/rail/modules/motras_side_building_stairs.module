@@ -3,6 +3,7 @@ local Box = require("motras_box")
 local BuildingUtils = require('motras_buildingutils')
 local Transf = require('transf')
 local Vec3 = require('vec3')
+local Stairway = require('motras_stairway')
 
 function data()
     return {
@@ -31,18 +32,20 @@ function data()
             local asset = result.motras:register(slotId)
 
             asset:handle(function ()
-                local offset = 7.5
-                if asset:getParentGridElement():getAbsoluteY() < transform[14] then
-                    offset = -7.5
-                end
-                transform[14] = transform[14] + offset
+                local stairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 0, y = 7.5, z = 0.0}))
 
-                BuildingUtils.makeLot(result, Box:new({ -6, -2, 0 }, { 6, 0, 4 }), transform)
+                BuildingUtils.makeLot(result, Box:new({ -6, 4, 0 }, { 6, 0, 4 }), stairsTransformation)
 
-                table.insert(result.models, {
-                    id = "station/rail/era_a/stairs.mdl",
-                    transf = transform
-                })
+                local stairway = Stairway:new{
+                    height = asset:getParentGridElement():getAbsolutePlatformHeight(),
+                    stepWidth = 0.29,
+                    stepModel = "station/rail/motras/stairs_step_10m.mdl"
+                }
+
+                
+
+                stairway:addStepsToModels(result.models, stairsTransformation)
+                stairway:addPathToModels(result.models, 0, stairsTransformation, 0, 3.5)
             end)
         end,
         getModelsFn = function()

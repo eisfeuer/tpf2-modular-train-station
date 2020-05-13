@@ -4,6 +4,8 @@ local BuildingUtils = require("motras_buildingutils")
 local Transf = require('transf')
 local Vec3 = require('vec3')
 
+local Stairway = require('motras_stairway')
+
 local decorationModels = {
     models = {
         ["asset/roof/era_b_lamp_b_02.mdl"] = {
@@ -114,7 +116,48 @@ function data()
                 }
 
                 BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
-		        ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+                ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+                
+                local platformHeight = asset:getParentGridElement():getPlatformHeight()
+                if platformHeight > 0.275 then
+                    local stairway = Stairway:new{
+                        height = platformHeight - 0.27,
+                        stepWidth = 0.29,
+                        stepModel = "station/rail/motras/stairs_step_10m.mdl"
+                    }
+
+                    local leftOuterStairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -15, y = 0, z = 0.8}))
+                    local leftInnerStairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -5, y = 0, z = 0.8}))
+                    local rightInnerStairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 5, y = 0, z = 0.8}))
+                    local rightOuterStairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 15, y = 0, z = 0.8}))
+
+                    stairway:addStepsToModels(result.models, leftOuterStairsTransformation)
+                    stairway:addStepsToModels(result.models, leftInnerStairsTransformation)
+                    stairway:addPathToModels(result.models, 5, leftInnerStairsTransformation, 0, 2.5)
+                    stairway:addStepsToModels(result.models, rightInnerStairsTransformation)
+                    stairway:addPathToModels(result.models, 5, rightInnerStairsTransformation, 0, 2.5)
+                    stairway:addStepsToModels(result.models, rightOuterStairsTransformation)
+                    stairway:addPathToModels(result.models, 5, rightOuterStairsTransformation, 0, 2.5)
+                end
+
+                if platformHeight < 0.265 then
+                    table.insert(result.models, {
+                        id = "station/rail/motras/stairs_step_10m.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = -15, y = -0.289, z = 0.81}))
+                    })
+                    table.insert(result.models, {
+                        id = "station/rail/motras/stairs_step_10m.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = -5, y = -0.289, z = 0.81}))
+                    })
+                    table.insert(result.models, {
+                        id = "station/rail/motras/stairs_step_10m.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = 5, y = -0.289, z = 0.81}))
+                    })
+                    table.insert(result.models, {
+                        id = "station/rail/motras/stairs_step_10m.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = 15, y = -0.289, z = 0.81}))
+                    })
+                end
             end)
         end,
         getModelsFn = function()

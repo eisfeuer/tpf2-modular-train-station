@@ -29,6 +29,8 @@ end
 function Stairway:addStepsToModels(models, transformation)
     local stepHeight = self:getStepHeight()
 
+    print(require('inspect')(Transf.mul(transformation, Transf.transl({x = 0, y = 1 * self.stepWidth, z = self.height - 1 * stepHeight}))))
+
     for i = 0, self:getStepCount() - 1 do
         table.insert(models, {
             id = self.stepModel,

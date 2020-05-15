@@ -5,6 +5,9 @@ local Blueprint = require('motras_blueprint')
 local TrackUpgradeUtils = require('motras_trackupgradeutils')
 local t = require('motras_types')
 
+local TallPlatformPattern = require('motras_blueprint_patterns.tall_platform_station')
+local WidePlatformPattern = require('motras_blueprint_patterns.wide_platform_station')
+
 local function hasDistanceFromCenter(platformLength, position, distance)
     if platformLength % 2 == 0 then
         if position <= 0 then
@@ -29,16 +32,60 @@ local oddBuildingPlacement = {
         { gridX = -1, slot = 4, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
         { gridX = 1, slot = 1, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
     }, {
-        { gridX = 0, slot = 5, module = 'station/rail/modules/motras_main_building_medium_era_c.module'},
+        { gridX = 0, slot = 5, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
         { gridX = 0, slot = 7, module = 'station/rail/modules/motras_main_building_medium_era_c.module'},
-        { gridX = 1, slot = 5, module = 'station/rail/modules/motras_main_building_medium_era_c.module'},
+        { gridX = 1, slot = 5, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+    }, {
+        { gridX = -1, slot = 11, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+        { gridX = 0, slot = 11, module = 'station/rail/modules/motras_main_building_large_era_c.module'},
+        { gridX = 1, slot = 11, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+    }, {
+        { gridX = -2, slot = 6, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = -2, slot = 8, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = -1, slot = 11, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+        { gridX = 0, slot = 11, module = 'station/rail/modules/motras_main_building_large_era_c.module'},
+        { gridX = 1, slot = 11, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+        { gridX = 2, slot = 6, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = 2, slot = 8, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+    }
+}
+
+local evenBuildingPlacement = {
+    {
+        { gridX = 0, slot = 5, module = 'station/rail/modules/motras_main_building_small_era_c.module'}
+    }, {
+        { gridX = 0, slot = 5, module = 'station/rail/modules/motras_main_building_small_era_c.module'},
+        { gridX = -1, slot = 3, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
+        { gridX = 0, slot = 2, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
+    }, {
+        { gridX = 0, slot = 5, module = 'station/rail/modules/motras_main_building_small_era_c.module'},
+        { gridX = -1, slot = 3, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
+        { gridX = 0, slot = 2, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
+        { gridX = -1, slot = 2, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
+        { gridX = 0, slot = 3, module = 'station/rail/modules/motras_side_building_small_era_c.module'},
+    }, {
+        { gridX = -1, slot = 7, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = 0, slot = 5, module = 'station/rail/modules/motras_main_building_medium_era_c.module'},
+        { gridX = 0, slot = 7, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+    }, {
+        { gridX = -1, slot = 9, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+        { gridX = 0, slot = 9, module = 'station/rail/modules/motras_main_building_large_era_c.module'},
+        { gridX = 1, slot = 9, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+    }, {
+        { gridX = -3, slot = 8, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = -2, slot = 6, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = -1, slot = 9, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+        { gridX = 0, slot = 9, module = 'station/rail/modules/motras_main_building_large_era_c.module'},
+        { gridX = 1, slot = 9, module = 'station/rail/modules/motras_side_building_large_era_c.module'},
+        { gridX = 1, slot = 8, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
+        { gridX = 2, slot = 6, module = 'station/rail/modules/motras_side_building_medium_era_c.module'},
     }
 }
 
 local function placeStairs(platformBlueprint, platformLength, platformWidth)
     local widePlatform = platformWidth > 1
 
-    if platformLength % 2 == 0 then
+    if platformLength < 3 then
         if platformBlueprint:getGridX() == 0 then
             if widePlatform and platformBlueprint:isIslandPlatform() then
                 if platformBlueprint:hasIslandPlatformSlots() then
@@ -48,14 +95,27 @@ local function placeStairs(platformBlueprint, platformLength, platformWidth)
                 platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 27)
             end
         end
+        return
+    end
 
-        if platformBlueprint:getGridX() == 1 then
+    if platformLength % 2 == 0 then
+        if platformBlueprint:getGridX() == 0 then
             if widePlatform and platformBlueprint:isIslandPlatform() then
                 if platformBlueprint:hasIslandPlatformSlots() then
                     platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 30)
                 end
             else
                 platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 26)
+            end
+        end
+
+        if platformBlueprint:getGridX() == -1 then
+            if widePlatform and platformBlueprint:isIslandPlatform() then
+                if platformBlueprint:hasIslandPlatformSlots() then
+                    platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_large.module', 31)
+                end
+            else
+                platformBlueprint:addAsset(t.UNDERPASS, 'station/rail/modules/motras_underpass_small.module', 27)
             end
         end
     else
@@ -75,12 +135,18 @@ end
 
 local function placeRoof(platformBlueprint, platformLength)
     local halfLength = math.floor(platformLength / 2)
+    print(platformBlueprint:getHorizontalSize())
 
     if platformBlueprint:getGridX() == 0 and platformLength % 2 == 1 then
         if platformLength > 4 then
-            platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33)
+            platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33, function(decorationBlueprint)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
+            end)
         else
             platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
                 decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 5)
                 decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 6)
             end)
@@ -89,15 +155,46 @@ local function placeRoof(platformBlueprint, platformLength)
         return
     end
 
-    if hasDistanceFromCenter(platformLength, platformBlueprint:getGridX(), math.floor(halfLength * 0.4)) then
-        platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33)
+    if platformLength > 4 and platformBlueprint:getRelativeHorizontalDistanceToCenter() < platformLength * 0.15 then
+        platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33, function(decorationBlueprint)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
+        end)
         return
     end
 
-    if hasDistanceFromCenter(platformLength, platformBlueprint:getGridX(), math.ceil(platformLength < 6 and halfLength * 0.5 or halfLength * 0.6)) then
-        platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33)
+    if platformBlueprint:getRelativeHorizontalDistanceToCenter() < platformLength * 0.35 then
+        platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
+        end)
         return
     end
+
+    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_platform_lamps_era_c.module', 45)
+end
+
+local function calculateBuildingSize(platformLength, trackCount)
+    local upgrade = 0
+    if trackCount >= 6 then
+        upgrade = upgrade + 2
+    elseif trackCount >= 4 then
+        upgrade = upgrade + 1
+    end
+
+    if platformLength < 2 then
+        return 1
+    end
+    if platformLength < 4 then
+        return 1 + upgrade
+    end
+    if platformLength < 6 then
+        return 2 + upgrade
+    end
+    if platformLength < 8 then
+        return 3 + upgrade
+    end
+    return 4 + upgrade
 end
 
 local function placeBuildingFromList(platformBlueprint, buildingList, index)
@@ -108,10 +205,67 @@ local function placeBuildingFromList(platformBlueprint, buildingList, index)
     end
 end
 
-local function placeBuilding(platformBlueprint, platformLength, platformCount)
-    if platformBlueprint:isSidePlatformBottom() then
-        if platformLength % 2 == 1 then
-            placeBuildingFromList(platformBlueprint, oddBuildingPlacement, 3)
+local function placeBuilding(platformBlueprint, platformLength, platformCount, buildingSize)
+    buildingSize = buildingSize == 0 and calculateBuildingSize(platformLength, platformCount) or buildingSize
+    if platformBlueprint:isSidePlatformTop() then
+        if platformLength % 2 == 0 then
+            placeBuildingFromList(platformBlueprint, evenBuildingPlacement, buildingSize)
+        else
+            placeBuildingFromList(platformBlueprint, oddBuildingPlacement, buildingSize)
+        end
+    end
+end
+
+local function blocksNotStationEntrance(platformBlueprint, buildingSize)
+    if not platformBlueprint:isSidePlatformTop() then
+        return true
+    end
+
+    if buildingSize < 5 then
+        return true
+    end
+
+    local additionalSize = platformBlueprint:horizontalSizeIsEven() and 1 or 0
+
+    if buildingSize == 5 then
+        return platformBlueprint:getRelativeHorizontalDistanceToCenter() > 1 + additionalSize
+    end
+
+    return platformBlueprint:getRelativeHorizontalDistanceToCenter() > 2 + additionalSize
+end
+
+local function placeDecoration(platformBlueprint, platformWidth, buildingSize)
+    if platformWidth > 1 and platformBlueprint:isIslandPlatform() then
+        if platformBlueprint:hasIslandPlatformSlots() then
+            if platformBlueprint:horizontalSizeIsEven() then
+                if platformBlueprint:getGridX() == -1 then
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 41)
+                elseif platformBlueprint:getGridX() == 0 then
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 44)
+                else
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 42)
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 43)
+                end
+            elseif platformBlueprint:getGridX() ~= 0 then
+                platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 42)
+                platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 43)
+            end
+        end
+    else
+        if blocksNotStationEntrance(platformBlueprint, buildingSize) then
+            if platformBlueprint:horizontalSizeIsEven() then
+                if platformBlueprint:getGridX() == -1 then
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 37)
+                elseif platformBlueprint:getGridX() == 0 then
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 40)
+                else
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 38)
+                    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 39)
+                end
+            elseif platformBlueprint:getGridX() ~= 0 then
+                platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 38)
+                platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module', 39)
+            end
         end
     end
 end
@@ -156,8 +310,8 @@ function data()
                         {
                             key = "motras_length",
                             name = _("Length"),
-                            values = { _("80m"), _("120m"), _("160m"), _("240m"), _("320m"), _("360"), _("400"), _("440"), _("480") },
-                            defaultIndex = 2,
+                            values = { _("40m"), _("80m"), _("120m"), _("160m"), _("200"), _("240m"), _("320m"), _("360"), _("400"), _("440"), _("480") },
+                            defaultIndex = 3,
                         },
                         {
                             key = "motras_platform_width",
@@ -166,16 +320,16 @@ function data()
                             defaultIndex = 0
                         },
                         {
-                            key = "motras_prefer_island_platforms",
-                            name = _("Prefer Island Platforms"),
-                            values = { _("No"), _("Yes") },
-                            defaultIndex = 0
-                        },
-                        {
                             key = "motras_platform_height",
                             name = _("Platform Height (in mm)"),
                             values = {_("200"), _("250"), _("270"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1250")},
                             defaultIndex = 0
+                        },
+                        {
+                            key = "motras_building_size",
+                            name = _("Building"),
+                            values = {_("None"), _("Auto"), _("Tiny"), _("Small"), _("Medium 1"), _("Medium 2"), _("Large"), _("Huge")},
+                            defaultIndex = 1
                         },
                         UgParamUtils.makeTrackTypeParam(),
                         UgParamUtils.makeTrackCatenaryParam(),
@@ -187,7 +341,7 @@ function data()
             local platformWidth = params.motras_platform_width + 1
             local length = params.motras_length + 1
             local isEvenLength = length % 2 == 0
-            local platformCount =  params.motras_tracks + 1
+            local trackCount =  params.motras_tracks + 1
 
             local platformModules = {
                 'station/rail/modules/motras_platform_200_era_c.module',
@@ -213,17 +367,28 @@ function data()
                 'station/rail/modules/motras_platform_1250_era_c.module',
             }
 
-            local blueprint = Blueprint:new{}:decorateEachPlatform(function(platformBlueprint)
-                placeStairs(platformBlueprint, length, platformWidth)
-                placeRoof(platformBlueprint, length)
-                placeBuilding(platformBlueprint, length, platformCount)
-            end):createStation({
-                platformCount = platformCount,
-                platformSegmentCount = length,
-                platformWidth = platformWidth,
+            local patternOptions = {
+                platformModule =  platformModules[params.motras_platform_height + 1],
                 trackModule = 'station/rail/modules/motras_track_train_normal_catenary.module',
-                platformModule = platformModules[params.motras_platform_height + 1]
-            })
+                trackCount = trackCount,
+                horizontalSize = length
+            }
+
+            local blueprint = Blueprint:new{}:decorateEachPlatform(function(platformBlueprint)
+                local buildingSize = params.motras_building_size - 1
+                buildingSize = buildingSize == 0 and calculateBuildingSize(length, trackCount) or buildingSize
+
+                if trackCount > 1 then
+                    placeStairs(platformBlueprint, length, platformWidth)
+                end
+                placeRoof(platformBlueprint, length)
+                placeDecoration(platformBlueprint, platformWidth, buildingSize)
+                if params.motras_building_size > 0 then
+                    placeBuilding(platformBlueprint, length, trackCount, params.motras_building_size - 1)
+                end
+            end):createStation(
+                params.motras_platform_width > 0 and WidePlatformPattern:new(patternOptions) or TallPlatformPattern:new(patternOptions)
+            )
 
             return blueprint:toTpf2Template()
         end,

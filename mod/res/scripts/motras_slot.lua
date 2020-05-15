@@ -21,7 +21,7 @@ function Slot:new (o)
     local ids = NatBomb.explode(DIGIT_SPACES, o.id or 0)
 
     o.type = ids[1] or t.UNKNOWN
-    o.gridType = math.floor(o.type / 16)
+    o.gridType = Slot.getGridTypeFromSlotType(o.type)
     o.gridX = toSignedId(ids[2])
     o.gridY = toSignedId(ids[3])
     o.assetId = ids[4] or 0
@@ -49,6 +49,10 @@ function Slot.getGridElementSpacing(grid)
         grid:getVerticalDistance() / 2 - 0.01,
         grid:getVerticalDistance() / 2 - 0.01,
     }
+end
+
+function Slot.getGridTypeFromSlotType(slotType)
+    return math.floor(slotType / 16)
 end
 
 function Slot.addGridSlotsToCollection(slotCollection, grid, slotPlacementClass)

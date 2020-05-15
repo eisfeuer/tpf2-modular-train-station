@@ -672,7 +672,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
         platform:addAssetSlot(slots, 37, {
             assetType = t.DECORATION,
             slotType = 'motras_decoration_asset',
-            position = {-15, 0, 1},
+            position = {-15, 0, platform:getAbsolutePlatformHeight() + 1},
             rotation = 0,
             spacing = {4, 4, 2, 2}
         })
@@ -681,7 +681,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
         platform:addAssetSlot(slots, 38, {
             assetType = t.DECORATION,
             slotType = 'motras_decoration_asset',
-            position = {-5, 0, 1},
+            position = {-5, 0, platform:getAbsolutePlatformHeight() + 1},
             rotation = 0,
             spacing = {4, 4, 2, 2}
         })
@@ -690,7 +690,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
         platform:addAssetSlot(slots, 39, {
             assetType = t.DECORATION,
             slotType = 'motras_decoration_asset',
-            position = {5, 0, 1},
+            position = {5, 0, platform:getAbsolutePlatformHeight() + 1},
             rotation = 0,
             spacing = {4, 4, 2, 2}
         })
@@ -699,7 +699,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
         platform:addAssetSlot(slots, 40, {
             assetType = t.DECORATION,
             slotType = 'motras_decoration_asset',
-            position = {15, 0, 1},
+            position = {15, 0, platform:getAbsolutePlatformHeight() + 1},
             rotation = 0,
             spacing = {4, 4, 2, 2}
         })
@@ -712,7 +712,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
             platform:addAssetSlot(slots, 41, {
                 assetType = t.DECORATION,
                 slotType = 'motras_decoration_asset',
-                position = {-15, verticalHalfDistance, 1},
+                position = {-15, verticalHalfDistance, platform:getAbsolutePlatformHeight() + 1},
                 rotation = 0,
                 spacing = {4, 4, 2, 2}
             })
@@ -721,7 +721,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
             platform:addAssetSlot(slots, 42, {
                 assetType = t.DECORATION,
                 slotType = 'motras_decoration_asset',
-                position = {-5, verticalHalfDistance, 1},
+                position = {-5, verticalHalfDistance, platform:getAbsolutePlatformHeight() + 1},
                 rotation = 0,
                 spacing = {4, 4, 2, 2}
             })
@@ -730,7 +730,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
             platform:addAssetSlot(slots, 43, {
                 assetType = t.DECORATION,
                 slotType = 'motras_decoration_asset',
-                position = {5, verticalHalfDistance, 1},
+                position = {5, verticalHalfDistance, platform:getAbsolutePlatformHeight() + 1},
                 rotation = 0,
                 spacing = {4, 4, 2, 2}
             })
@@ -739,7 +739,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
             platform:addAssetSlot(slots, 44, {
                 assetType = t.DECORATION,
                 slotType = 'motras_decoration_asset',
-                position = {15, verticalHalfDistance, 1},
+                position = {15, verticalHalfDistance, platform:getAbsolutePlatformHeight() + 1},
                 rotation = 0,
                 spacing = {4, 4, 2, 2}
             })
@@ -750,7 +750,7 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
         platform:addAssetSlot(slots, 45, {
             assetType = t.DECORATION,
             slotType = 'motras_decoration_lamps',
-            position = {0, 0, 5},
+            position = {0, 0, platform:getAbsolutePlatformHeight() + 5},
             rotation = 0,
             spacing = {20, 20, 2.5, 2.5}
         })
@@ -762,7 +762,7 @@ function PlatformModuleUtils.addRoofSlots(platform, slots)
         platform:addAssetSlot(slots, 33, {
             assetType = t.ROOF,
             slotType = 'motras_roof_small',
-            position = {0, 0, 5},
+            position = {0, 0, platform:getAbsolutePlatformHeight() + 5},
             rotation = 0,
             spacing = {20, 20, 2.5, 2.5}
         })
@@ -773,6 +773,86 @@ function PlatformModuleUtils.addRoofSlots(platform, slots)
     --     rotation = 0,
     --     spacing = {10, 10, 2.5, 2.5}
     -- })
+    end
+end
+
+function PlatformModuleUtils.makeFence(platform, result, transform, fenceModel)
+    local leftNeighbor = platform:getNeighborLeft()
+    local rightNeighbor = platform:getNeighborRight()
+    local getAbsolutePlatformHeight = platform:getAbsolutePlatformHeight()
+
+    local hasNoOccupiedSlot = function (slotList)
+        for i, slotItem in ipairs(slotList) do
+            if slotItem[1]:hasAsset(slotItem[2]) then
+                return false
+            end
+        end
+
+        return true
+    end
+
+    if not platform:hasNeighborTop() then
+        local outerLeft = {{platform, 1}, {platform, 5}, {platform, 6}, {leftNeighbor, 12}, {platform, 9}, {platform, 10}, {platform, 11}}
+        local innerLeft = {{platform, 2}, {platform, 35}, {platform, 6}, {platform, 7}, {platform, 9}, {platform, 10}, {platform, 11}, {platform, 12}}
+        local innerRight = {{platform, 3}, {platform, 35}, {platform, 7}, {platform, 8}, {platform, 10}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}}
+        local outerRight = {{platform, 4}, {platform, 8}, {rightNeighbor, 5}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}, {rightNeighbor, 10}}
+
+        if hasNoOccupiedSlot(outerLeft) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -15, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+        if hasNoOccupiedSlot(innerLeft) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -5, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+        if hasNoOccupiedSlot(innerRight) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 5, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+        if hasNoOccupiedSlot(outerRight) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 15, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+    end
+
+    if not platform:hasNeighborBottom() then
+        local outerLeft = {{platform, 13}, {platform, 17}, {platform, 18}, {rightNeighbor, 24}, {platform, 21}, {platform, 12}, {platform, 23}}
+        local innerLeft = {{platform, 14}, {platform, 36}, {platform, 18}, {platform, 19}, {platform, 21}, {platform, 22}, {platform, 23}, {platform, 24}}
+        local innerRight = {{platform, 15}, {platform, 36}, {platform, 19}, {platform, 20}, {platform, 22}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}}
+        local outerRight = {{platform, 16}, {platform, 20}, {leftNeighbor, 17}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}, {leftNeighbor, 22}}
+
+        if hasNoOccupiedSlot(outerLeft) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.transl({x = 15, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+        if hasNoOccupiedSlot(innerLeft) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.transl({x = 5, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+        if hasNoOccupiedSlot(innerRight) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.transl({x = -5, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
+        if hasNoOccupiedSlot(outerRight) then
+            table.insert(result.models, {
+                id = fenceModel,
+                transf = Transf.mul(transform, Transf.transl({x = -15, y = 0.0, z = getAbsolutePlatformHeight}))
+            })
+        end
     end
 end
 
@@ -821,6 +901,8 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
             'station/rail/motras/platform_back_side_right.mdl',
             { addBackEdgesOnConnect = true }
         )
+
+        PlatformModuleUtils.makeFence(platform, result, transform, 'station/rail/motras/platform_wall.mdl')
     end)
     
     platform:handleTerminals(function (addTerminal, directionFactor)

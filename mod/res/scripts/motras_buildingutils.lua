@@ -303,6 +303,8 @@ end
 
 function BuildingUtils.makeConnectableBuilding(buildingModule, result, models, pivot)
     local buildingGroups = buildingModule:getOption('groups', {})
+    local connectedLeft = false
+    local connectedRight = false
 
     table.insert(result.models, {
         id = models.mainBuilding,
@@ -319,16 +321,19 @@ function BuildingUtils.makeConnectableBuilding(buildingModule, result, models, p
             id = models.connectionToLeftSmallBuilding or models.endingLeft,
             transf = pivot
         })
+        connectedLeft = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getMediumLeftNeighborBuildingOn40m(buildingModule), buildingGroups) then
         table.insert(result.models, {
             id = models.connectionToLeftMediumBuilding or models.endingLeft,
             transf = pivot
         })
+        connectedLeft = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getLargeLeftNeighborBuildingOn40m(buildingModule), buildingGroups) then
         table.insert(result.models, {
             id = models.connectionToLeftLargeBuilding or models.endingLeft,
             transf = pivot
         })
+        connectedLeft = true
     else
         table.insert(result.models, {
             id = models.endingLeft,
@@ -346,22 +351,27 @@ function BuildingUtils.makeConnectableBuilding(buildingModule, result, models, p
             id = models.connectionToRightSmallBuilding or models.endingRight,
             transf = pivot
         })
+        connectedRight = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getMediumRightNeighborBuildingOn40m(buildingModule), buildingGroups) then
         table.insert(result.models, {
             id = models.connectionToRightMediumBuilding or models.endingRight,
             transf = pivot
         })
+        connectedRight = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getLargeRightNeighborBuildingOn40m(buildingModule), buildingGroups) then
         table.insert(result.models, {
             id = models.connectionToRightLargeBuilding or models.endingRight,
             transf = pivot
         })
+        connectedRight = true
     else
         table.insert(result.models, {
             id = models.endingRight,
             transf = pivot
         })
     end
+
+    return connectedLeft, connectedRight
 end
 
 function BuildingUtils.makeLot(result, boundingBox, pivot, options)

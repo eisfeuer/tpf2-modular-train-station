@@ -1,5 +1,6 @@
 local Transf = require('transf')
 local BuildingUtils = require('motras_buildingutils')
+local t = require('motras_types')
 
 local function hasCurvedRoof(platform)
     if not platform:isPlatform() then
@@ -47,8 +48,91 @@ function data()
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId, { groups = {'roof_ug_era_3_curved'}})
+
+            asset:addDecorationSlot(result.slots, 1, {
+                position = {-20.0, 2, -1.4},
+                assetDecorationType = t.ASSET_DECORATION_CEILING_MOUNTED,
+                slotType = 'motras_decoration_ceiling_mounted',
+                transformation = transform,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+            asset:addDecorationSlot(result.slots, 2, {
+                position = {-20.0, -2, -1.4},
+                assetDecorationType = t.ASSET_DECORATION_CEILING_MOUNTED,
+                slotType = 'motras_decoration_ceiling_mounted',
+                transformation = transform,
+                rotation = 180,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+         
+            local leftNeighbor = asset:getParentGridElement():getNeighborRight()
+            if not (leftNeighbor:isPlatform() and leftNeighbor:hasAsset(33)) then
+                asset:addDecorationSlot(result.slots, 9, {
+                    assetDecorationType = t.ASSET_DECORATION_CEILING_MOUNTED,
+                    position = {20.0, 2, -1.4},
+                    slotType = 'motras_decoration_ceiling_mounted',
+                    transformation = transform,
+                    spacing = {1.0, 1.0, 1.0, 1.0}
+                })
+                asset:addDecorationSlot(result.slots, 10, {
+                    assetDecorationType = t.ASSET_DECORATION_CEILING_MOUNTED,
+                    position = {20.0, -2, -1.4},
+                    slotType = 'motras_decoration_ceiling_mounted',
+                    transformation = transform,
+                    rotation = 180,
+                    spacing = {1.0, 1.0, 1.0, 1.0}
+                })
+            end
+
+            asset:addDecorationSlot(result.slots, 1, {
+                position = {-20.0, 0.0, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            asset:addDecorationSlot(result.slots, 2, {
+                position = {-10.0, 0.0, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            asset:addDecorationSlot(result.slots, 3, {
+                position = {0.0, 0.0, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            asset:addDecorationSlot(result.slots, 4, {
+                position = {10.0, 0.0, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            if not (leftNeighbor:isPlatform() and leftNeighbor:hasAsset(33)) then
+                asset:addDecorationSlot(result.slots, 5, {
+                    position = {20.0, 0.0, -2.4},
+                    assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                    slotType = 'motras_decoration_truss_mounted',
+                    transformation = transform,
+                    rotation = 0,
+                    spacing = {1.0, 1.0, 1.0, 1.0}
+                })
+            end
+
             asset:handle(function (moduleResult)
-                local roofTransformation = Transf.mul(transform, Transf.transl({x = -20, y = 0, z = -1}))
+                local roofTransformation = Transf.mul(transform, Transf.transl({x = -20, y = 0, z = -6}))
 
                 table.insert(result.models, {
                     id = "station/rail/era_c/perron_5_roof_3.mdl",

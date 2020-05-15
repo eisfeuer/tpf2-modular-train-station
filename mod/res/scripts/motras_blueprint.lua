@@ -14,98 +14,37 @@ function Blueprint:new(o)
     return o
 end
 
-local function getPlatformModuleCount(platformCount, platformWidth, preferIslandPlatforms)
-    local evenPlatformCount = platformCount % 2 == 0
-    if preferIslandPlatforms then
-        local islandPlatformsModules = math.floor(platformCount / 2) * platformWidth
-        return evenPlatformCount and islandPlatformsModules or (islandPlatformsModules + 1)
-    end
-    local islandPlatformsModules = math.floor((platformCount - 1) / 2) * platformWidth
-    return evenPlatformCount and (islandPlatformsModules + 2) or (islandPlatformsModules + 1)
-end
-
-local function isPlatform(index, platformWidth, preferIsland, evenPlatformCount)
-    local offset = (preferIsland and evenPlatformCount) and 1 or -1
-    return (index + offset) % (platformWidth + 2) > 1, (index + offset) % (platformWidth + 2) >= 2
-end
-
 function Blueprint:addModuleToTemplate(slotId, moduleName)
     self.tpf2Template[slotId] = moduleName
     return self
 end
 
-function Blueprint:addRowOfModulesToTemplate(slotType, moduleName, moduleCount, gridY, isPlatform, hasIslandPlatformSlots, hasSidePlatformTop, hasSidePlatformBottom)
-    local isEven = moduleCount % 2 == 0
+function Blueprint:createStation(pattern)
+    local startY, endY = pattern:getVerticalRange()
 
-    local from = isEven and -moduleCount / 2 + 1 or -math.floor(moduleCount / 2)
-    local to = math.floor(moduleCount / 2)
+    for iY = startY, endY do
+        local startX, endX = pattern:getHorizontalRange(iY)
+        for iX = startX, endX do
+            local slotType, moduleName, options = pattern:getTypeAndModule(iX, iY)
+            self:addModuleToTemplate(Slot.makeId{type = slotType, gridX = iX, gridY = iY}, moduleName)
 
-    local decorationFunc = isPlatform and self.platformDecorationFunc or self.trackDecorationFunc
-
-    for i = from, to do
-        local slotId = Slot.makeId({type = slotType, gridX = i, gridY = gridY})
-        self:addModuleToTemplate(slotId, moduleName)
-        if decorationFunc then
-            decorationFunc(AssetBlueprint:new{
+            local assetBlueprint = AssetBlueprint:new{
                 blueprint = self,
-                gridX = i,
-                gridY = gridY,
-                sidePlatformTop = isPlatform and hasSidePlatformTop,
-                sidePlatformBottom = isPlatform and hasSidePlatformBottom,
-                islandPlatformSlots = isPlatform and hasIslandPlatformSlots == true
-            })
+                gridX = iX,
+                gridStartX = startX,
+                gridEndX = endX,
+                gridY = iY,
+                gridStartY = startY,
+                gridEndY = endY,
+                options = options or {}
+            }
+            if Slot.getGridTypeFromSlotType(slotType) == t.GRID_TRACK then
+                self.trackDecorationFunc(assetBlueprint)
+            end
+            if Slot.getGridTypeFromSlotType(slotType) == t.GRID_PLATFORM then
+                self.platformDecorationFunc(assetBlueprint)
+            end
         end
-    end
-end
-
-function Blueprint:validateOptions(options)
-    if not options.trackModule then
-        error('parameter trackModule is required')
-    end
-
-    if not options.platformModule then
-        error('parameter platformModule is required')
-    end
-
-    if not options.platformSegmentCount then
-        error('parameter platformSegmentCount is required')
-    end
-
-    if not options.platformCount then
-        error('parameter platformCount is required')
-    end
-end
-
-function Blueprint:createStation(options)
-    self:validateOptions(options)
-    local platformWidth = options.platformWidth or 1
-    local preferIslandPlatforms = options.preferIslandPlatforms == true
-
-    if options.platformCount == 1 then
-        self:addRowOfModulesToTemplate(t.TRACK, options.trackModule, options.platformSegmentCount, 0, false, false, false, false)
-        self:addRowOfModulesToTemplate(t.PLATFORM, options.platformModule, options.platformSegmentCount, 1, true, false, true, false)
-        return self
-    end
-
-    local trackModuleCount = options.platformCount
-    local platformModuleCount = getPlatformModuleCount(options.platformCount, platformWidth, preferIslandPlatforms)
-
-    local startY = -math.floor((trackModuleCount + platformModuleCount) / 2)
-
-    for i = 0, trackModuleCount + platformModuleCount - 1 do
-        local moduleIsPlatform, hasIslandPlatformSlots = isPlatform(i, platformWidth, preferIslandPlatforms, options.platformCount % 2 == 0)
-        if moduleIsPlatform then
-            self:addRowOfModulesToTemplate(
-                t.PLATFORM,
-                options.platformModule,options.platformSegmentCount,
-                startY + i, true,
-                hasIslandPlatformSlots,
-                i == 0,
-                i == trackModuleCount + platformModuleCount - 1
-            )
-        else
-            self:addRowOfModulesToTemplate(t.TRACK, options.trackModule, options.platformSegmentCount, startY + i, false, false, false, false)
-        end   
     end
 
     return self

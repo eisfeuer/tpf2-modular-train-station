@@ -26,20 +26,69 @@ function AssetBlueprint:getGridY()
     return self.gridY
 end
 
+function AssetBlueprint:isOnTopBorder()
+    return self.gridY == self.gridEndY
+end
+
+function AssetBlueprint:isOnBottomBorder()
+    return self.gridY == self.gridStartY
+end
+
+function AssetBlueprint:isOnLeftBorder()
+    return self.gridX == self.gridStartX
+end
+
+function AssetBlueprint:isOnRightBorder()
+    return self.gridX == self.gridEndX
+end
+
+function AssetBlueprint:getOption(key, default)
+    return self.options[key] or default
+end
+
+function AssetBlueprint:getHorizontalSize()
+    return self.gridEndX - self.gridStartX + 1
+end
+
+function AssetBlueprint:horizontalSizeIsEven()
+    return self:getHorizontalSize() % 2 == 0
+end
+
+function AssetBlueprint:horizontalSizeIsOdd()
+    return self:getHorizontalSize() % 2 == 1
+end
+
+function AssetBlueprint:getRelativeHorizontalDistanceToCenter()
+    if self:horizontalSizeIsEven() then
+        return math.abs(self:getGridX() + 0.5)
+    end
+    return math.abs(self:getGridX())
+end
+
+function AssetBlueprint:isNthSegmentFromCenter(n)
+    return math.ceil(self:getRelativeHorizontalDistanceToCenter()) == n
+end
+
+function AssetBlueprint:isInEveryNthSegmentFromCenter(n)
+    return math.ceil(self:getRelativeHorizontalDistanceToCenter()) % n == 0
+end
+
+-- platform related function and aliases
+
 function AssetBlueprint:hasIslandPlatformSlots()
-    return self.islandPlatformSlots == true
+    return self:getOption('hasIslandPlatformSlots', false)
 end
 
 function AssetBlueprint:isSidePlatformTop()
-    return self.sidePlatformTop == true
+    return self:isOnTopBorder()
 end
 
 function AssetBlueprint:isSidePlatformBottom()
-    return self.sidePlatformBottom == true
+    return self:isOnBottomBorder()
 end
 
 function AssetBlueprint:isSidePlatform()
-    return self:isSidePlatformTop() or self:isSidePlatformBottom()
+    return self:isOnTopBorder() or self:isOnBottomBorder()
 end
 
 function AssetBlueprint:isIslandPlatform()

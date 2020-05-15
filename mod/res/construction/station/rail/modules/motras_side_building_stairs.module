@@ -36,16 +36,20 @@ function data()
 
                 BuildingUtils.makeLot(result, Box:new({ -6, 4, 0 }, { 6, 0, 4 }), stairsTransformation)
 
+                local absolutePlatformHeight = asset:getParentGridElement():getAbsolutePlatformHeight()
                 local stairway = Stairway:new{
-                    height = asset:getParentGridElement():getAbsolutePlatformHeight(),
+                    height = absolutePlatformHeight,
                     stepWidth = 0.29,
                     stepModel = "station/rail/motras/stairs_step_10m.mdl"
                 }
 
-                
-
                 stairway:addStepsToModels(result.models, stairsTransformation)
                 stairway:addPathToModels(result.models, 0, stairsTransformation, 0, 3.5)
+
+                table.insert(result.models, {
+                    id = "station/rail/motras/platform_wall_side_entrance.mdl",
+                    transf = Transf.mul(stairsTransformation, Transf.rotZTransl(math.pi, {x = 0, y = -2.5, z = absolutePlatformHeight}))
+                })
             end)
         end,
         getModelsFn = function()

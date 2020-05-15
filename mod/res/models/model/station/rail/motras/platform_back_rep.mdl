@@ -15,12 +15,16 @@ return {
 		{
 			node = {
 				children = {
-					{
-						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
-						mesh = "station/rail/motras/platform_back_rep_lod0.msh",
-						name = "platform_back_rep",
-						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					children = {
+						{
+							materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+							mesh = "station/rail/motras/platform_back_rep_lod0.msh",
+							name = "platform_back_rep",
+							transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+						},
 					},
+					name = "platform_number_sign_lod0",
+					transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
 				},
 				name = "RootNode",
 				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },

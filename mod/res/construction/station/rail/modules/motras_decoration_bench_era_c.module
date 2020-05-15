@@ -31,32 +31,32 @@ function data()
                 if asset:getId() >= 41 and asset:getId() <= 44 then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_double_chair.mdl",
-                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 0, z = -0.2}))
+                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 0, z = -1}))
                     })   
                 elseif not gridElement:hasNeighborTop() and gridElement:getNeighborBottom():isTrack() then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_single_chair.mdl",
-                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 2.1, z = -0.2}))
+                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 2.1, z = -1}))
                     })
                 elseif not gridElement:hasNeighborBottom() and gridElement:getNeighborTop():isTrack() then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_single_chair.mdl",
-                        transf = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0, y = -2.1, z = -0.2}))
+                        transf = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0, y = -2.1, z = -1}))
                     })
                 elseif gridElement:hasAsset(asset:getId() - 8) then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_single_chair.mdl",
-                        transf = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0, y = 0.4, z = -0.2}))
+                        transf = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0, y = 0.4, z = -1}))
                     })  
                 elseif gridElement:getNeighborTop():hasAsset(asset:getId() - 8) then
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_single_chair.mdl",
-                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = -0.4, z = -0.2}))
+                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = -0.4, z = -1}))
                     }) 
                 else
                     table.insert(result.models, {
                         id = "station/rail/asset/era_c_double_chair.mdl",
-                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 0, z = -0.2}))
+                        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0, y = 0, z = -1}))
                     })    
                 end
             end)

@@ -189,7 +189,7 @@ function data()
 
 
             asset:handle(function ()
-                local roofTransformation = Transf.mul(transform, Transf.transl({x = -20, y = 0, z = -5}))
+                local roofTransformation = Transf.mul(transform, Transf.transl({x = -20, y = 0, z = -6}))
 
                 table.insert(result.models, {
                     id = "station/rail/era_c/perron_5_roof.mdl",

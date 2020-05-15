@@ -105,7 +105,7 @@ function data()
 			        endingRight = "station/rail/era_c/station_1_main_end_l.mdl",
                 }
 
-                BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
+                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
                 ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
                 
                 local platformHeight = asset:getParentGridElement():getPlatformHeight()
@@ -132,6 +132,20 @@ function data()
                     table.insert(result.models, {
                         id = "station/rail/motras/stairs_step_10m.mdl",
                         transf = Transf.mul(transform, Transf.transl({x = 5, y = -0.289, z = 0.81}))
+                    })
+                end
+                
+                if not connectedLeft then
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_wall_side.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = 10.15, y = 2.5, z = 0.81 + platformHeight - 0.27}))
+                    })
+                end
+
+                if not connectedRight then
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_wall_side.mdl",
+                        transf = Transf.mul(transform, Transf.transl({x = -10.15, y = 2.5, z = 0.81 + platformHeight - 0.27}))
                     })
                 end
             end)

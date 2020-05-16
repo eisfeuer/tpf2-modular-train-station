@@ -99,6 +99,14 @@ function GridElement:setOptions(options)
     self.options = options
 end
 
+function GridElement:setOption(key, value)
+    if not self.options then
+        self.options = {}
+    end
+
+    self.options[key] = value
+end
+
 function GridElement:getOption(option, default)
     return self.options and self.options[option] or default
 end

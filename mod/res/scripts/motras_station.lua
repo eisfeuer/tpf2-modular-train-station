@@ -12,6 +12,7 @@ local TerminalUtils = require("motras_terminalutils")
 local AssetSlotCache = require("motras_asset_slot_cache")
 local UnderpassUtils = require("motras_underpassutils")
 local AssetDecorationSlotCache = require('motras_asset_decoration_slot_cache')
+local PlatformIdMapper = require('motras_displayed_name_mappers.platform_id_mapper')
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -46,6 +47,7 @@ end
 function Station:processResult(result)
     table.remove(result.models, 1)
 
+    TrackUtils.addTrackIdsToAllTracksOnGrid(self.grid, self.displayedNameMapper or PlatformIdMapper:new{})
     self.grid:handleModules(result)
 
     local edgeListMap = EdgeListMap:new{edgeLists = result.edgeLists}
@@ -85,6 +87,7 @@ function Station:getData()
     result.terrainAlignmentLists = {}
     result.groundFaces = {}
     result.colliders = {}
+    result.labelText = {}
 
     result.terminateConstructionHook = function ()
         self:processResult(result)

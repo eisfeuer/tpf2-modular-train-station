@@ -27,11 +27,38 @@ function data()
             local decoration = result.motras:register(slotId)
 
             decoration:handle(function ()
+                local lableForBottomTrack = ''
+                local lableForTopTrack = ''
+
+                if decoration:getAssetId() == 34 or decoration:getAssetId() == 46 then
+                    local bottomTrack = decoration:getParentGridElement():getGrid():get(decoration:getGridX(), decoration:getGridY() - 2)
+                    local topTrack = decoration:getParentGridElement():getNeighborTop()
+
+                    if bottomTrack:isTrack() then
+                        lableForBottomTrack = bottomTrack:getDisplayedId()
+                    end
+                    if topTrack:isTrack() then
+                        lableForTopTrack = topTrack:getDisplayedId()
+                    end
+                else
+                    local bottomTrack = decoration:getParentGridElement():getNeighborBottom()
+                    local topTrack = decoration:getParentGridElement():getNeighborTop()
+
+                    if bottomTrack:isTrack() then
+                        lableForBottomTrack = bottomTrack:getDisplayedId()
+                    end
+                    if topTrack:isTrack() then
+                        lableForTopTrack = topTrack:getDisplayedId()
+                    end
+                end
+
+                result.labelText[#result.models] = {lableForTopTrack, lableForTopTrack, lableForBottomTrack, lableForBottomTrack}
                 table.insert(result.models, {
                     id = "station/rail/asset/era_c_perron_number.mdl",
                     transf = transform
                 })
             end)
+           -- result.labelText[#result.models] = {"1", "2", "3", "4"}
         end,
         getModelsFn = function()
             return {

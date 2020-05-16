@@ -124,6 +124,22 @@ function TrackClass:new(gridElement)
         return '__module_' .. self:getSlotId()
     end
 
+    function Track:getTrackId()
+        return self:getOption('trackId')
+    end
+
+    function Track:getPlatformId()
+        return self:getOption('platformId')
+    end
+
+    function Track:getDisplayedId()
+        return self:getOption('displayedId')
+    end
+
+    function Track:getDisplayedDestination()
+        return self:getOption('displayedDestination')
+    end
+
     return Track
 end
 

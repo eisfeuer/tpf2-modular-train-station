@@ -754,6 +754,16 @@ function PlatformModuleUtils.addDecorationSlots(platform, slots)
             rotation = 0,
             spacing = {20, 20, 2.5, 2.5}
         })
+
+        if platform:getNeighborBottom():isPlatform() and not platform:hasAsset(34) then
+            platform:addAssetSlot(slots, 46, {
+                assetType = t.DECORATION,
+                slotType = 'motras_decoration_lamps',
+                position = {0, -platform:getGrid():getVerticalDistance() / 2, platform:getAbsolutePlatformHeight() + 5},
+                rotation = 0,
+                spacing = {20, 20, 2.5, 2.5}
+            })
+        end
     end
 end
 

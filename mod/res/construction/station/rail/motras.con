@@ -133,7 +133,7 @@ local function placeStairs(platformBlueprint, platformLength, platformWidth)
     end
 end
 
-local function placeRoof(platformBlueprint, platformLength)
+local function placeRoof(platformBlueprint, platformLength, platformWidth)
     local halfLength = math.floor(platformLength / 2)
     print(platformBlueprint:getHorizontalSize())
 
@@ -142,13 +142,19 @@ local function placeRoof(platformBlueprint, platformLength)
             platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33, function(decorationBlueprint)
                 decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
                 decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_platform_number_era_c_truss_mounted_1.module', 3) 
             end)
         else
             platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
                 decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
                 decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 5)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 6)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_platform_number_era_c_truss_mounted_1.module', 3) 
+                if not platformBlueprint:isSidePlatformTop() and (platformBlueprint:isSidePlatformBottom() or platformWidth < 2 or platformBlueprint:hasIslandPlatformSlots()) then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 5)
+                end
+                if not platformBlueprint:isSidePlatformBottom() and (platformBlueprint:isSidePlatformTop() or platformWidth < 2 or not platformBlueprint:hasIslandPlatformSlots()) then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 6)
+                end
             end)
         end
 
@@ -159,6 +165,7 @@ local function placeRoof(platformBlueprint, platformLength)
         platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33, function(decorationBlueprint)
             decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
             decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_platform_number_and_clock_era_c_truss_mounted.module', 3) 
         end)
         return
     end
@@ -167,11 +174,28 @@ local function placeRoof(platformBlueprint, platformLength)
         platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
             decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 2)
             decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_station_sign_era_c.module', 4)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_platform_number_era_c_truss_mounted_1.module', 3) 
+            if not platformBlueprint:isSidePlatformTop() and (platformBlueprint:isSidePlatformBottom() or platformWidth < 2 or platformBlueprint:hasIslandPlatformSlots()) then
+                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 5)
+            end
+            if not platformBlueprint:isSidePlatformBottom() and (platformBlueprint:isSidePlatformTop() or platformWidth < 2 or not platformBlueprint:hasIslandPlatformSlots()) then
+                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module', 6)
+            end
         end)
         return
     end
 
-    platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_platform_lamps_era_c.module', 45)
+    if platformWidth > 1 and platformBlueprint:isIslandPlatform() then
+        if platformBlueprint:hasIslandPlatformSlots() then
+            platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_platform_lamps_era_c.module', 46, function(decorationBlueprint)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_platform_number_era_c_truss_mounted_1.module', 3) 
+            end)
+        end
+    else
+        platformBlueprint:addAsset(t.DECORATION, 'station/rail/modules/motras_platform_lamps_era_c.module', 45, function(decorationBlueprint)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, 'station/rail/modules/motras_platform_number_era_c_truss_mounted_1.module', 3) 
+        end)
+    end
 end
 
 local function calculateBuildingSize(platformLength, trackCount)
@@ -381,7 +405,7 @@ function data()
                 if trackCount > 1 then
                     placeStairs(platformBlueprint, length, platformWidth)
                 end
-                placeRoof(platformBlueprint, length)
+                placeRoof(platformBlueprint, length, platformWidth)
                 placeDecoration(platformBlueprint, platformWidth, buildingSize)
                 if params.motras_building_size > 0 then
                     placeBuilding(platformBlueprint, length, trackCount, params.motras_building_size - 1)

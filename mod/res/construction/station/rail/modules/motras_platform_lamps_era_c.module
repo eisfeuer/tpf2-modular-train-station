@@ -1,4 +1,5 @@
 local Transf = require("transf")
+local t = require('motras_types')
 
 function data()
     return {
@@ -26,12 +27,60 @@ function data()
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId)
 
-            asset:handle(function ()
-                local leftNeightbor = asset:getParentGridElement():getNeighborLeft()
-                local gridElement = asset:getParentGridElement()
+            local gridElement = asset:getParentGridElement()
+            local leftNeighbor = asset:getParentGridElement():getNeighborLeft()
 
-                if not gridElement:hasNeighborTop() and gridElement:getNeighborBottom():isTrack() then
-                    if leftNeightbor:isPlatform() and not leftNeightbor:hasAsset(33) then
+            local trackTopOnly = not gridElement:hasNeighborBottom() and gridElement:getNeighborTop():isTrack()
+            local trackBottomOnly = not gridElement:hasNeighborTop() and gridElement:getNeighborBottom():isTrack()
+
+            local slotYPosition = 0
+            if trackTopOnly then
+                slotYPosition = -2.3
+            elseif trackBottomOnly then
+                slotYPosition = 2.3
+            end
+
+            if not (leftNeighbor:isPlatform() and leftNeighbor:hasAsset(33)) then
+                asset:addDecorationSlot(result.slots, 1, {
+                    position = {-20.0, slotYPosition, -2.4},
+                    assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                    slotType = 'motras_decoration_truss_mounted',
+                    transformation = transform,
+                    rotation = 0,
+                    spacing = {1.0, 1.0, 1.0, 1.0}
+                })
+            end
+
+            asset:addDecorationSlot(result.slots, 2, {
+                position = {-10.0, slotYPosition, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            asset:addDecorationSlot(result.slots, 3, {
+                position = {0.0, slotYPosition, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            asset:addDecorationSlot(result.slots, 4, {
+                position = {10.0, slotYPosition, -2.4},
+                assetDecorationType = t.ASSET_DECORATION_TRUSS_MOUNTED,
+                slotType = 'motras_decoration_truss_mounted',
+                transformation = transform,
+                rotation = 0,
+                spacing = {1.0, 1.0, 1.0, 1.0}
+            })
+
+            asset:handle(function ()
+                if trackBottomOnly then
+                    if leftNeighbor:isPlatform() and not leftNeighbor:hasAsset(33) then
                         table.insert(result.models, {
                             id = "asset/lamp_new.mdl",
                             transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -20.0, y = 2.3, z = -5}))
@@ -49,8 +98,8 @@ function data()
                         id = "asset/lamp_new.mdl",
                         transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 10.0, y = 2.3, z = -5}))
                     })
-                elseif not gridElement:hasNeighborBottom() and gridElement:getNeighborTop():isTrack() then
-                    if leftNeightbor:isPlatform() and not leftNeightbor:hasAsset(33) then
+                elseif trackTopOnly then
+                    if leftNeighbor:isPlatform() and not leftNeighbor:hasAsset(33) then
                         table.insert(result.models, {
                             id = "asset/lamp_new.mdl",
                             transf = Transf.mul(transform, Transf.transl({x = -20.0, y = -2.3, z = -5}))
@@ -69,7 +118,7 @@ function data()
                         transf = Transf.mul(transform, Transf.transl({x = 10.0, y = -2.3, z = -5}))
                     })
                 else
-                    if leftNeightbor:isPlatform() and not leftNeightbor:hasAsset(33) then
+                    if leftNeighbor:isPlatform() and not leftNeighbor:hasAsset(33) then
                         table.insert(result.models, {
                             id = "station/rail/asset/cargo_lamps.mdl",
                             transf = Transf.mul(transform, Transf.transl({x = -20.0, y = 0.0, z = -5}))

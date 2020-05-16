@@ -1,12 +1,12 @@
 function data()
 return {
 	boundingInfo = {
-		bbMax = { 20, 0, 0.0099999997764826, },
-		bbMin = { -20, -0.29999995231628, -2, },
+		bbMax = { 0.3, 0.11, 0.3, },
+		bbMin = { -0.3, -0.11, -0.3, },
 	},
 	collider = {
 		params = {
-			halfExtents = { 20, 0.14999997615814, 1.0049999952316, },
+			halfExtents = { 0.3, 0.11, 0.3, },
 		},
 		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
 		type = "BOX",
@@ -16,10 +16,10 @@ return {
 			node = {
 				children = {
 					{
-						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
-						mesh = "station/rail/motras/platform_back_rep_lod0.msh",
-						name = "platform_back_rep",
-						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+						materials = { "station/rail/era_c/era_c_trainstation_assets.mtl", },
+						mesh = "station/rail/motras/platform_number_sign_era_c_lod0.msh",
+						name = "platform_number_sign_era_c_lod0",
+						transf = { 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1, },
 					},
 				},
 				name = "RootNode",
@@ -27,7 +27,7 @@ return {
 			},
 			static = false,
 			visibleFrom = 0,
-			visibleTo = 2324.1796875,
+			visibleTo = 34.957305908203,
 		},
 	},
 	metadata = { },

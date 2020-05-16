@@ -9,9 +9,9 @@ function data()
             categories = { "tracks", },
         },
         description = {
-            name = _("High-speed tracks"),
-		description = _("Specialized tracks for higher speeds."),
-            icon = "ui/construction/station/rail/modular_station/high_speed.tga"
+            name = _("High-speed tracks with catenary"),
+            description = _("Specialized tracks with catenary for higher speeds."),
+            icon = "ui/construction/station/rail/modular_station/high_speed_catenary.tga"
         }, 
         availability = {
             yearFrom = 0,

@@ -4,8 +4,8 @@ function data()
             minorVersion = 0,
             severityAdd = "NONE",
             severityRemove = "NONE",
-            name = _("Modular Train Station"),
-            description = _("modular_tram_station_desc"),
+            name = _("MOTRAS Base Kit"),
+            description = _("motras_mod_desc"),
             tags = { "Train Station" },
             authors = {
                 {

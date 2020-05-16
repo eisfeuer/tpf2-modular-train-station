@@ -9,8 +9,8 @@ function data()
             categories = { "decoration", },
         },
         description = {
-            name = _("platform_numbers"),
-		    description = _("ceiling_mounted"),
+            name = _("platform_number_sign"),
+		    description = _("ceiling_mountable"),
 		    icon = "ui/construction/station/rail/motras/decoration_clock_ceiling_mounted_era_c.tga"
         }, 
         availability = {

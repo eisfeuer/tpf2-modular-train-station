@@ -102,7 +102,7 @@ function data()
         },
         description = {
             name = _("platform_number_sign_and_clock"),
-		    description = _("truss_mounted"),
+		    description = _("truss_mountable") .. "\n" .. _("suitable_for_curved_roof"),
 		    icon = "ui/construction/station/rail/motras/decoration_clock_ceiling_mounted_era_c.tga"
         }, 
         availability = {

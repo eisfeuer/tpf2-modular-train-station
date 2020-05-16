@@ -10,7 +10,7 @@ function data()
         },
         description = {
             name = _("High-speed tracks"),
-		description = _("Specialized tracks for higher speeds."),
+            description = _("Specialized tracks for higher speeds."),
             icon = "ui/construction/station/rail/modular_station/high_speed.tga"
         }, 
         availability = {

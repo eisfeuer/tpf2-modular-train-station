@@ -10,8 +10,8 @@ function data()
         },
         description = {
             name = _("Standard tracks"),
-		    description = _("Standard tracks with limited speed capabilities."),
-            icon = "ui/construction/station/rail/modular_station/track_catenary.tga"
+		description = _("Standard tracks with catenary and limited speed capabilities."),
+		icon = "ui/construction/station/rail/modular_station/track_catenary.tga"
         }, 
         availability = {
             yearFrom = 0,

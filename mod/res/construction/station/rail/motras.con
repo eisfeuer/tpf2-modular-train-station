@@ -301,8 +301,8 @@ function data()
     return { 
         type = 'RAIL_STATION',
         description = {
-            name = _('motras_mod_name'),			
-            description = _('motras_mod_desc'),
+            name = _('motras_menu_name'),			
+            description = _('motras_menu_desc'),
             icon = 'ui/construction/station/street/passenger_era_a.tga'
         },
         availability = {
@@ -319,8 +319,8 @@ function data()
                     yearTo = 0
                 },
                 description = {
-                    name = _('motras_base_station'),
-                    description = _('motras_base_station_desc'),
+                    name = _('motras_menu_name'),			
+                    description = _('motras_menu_desc'),
                     icon = 'ui/construction/station/street/passenger_era_a.tga'
                 },
                 data = {
@@ -328,35 +328,45 @@ function data()
                         {
                             key = "motras_tracks",
                             name = _("Tracks"),
-                            values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18"), _("19"), _("20"), _("21"), _("22"), _("23"), _("24"),  _("25"), _("26"), _("27"), _("28"), _("29"), _("30"), _("31"), _("32"), _("33"), _("34") },
+                            values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12") },
                             defaultIndex = 0,
                         },
+                        UgParamUtils.makeTrackTypeParam(),
+                        UgParamUtils.makeTrackCatenaryParam(),
                         {
                             key = "motras_length",
-                            name = _("Length"),
-                            values = { _("40m"), _("80m"), _("120m"), _("160m"), _("200"), _("240m"), _("320m"), _("360"), _("400"), _("440"), _("480") },
+                            name = _("length_in_m"),
+                            uiType = "COMBOBOX",
+                            values = { _("40"), _("80"), _("120"), _("160"), _("200"), _("240"), _("320"), _("360"), _("400"), _("440"), _("480") },
                             defaultIndex = 3,
                         },
                         {
                             key = "motras_platform_width",
-                            name = _("Platform Width"),
-                            values = { _("tall"), _("wide") },
+                            name = _("platform_width"),
+                            values = { _("platform_width_tall"), _("platform_width_wide") },
                             defaultIndex = 0
                         },
                         {
                             key = "motras_platform_height",
-                            name = _("Platform Height (in mm)"),
-                            values = {_("200"), _("250"), _("270"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1250")},
+                            uiType = "COMBOBOX",
+                            name = _("platform_height_in_mm"),
+                            values = { _("default_platform_height"), _("200"), _("250"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1250")},
                             defaultIndex = 0
                         },
                         {
                             key = "motras_building_size",
+                            uiType = "COMBOBOX",
                             name = _("Building"),
-                            values = {_("None"), _("Auto"), _("Tiny"), _("Small"), _("Medium 1"), _("Medium 2"), _("Large"), _("Huge")},
+                            values = {_("motras_none"), _("motras_auto"), _("motras_tiny"), _("motras_small"), _("motras_medium_1"), _("motras_medium_2"), _("motras_large"), _("motras_huge")},
                             defaultIndex = 1
                         },
-                        UgParamUtils.makeTrackTypeParam(),
-                        UgParamUtils.makeTrackCatenaryParam(),
+                        {
+                            key = "motras_use_track_ids",
+                            uiType = "CHECKBOX",
+                            name = _("motras_use_track_ids"),
+                            values = { "0", "1" },
+                            default_index = 0
+                        }
                     }
                 }
             }
@@ -368,9 +378,9 @@ function data()
             local trackCount =  params.motras_tracks + 1
 
             local platformModules = {
+                'station/rail/modules/motras_platform_270_era_c.module',
                 'station/rail/modules/motras_platform_200_era_c.module',
                 'station/rail/modules/motras_platform_250_era_c.module',
-                'station/rail/modules/motras_platform_270_era_c.module',
                 'station/rail/modules/motras_platform_350_era_c.module',
                 'station/rail/modules/motras_platform_380_era_c.module',
                 'station/rail/modules/motras_platform_550_era_c.module',

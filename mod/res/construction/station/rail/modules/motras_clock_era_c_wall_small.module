@@ -9,8 +9,8 @@ function data()
             categories = { "decoration", },
         },
         description = {
-            name = _("Small main building"),
-		    description = _("Small main building with street access for passenger stations."),
+            name = _("station_clock"),
+		    description = _("wall_mountable"),
 		    icon = "ui/construction/station/rail/modular_station/main_building_1_era_c.tga"
         }, 
         availability = {

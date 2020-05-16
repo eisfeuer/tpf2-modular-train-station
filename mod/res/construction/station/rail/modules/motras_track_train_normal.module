@@ -10,7 +10,7 @@ function data()
         },
         description = {
             name = _("Standard tracks"),
-		    description = _("Standard tracks with limited speed capabilities."),
+            description = _("Standard tracks with limited speed capabilities."),
             icon = "ui/construction/station/rail/modular_station/track.tga"
         }, 
         availability = {

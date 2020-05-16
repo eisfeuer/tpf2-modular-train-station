@@ -9,8 +9,8 @@ function data()
             categories = { "decoration", },
         },
         description = {
-            name = _("Small main building"),
-		    description = _("Small main building with street access for passenger stations."),
+            name = _("platform_number_sign"),
+		    description = _("truss_mountable"),
 		    icon = "ui/construction/station/rail/motras/decoration_platform_numbers_truss_mounted_era_c.tga"
         }, 
         availability = {

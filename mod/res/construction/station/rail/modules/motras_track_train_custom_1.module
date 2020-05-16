@@ -9,8 +9,8 @@ function data()
             categories = { "tracks", },
         },
         description = {
-            name = _("Custom Track 1"),
-		    description = _("Standard tracks with limited speed capabilities."),
+            name = _("custom_track_standard"),
+		    description = _("selectable_in_options_menu") .. "\n" .. _("not_electrified"),
             icon = "ui/construction/station/rail/modular_station/track.tga"
         }, 
         availability = {

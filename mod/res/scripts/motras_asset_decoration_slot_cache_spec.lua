@@ -29,7 +29,7 @@ describe('AssetDecorationSlotCache', function ()
 
             local result = cache:getAllAssetDecorationSlotsForAsset(asset)
 
-            assert.are.equal(assetDecorationSlot, result[4])
+            assert.are.equal(assetDecorationSlot, result[assetDecorationSlot.type][4])
         end)
 
         it('bindAssetDecorationSlotsToAsset', function ()
@@ -45,7 +45,7 @@ describe('AssetDecorationSlotCache', function ()
 
             cache:bindAssetDecorationSlotsToAsset(asset)
 
-            assert.are.equal(assetDecorationSlotId, asset:getDecoration(4):getSlotId())
+            assert.are.equal(assetDecorationSlotId, asset:getDecoration(4, assetDecorationSlot.type):getSlotId())
         end)
     end)
 end)

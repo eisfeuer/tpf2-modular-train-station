@@ -17,9 +17,11 @@ function AssetDecorationSlotCache:new(o)
 end
 
 function AssetDecorationSlotCache:addAssetDecorationSlotToCache(assetDecorationSlot)
-    local decorationSlotsForGivenAsset = getOrNew(getOrNew(getOrNew(self.assetDecorationSlots, assetDecorationSlot.gridX), assetDecorationSlot.gridY), assetDecorationSlot.assetId)
+    local decorationSlotsForGivenAsset = getOrNew(getOrNew(getOrNew(getOrNew(self.assetDecorationSlots, assetDecorationSlot.gridX), assetDecorationSlot.gridY), assetDecorationSlot.assetId), assetDecorationSlot.type)
 
     if decorationSlotsForGivenAsset[assetDecorationSlot.assetDecorationId] then
+        print(require('inspect')(self.assetDecorationSlots))
+        print(require('inspect')(assetDecorationSlot:debug()))
         error('decoration slot is occupied')
     end
 
@@ -42,7 +44,7 @@ function AssetDecorationSlotCache:find(slot)
         return decorationSlotForGivenAsset
     end
 
-    return decorationSlotForGivenAsset[slot.assetDecorationId]
+    return decorationSlotForGivenAsset[slot.type] and decorationSlotForGivenAsset[slot.type][slot.assetDecorationId]
 end
 
 function AssetDecorationSlotCache:getAllAssetDecorationSlotsForAsset(asset)
@@ -50,8 +52,10 @@ function AssetDecorationSlotCache:getAllAssetDecorationSlotsForAsset(asset)
 end
 
 function AssetDecorationSlotCache:bindAssetDecorationSlotsToAsset(asset)
-    for assetDecorationId, assetDecorationSlot in pairs(self:getAllAssetDecorationSlotsForAsset(asset)) do
-        asset:registerDecoration(assetDecorationId, assetDecorationSlot)
+    for assetDecorationType, assetDecorationSlotList in pairs(self:getAllAssetDecorationSlotsForAsset(asset)) do
+        for assetDecorationId, assetDecorationSlot in pairs(assetDecorationSlotList) do
+            asset:registerDecoration(assetDecorationId, assetDecorationSlot) 
+        end
     end
 end
 

@@ -61,7 +61,9 @@ function TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatforms)
         platform:callTerminalHandling(addTerminalFunc, platformIsOverTrack and -1 or 1, platformIsOverTrack)
     end
 
-    table.insert(terminalGroups, terminalGroup)
+    if #terminalGroup.terminals > 0 then
+        table.insert(terminalGroups, terminalGroup)
+    end
 end
 
 function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid)

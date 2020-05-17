@@ -215,5 +215,19 @@ describe('TerminalUtils', function ()
                 }
             }, terminalGroups)
         end)
+
+        it('ignores terminals withouts any edges', function ()
+            local terminalGroups = {}
+            local station2 = Station:new{}
+
+            station2:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            local localPlatform = station2:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 1}))
+
+            localPlatform:handleTerminals(function() end)
+
+            TerminalUtils.addTerminalsFromGrid(terminalGroups, {}, station2.grid)
+
+            assert.are.same({}, terminalGroups)
+        end)
     end)
 end)

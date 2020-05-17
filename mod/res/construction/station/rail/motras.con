@@ -303,7 +303,7 @@ function data()
         description = {
             name = _('motras_menu_name'),			
             description = _('motras_menu_desc'),
-            icon = 'ui/construction/station/street/passenger_era_a.tga'
+            icon = "ui/construction/station/rail/motras/template_1.tga"
         },
         availability = {
             yearFrom = 0,
@@ -321,7 +321,7 @@ function data()
                 description = {
                     name = _('motras_menu_name'),			
                     description = _('motras_menu_desc'),
-                    icon = 'ui/construction/station/street/passenger_era_a.tga'
+                    icon = "ui/construction/station/rail/motras/template_1.tga"
                 },
                 data = {
                     params = {

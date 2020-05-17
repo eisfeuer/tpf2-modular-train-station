@@ -1,4 +1,5 @@
 local Transf = require("transf")
+local ModelUtils = require('motras_modelutils')
 
 function data()
     return {
@@ -11,7 +12,7 @@ function data()
         description = {
             name = _("platform_number_sign"),
 		    description = _("ceiling_mountable"),
-		    icon = "ui/construction/station/rail/motras/decoration_clock_ceiling_mounted_era_c.tga"
+		    icon = "ui/construction/station/rail/motras/decoration_platform_numbers_ceiling_mounted_era_c.tga"
         }, 
         availability = {
             yearFrom = 0,
@@ -31,10 +32,23 @@ function data()
                     id = "station/rail/asset/era_c_street_pillar.mdl",
                     transf = Transf.mul(transform, Transf.scale({x = 0.5, y = -0.5, z = -1.0}))
                 })
-                table.insert(result.models, {
-                    id = "station/rail/motras/platform_number_sign_era_c.mdl",
-                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.0, z = -0.8}))
-                })
+
+                local label = ''
+                local gridElement = decoration:getParentGridElement()
+                local neighborTop = gridElement:getNeighborTop()
+                local neighborBottom = gridElement:getNeighborBottom()
+
+                if decoration:getId() % 2 == 1 and neighborTop:isTrack() then
+                    label = neighborTop:getDisplayedId()
+                elseif decoration:getId() % 2 == 0 and neighborBottom:isTrack() then
+                    label = neighborBottom:getDisplayedId()
+                end
+                ModelUtils.addLabeledModel(
+                    result,
+                    "station/rail/motras/platform_number_sign_era_c.mdl",
+                    { label, label },
+                    Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.0, z = -0.8}))
+                )
             end)
         end,
         getModelsFn = function()

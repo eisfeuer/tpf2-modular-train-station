@@ -1,6 +1,7 @@
 local Transf = require("transf")
+local ModelUtils = require("motras_modelutils")
 
-local function addTopPlatformNumber(result, transform)
+local function addTopPlatformNumber(result, transform, label)
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
         transf = Transf.mul(transform, Transf.scaleRotZYXTransl(
@@ -17,13 +18,15 @@ local function addTopPlatformNumber(result, transform)
             {x = 0.0, y = 0.0, z = -0.2}
         ))
     })
-    table.insert(result.models, {
-        id = "station/rail/motras/platform_number_sign_era_c.mdl",
-        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.7, z = -0.1}))
-    })
+    ModelUtils.addLabeledModel(
+        result,
+        "station/rail/motras/platform_number_sign_era_c.mdl",
+        {label, label},
+        Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.7, z = -0.1}))
+    )
 end
 
-local function addBottomPlatformNumber(result, transform)
+local function addBottomPlatformNumber(result, transform, label)
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
         transf = Transf.mul(transform, Transf.scaleRotZYXTransl(
@@ -40,10 +43,12 @@ local function addBottomPlatformNumber(result, transform)
             {x = 0.0, y = 0.0, z = -0.2}
         ))
     })
-    table.insert(result.models, {
-        id = "station/rail/motras/platform_number_sign_era_c.mdl",
-        transf = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0.0, y = -0.7, z = -0.1}))
-    })
+    ModelUtils.addLabeledModel(
+        result,
+        "station/rail/motras/platform_number_sign_era_c.mdl",
+        {label, label},
+        Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0.0, y = -0.7, z = -0.1}))
+    )
 end
 
 function data()
@@ -57,7 +62,7 @@ function data()
         description = {
             name = _("platform_number_sign"),
 		    description = _("truss_mountable"),
-		    icon = "ui/construction/station/rail/motras/decoration_clock_ceiling_mounted_era_c.tga"
+		    icon = "ui/construction/station/rail/motras/decoration_platform_numbers_truss_mounted_2_era_c.tga"
         }, 
         availability = {
             yearFrom = 0,
@@ -74,20 +79,46 @@ function data()
 
             decoration:handle(function ()
                 local gridElement = decoration:getParentGridElement()
+
+                local lableForBottomTrack = ''
+                local lableForTopTrack = ''
+
+                if decoration:getAssetId() == 34 or decoration:getAssetId() == 46 then
+                    local bottomTrack = gridElement:getGrid():get(decoration:getGridX(), decoration:getGridY() - 2)
+                    local topTrack = gridElement:getNeighborTop()
+
+                    if bottomTrack:isTrack() then
+                        lableForBottomTrack = bottomTrack:getDisplayedId()
+                    end
+                    if topTrack:isTrack() then
+                        lableForTopTrack = topTrack:getDisplayedId()
+                    end
+                else
+                    local bottomTrack = gridElement:getNeighborBottom()
+                    local topTrack = gridElement:getNeighborTop()
+
+                    if bottomTrack:isTrack() then
+                        lableForBottomTrack = bottomTrack:getDisplayedId()
+                    end
+                    if topTrack:isTrack() then
+                        lableForTopTrack = topTrack:getDisplayedId()
+                    end
+                end
+
                 local hasTrackTop = gridElement:getNeighborTop():isTrack()
                 local hasTrackBottom = gridElement:getNeighborBottom():isTrack()
 
                 if decoration:getAssetId() == 46 then
-                    addTopPlatformNumber(result, transform)
-                    addBottomPlatformNumber(result, transform)
+                    addTopPlatformNumber(result, transform, lableForTopTrack)
+                    addBottomPlatformNumber(result, transform, lableForBottomTrack)
                 end
                 if hasTrackTop and not hasTrackBottom then
-                    addTopPlatformNumber(result, transform)
+                    addTopPlatformNumber(result, transform, lableForTopTrack)
                 elseif hasTrackBottom and not hasTrackTop then
-                    addBottomPlatformNumber(result, transform)
+                    addBottomPlatformNumber(result, transform, lableForBottomTrack)
                 else
-                    addTopPlatformNumber(result, transform)
-                    addBottomPlatformNumber(result, transform)
+                    addTopPlatformNumber(result, transform, lableForTopTrack)
+                    addBottomPlatformNumber(result, transform, lableForBottomTrack)
                 end
             end)
         end,
@@ -97,17 +128,25 @@ function data()
                     id = "station/rail/asset/era_c_street_pillar.mdl",
                     transf = {
                         0.5, 0, 0, 0,
-                        0, -0.5, 0, 0,
-                        0, 0, -1.0, 0,
-                        0, 0, 0, 1
+                        0, 0, -0.5, 0,
+                        0, 1, 0, 0,
+                        0, 0, 0.1, 1
+                    },
+                }, { 
+                    id = "station/rail/asset/era_c_street_pillar.mdl",
+                    transf = {
+                        0.5, 0, 0, 0,
+                        0, 0, -0.5, 0,
+                        0, 1, 0, 0,
+                        0, 0, -0.1, 1
                     },
                 }, { 
                     id = "station/rail/motras/platform_number_sign_era_c.mdl",
                     transf = {
-                        0, -1.0, 0, 0,
-                        1.0, 0, 0, 0,
-                        0, 0, 1.0, 0,
-                        0, 0, -0.8, 1
+                        0, -1, 0, 0,
+                        1, 0, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0.7, 0, 1
                     },
                 },
             }

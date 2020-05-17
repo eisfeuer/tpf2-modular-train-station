@@ -1,4 +1,5 @@
 local Transf = require("transf")
+local ModelUtils = require("motras_modelutils")
 
 function data()
     return {
@@ -52,13 +53,13 @@ function data()
                     end
                 end
 
-                result.labelText[#result.models] = {lableForTopTrack, lableForTopTrack, lableForBottomTrack, lableForBottomTrack}
-                table.insert(result.models, {
-                    id = "station/rail/asset/era_c_perron_number.mdl",
-                    transf = transform
-                })
+                ModelUtils.addLabeledModel(
+                    result,
+                    "station/rail/asset/era_c_perron_number.mdl",
+                    {lableForTopTrack, lableForTopTrack, lableForBottomTrack, lableForBottomTrack},
+                    transform
+                )
             end)
-           -- result.labelText[#result.models] = {"1", "2", "3", "4"}
         end,
         getModelsFn = function()
             return {

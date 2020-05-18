@@ -34,7 +34,7 @@ return {
 		labelList = {
 			labels = {
 				{
-					transf = {-1, 0, 0, 0, -0, -0, 1, 0, 0, 1, 0, 0, 0.19, 0.083, -0.19, 1, },
+					transf = {-1, 0, 0, 0, -0, -0, 1, 0, 0, 1, 0, 0, 0.19, 0.083, -0.14, 1, },
 					size = { 0.38, 0.38 },
 					type = "CUSTOM",
 					alignment = "CENTER",
@@ -44,7 +44,7 @@ return {
 					childId = "RootNode",
 				},
 				{
-					transf = {1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, -0.19, -0.083, -0.19, 1, },
+					transf = {1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, -0.19, -0.083, -0.14, 1, },
 					size = { 0.38, 0.38 },
 					type = "CUSTOM",
 					alignment = "CENTER",

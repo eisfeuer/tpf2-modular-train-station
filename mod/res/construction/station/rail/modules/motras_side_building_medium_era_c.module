@@ -72,13 +72,8 @@ function data()
             local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})
 
             asset:handle(function (moduleResult)
-                local offset = 7.5
-                if asset:getParentGridElement():getAbsoluteY() < transform[14] then
-                    offset = -7.5
-                end
-                transform[14] = transform[14] + offset
-
-                BuildingUtils.makeLot(result, Box:new({ -11, -23, 0 }, { 11, 0, 4 }), transform)
+                local buildingTransform = Transf.mul(transform, Transf.transl({x = 0.0, y = 7.5, z = 0.0}))
+                BuildingUtils.makeLot(result, Box:new({ -11, -23, 0 }, { 11, 0, 4 }), buildingTransform)
 
                 local buildingModels = {
                     mainBuilding = "station/rail/era_c/station_2.mdl",
@@ -92,8 +87,8 @@ function data()
 			        endingRight = "station/rail/era_c/station_2_end_l.mdl",
                 }
 
-                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, transform)
-                ConstructionUtils.addModels(decorationModels, result.models, transform, tag)
+                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, buildingTransform)
+                ConstructionUtils.addModels(decorationModels, result.models, buildingTransform, tag)
                 
                 local platformHeight = asset:getParentGridElement():getPlatformHeight()
                 if platformHeight > 0.275 then
@@ -103,8 +98,8 @@ function data()
                         stepModel = "station/rail/motras/stairs_step_10m.mdl"
                     }
 
-                    local leftStairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -5, y = 0, z = 0.8}))
-                    local rightStairsTransformation = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 5, y = 0, z = 0.8}))
+                    local leftStairsTransformation = Transf.mul(buildingTransform, Transf.rotZTransl(math.pi, {x = -5, y = 0, z = 0.8}))
+                    local rightStairsTransformation = Transf.mul(buildingTransform, Transf.rotZTransl(math.pi, {x = 5, y = 0, z = 0.8}))
 
                     stairway:addStepsToModels(result.models, leftStairsTransformation)
                     stairway:addStepsToModels(result.models, rightStairsTransformation)
@@ -114,25 +109,25 @@ function data()
                 if platformHeight < 0.265 then
                     table.insert(result.models, {
                         id = "station/rail/motras/stairs_step_10m.mdl",
-                        transf = Transf.mul(transform, Transf.transl({x = -5, y = -0.289, z = 0.81}))
+                        transf = Transf.mul(buildingTransform, Transf.transl({x = -5, y = -0.289, z = 0.81}))
                     })
                     table.insert(result.models, {
                         id = "station/rail/motras/stairs_step_10m.mdl",
-                        transf = Transf.mul(transform, Transf.transl({x = 5, y = -0.289, z = 0.81}))
+                        transf = Transf.mul(buildingTransform, Transf.transl({x = 5, y = -0.289, z = 0.81}))
                     })
                 end
 
                 if not connectedLeft then
                     table.insert(result.models, {
                         id = "station/rail/motras/platform_wall_side.mdl",
-                        transf = Transf.mul(transform, Transf.transl({x = 10.15, y = 2.5, z = 0.81 + platformHeight - 0.27}))
+                        transf = Transf.mul(buildingTransform, Transf.transl({x = 10.15, y = 2.5, z = 0.81 + platformHeight - 0.27}))
                     })
                 end
 
                 if not connectedRight then
                     table.insert(result.models, {
                         id = "station/rail/motras/platform_wall_side.mdl",
-                        transf = Transf.mul(transform, Transf.transl({x = -10.15, y = 2.5, z = 0.81 + platformHeight - 0.27}))
+                        transf = Transf.mul(buildingTransform, Transf.transl({x = -10.15, y = 2.5, z = 0.81 + platformHeight - 0.27}))
                     })
                 end
             end)

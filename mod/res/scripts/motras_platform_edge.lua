@@ -14,7 +14,7 @@ function PlatformEdge:addLeftPartToModels(models, rotation, flipFactor, leftPart
     if leftPartModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             leftPartModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = -verticalDistance / 2 * flipFactor, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = horizontalDistance / 2 * flipFactor, y = -verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end
@@ -24,7 +24,7 @@ function PlatformEdge:addRightPartToModels(models, rotation, flipFactor, rightPa
     if rightPartModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             rightPartModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = horizontalDistance / 2 * flipFactor, y = verticalDistance / 2 * flipFactor, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end

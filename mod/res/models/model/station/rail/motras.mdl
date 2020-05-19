@@ -16,7 +16,7 @@ return {
 			node = {
 				children = {
 					{
-						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
+						materials = { "station/rail/motras/platform_edges.mtl", },
 						mesh = "station/rail/motras/platform_edge_side_right_lod0.msh",
 						name = "platform_edge_side_right_lod0",
 						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },

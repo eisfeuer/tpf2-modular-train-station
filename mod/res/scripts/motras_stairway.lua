@@ -1,5 +1,6 @@
 local Transf = require('transf')
 local PathUtils = require('motras_pathutils')
+local ModelUtils = require('motras_modelutils')
 
 local Stairway = {}
 
@@ -26,14 +27,18 @@ function Stairway:getHeight()
     return self.getHeight()
 end
 
-function Stairway:addStepsToModels(models, transformation)
+function Stairway:addStepsToModels(models, transformation, tag)
     local stepHeight = self:getStepHeight()
 
     for i = 0, self:getStepCount() - 1 do
-        table.insert(models, {
-            id = self.stepModel,
-            transf = Transf.mul(transformation, Transf.transl({x = 0, y = i * self.stepWidth, z = self.height - i * stepHeight}))
-        })
+        table.insert(
+            models,
+            ModelUtils.makeTaggedModel(
+                self.stepModel,
+                Transf.mul(transformation, Transf.transl({x = 0, y = i * self.stepWidth, z = self.height - i * stepHeight})),
+                tag
+            )
+        )
     end
 end
 

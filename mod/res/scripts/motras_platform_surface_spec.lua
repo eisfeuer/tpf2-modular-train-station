@@ -33,6 +33,26 @@ describe('PlatformSurface', function ()
             }, models)
         end)
 
+        it('add all 4 parts when no stairs a set (use with tags)', function ()
+            local station = Station:new{}
+            local platform1 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            local platform2 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 1}))
+
+            local platformSurface = PlatformSurface:new{platform = platform1, transformation = transformation, mainPart = 'main_part.mdl', tag = 'katze'}
+
+            local models = {}
+            platformSurface:addStairsSegment(25, 29, 'part1.mdl', 'part2.mdl', 'part3.mdl', 'part4.mdl')
+            platformSurface:addToModels(models)
+
+            assert.are.same({
+                { id = 'main_part.mdl', transf = transformation, tag = 'katze'},
+                { id = 'part1.mdl', transf = transformation, tag = 'katze'},
+                { id = 'part2.mdl', transf = transformation, tag = 'katze'},
+                { id = 'part3.mdl', transf = transformation, tag = 'katze'},
+                { id = 'part4.mdl', transf = transformation, tag = 'katze'},
+            }, models)
+        end)
+
         it('has no inner parts when small stairs are set', function ()
             local station = Station:new{}
             local platform1 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))

@@ -136,20 +136,23 @@ function data()
 
                 table.insert(result.models, {
                     id = "station/rail/era_c/perron_5_roof_3.mdl",
-                    transf = roofTransformation
+                    transf = roofTransformation,
+                    tag = tag
                 })
 
                 if not asset:getParentGridElement():getNeighborLeft():hasAsset(33) then
                     table.insert(result.models, {
                         id = "station/rail/era_c/perron_5_roof_end.mdl",
-                        transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 0, y = 0, z = 0}))
+                        transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 0, y = 0, z = 0})),
+                        tag = tag
                     })
                 end
 
                 if not asset:getParentGridElement():getNeighborRight():hasAsset(33) then
                     table.insert(result.models, {
                         id = "station/rail/era_c/perron_5_roof_end.mdl",
-                        transf = Transf.mul(roofTransformation, Transf.transl({x = 40, y = 0, z = 0}))
+                        transf = Transf.mul(roofTransformation, Transf.transl({x = 40, y = 0, z = 0})),
+                        tag = tag
                     })
                 end
 
@@ -158,12 +161,14 @@ function data()
                     if hasTopContinuesRoof(neighborTop) then
                         table.insert(result.models, {
                             id = "station/rail/era_c/perron_5_roof_3_con_l_r_5m.mdl",
-                            transf = Transf.mul(roofTransformation, Transf.transl({x = 0, y = 5, z = 0}))
+                            transf = Transf.mul(roofTransformation, Transf.transl({x = 0, y = 5, z = 0})),
+                            tag = tag
                         })
                     else
                         table.insert(result.models, {
                             id = "station/rail/era_c/perron_5_roof_3_con_l.mdl",
-                            transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 40, y = 0, z = 0}))
+                            transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 40, y = 0, z = 0})),
+                            tag = tag
                         })
                     end
                 end
@@ -176,14 +181,16 @@ function data()
                     if hasContinuesRoof then
                         table.insert(result.models, {
                             id = "station/rail/era_c/perron_5_roof_3_con_l_r_5m.mdl",
-                            transf = Transf.mul(roofTransformation, Transf.transl({x = 0, y = -5, z = 0}))
+                            transf = Transf.mul(roofTransformation, Transf.transl({x = 0, y = -5, z = 0})),
+                            tag = tag
                         })
                     end
 
                     if not (hasContinuesRoof or hasCurvedRoof(neightborsNeighbor)) then
                         table.insert(result.models, {
                             id = "station/rail/era_c/perron_5_roof_3_con_r.mdl",
-                            transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 40, y = 0, z = 0}))
+                            transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 40, y = 0, z = 0})),
+                            tag = tag
                         })
                     end
                 end

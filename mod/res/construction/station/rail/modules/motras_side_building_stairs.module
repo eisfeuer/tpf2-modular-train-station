@@ -40,15 +40,16 @@ function data()
                 local stairway = Stairway:new{
                     height = absolutePlatformHeight,
                     stepWidth = 0.29,
-                    stepModel = "station/rail/motras/stairs_step_10m.mdl"
+                    stepModel = "station/rail/motras/stairs_step_10m.mdl",
                 }
 
-                stairway:addStepsToModels(result.models, stairsTransformation)
+                stairway:addStepsToModels(result.models, stairsTransformation, tag)
                 stairway:addPathToModels(result.models, 0, stairsTransformation, 0, 3.5)
 
                 table.insert(result.models, {
                     id = "station/rail/motras/platform_wall_side_entrance.mdl",
-                    transf = Transf.mul(stairsTransformation, Transf.rotZTransl(math.pi, {x = 0, y = -2.5, z = absolutePlatformHeight}))
+                    transf = Transf.mul(stairsTransformation, Transf.rotZTransl(math.pi, {x = 0, y = -2.5, z = absolutePlatformHeight})),
+                    tag = tag
                 })
             end)
         end,

@@ -47,7 +47,8 @@ function data()
 
                 table.insert(result.models, {
                     id = 'station/rail/motras/stairs_small.mdl',
-                    transf = stairsTransformation
+                    transf = stairsTransformation,
+                    tag = tag
                 })
 
                 local zOffset = asset:getGrid():getUnderpassZ()- asset:getParentGridElement():getAbsolutePlatformHeight()

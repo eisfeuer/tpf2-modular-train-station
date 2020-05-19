@@ -3,6 +3,7 @@ local Box = require('motras_box')
 local ModuleUtils = require('modulesutil')
 local Transf = require('transf')
 local Vec3 = require('vec3')
+local ModelUtils = require('motras_modelutils')
 
 function BuildingUtils.isSmallBuilding(buildingModule)
     local assetId = buildingModule:getId()
@@ -301,74 +302,41 @@ function BuildingUtils.buildingIsInGroup(buildingModule, groups)
     return false
 end
 
-function BuildingUtils.makeConnectableBuilding(buildingModule, result, models, pivot)
+function BuildingUtils.makeConnectableBuilding(buildingModule, result, models, pivot, tag)
     local buildingGroups = buildingModule:getOption('groups', {})
     local connectedLeft = false
     local connectedRight = false
 
-    table.insert(result.models, {
-        id = models.mainBuilding,
-        transf = pivot
-    })
+    table.insert(result.models, ModelUtils.makeTaggedModel(models.mainBuilding, pivot, tag))
 
     if #buildingGroups == 0 then
-        table.insert(result.models, {
-            id = models.endingLeft,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.endingLeft, pivot, tag))
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getSmallLeftNeighborBuildingOn40m(buildingModule), buildingGroups) then
-        table.insert(result.models, {
-            id = models.connectionToLeftSmallBuilding or models.endingLeft,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.connectionToLeftSmallBuilding or models.endingLeft, pivot, tag))
         connectedLeft = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getMediumLeftNeighborBuildingOn40m(buildingModule), buildingGroups) then
-        table.insert(result.models, {
-            id = models.connectionToLeftMediumBuilding or models.endingLeft,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.connectionToLeftMediumBuilding or models.endingLeft, pivot, tag))
         connectedLeft = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getLargeLeftNeighborBuildingOn40m(buildingModule), buildingGroups) then
-        table.insert(result.models, {
-            id = models.connectionToLeftLargeBuilding or models.endingLeft,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.connectionToLeftLargeBuilding or models.endingLeft, pivot, tag))
         connectedLeft = true
     else
-        table.insert(result.models, {
-            id = models.endingLeft,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.endingLeft, pivot, tag))
     end
 
     if #buildingGroups == 0 then
-        table.insert(result.models, {
-            id = models.endingRight,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.endingRight, pivot, tag))
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getSmallRightNeighborBuildingOn40m(buildingModule), buildingGroups) then
-        table.insert(result.models, {
-            id = models.connectionToRightSmallBuilding or models.endingRight,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.connectionToRightSmallBuilding or models.endingRight, pivot, tag))
         connectedRight = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getMediumRightNeighborBuildingOn40m(buildingModule), buildingGroups) then
-        table.insert(result.models, {
-            id = models.connectionToRightMediumBuilding or models.endingRight,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.connectionToRightMediumBuilding or models.endingRight, pivot, tag))
         connectedRight = true
     elseif BuildingUtils.buildingIsInGroup(BuildingUtils.getLargeRightNeighborBuildingOn40m(buildingModule), buildingGroups) then
-        table.insert(result.models, {
-            id = models.connectionToRightLargeBuilding or models.endingRight,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.connectionToRightLargeBuilding or models.endingRight, pivot, tag))
         connectedRight = true
     else
-        table.insert(result.models, {
-            id = models.endingRight,
-            transf = pivot
-        })
+        table.insert(result.models, ModelUtils.makeTaggedModel(models.endingRight, pivot, tag))
     end
 
     return connectedLeft, connectedRight

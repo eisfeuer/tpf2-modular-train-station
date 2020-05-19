@@ -193,20 +193,23 @@ function data()
 
                 table.insert(result.models, {
                     id = "station/rail/era_c/perron_5_roof.mdl",
-                    transf = roofTransformation
+                    transf = roofTransformation,
+                    tag = tag
                 })
 
                 if not asset:getParentGridElement():getNeighborLeft():hasAsset(33) then
                     table.insert(result.models, {
                         id = "station/rail/era_c/perron_5_roof_end.mdl",
-                        transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 0, y = 0, z = 0}))
+                        transf = Transf.mul(roofTransformation, Transf.rotZTransl(math.rad(-180), {x = 0, y = 0, z = 0})),
+                        tag = tag
                     })
                 end
 
                 if not asset:getParentGridElement():getNeighborRight():hasAsset(33) then
                     table.insert(result.models, {
                         id = "station/rail/era_c/perron_5_roof_end.mdl",
-                        transf = Transf.mul(roofTransformation, Transf.transl({x = 40, y = 0, z = 0}))
+                        transf = Transf.mul(roofTransformation, Transf.transl({x = 40, y = 0, z = 0})),
+                        tag = tag
                     })
                 end
             end)

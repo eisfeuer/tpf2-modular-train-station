@@ -718,18 +718,21 @@ describe('BuildingUtils', function ()
             0, 0, 0, 1,
         }
 
-        BuildingUtils.makeConnectableBuilding(building1, result, models, transform)
+        BuildingUtils.makeConnectableBuilding(building1, result, models, transform, 'katze')
         
         assert.are.same({
             {
                 id = "main_building.mdl",
-                transf = transform
+                transf = transform,
+                tag = "katze",
             }, {
                 id = "ending_left.mdl",
-                transf = transform
+                transf = transform,
+                tag = "katze",
             }, {
                 id = "con_right_small.mdl",
-                transf = transform
+                transf = transform,
+                tag = "katze",
             }
         }, result.models)
 

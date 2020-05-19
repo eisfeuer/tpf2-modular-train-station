@@ -57,7 +57,8 @@ function data()
                     result,
                     "station/rail/asset/era_c_perron_number.mdl",
                     {lableForTopTrack, lableForTopTrack, lableForBottomTrack, lableForBottomTrack},
-                    transform
+                    transform,
+                    tag
                 )
             end)
         end,

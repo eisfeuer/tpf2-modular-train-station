@@ -47,7 +47,8 @@ function data()
                     result,
                     "station/rail/motras/platform_number_sign_era_c.mdl",
                     { label, label },
-                    Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.0, z = -0.8}))
+                    Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.0, z = -0.8})),
+                    tag
                 )
             end)
         end,

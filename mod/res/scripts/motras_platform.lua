@@ -44,6 +44,17 @@ function PlatformClass:new(gridElement)
         self.terminalHandlingFunc = terminalHandlingFunc
     end
 
+    function Platform:applyPlatformHeightOnTransformation(transformation)
+        local resultTransformation = {}
+        for i, value in ipairs(transformation) do
+            table.insert(resultTransformation, value)
+        end
+
+        resultTransformation[15] = resultTransformation[15] + self:getAbsolutePlatformHeight()
+        
+        return resultTransformation
+    end
+
     return Platform
 end
 

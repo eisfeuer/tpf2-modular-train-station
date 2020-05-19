@@ -110,7 +110,7 @@ function data()
 			        endingRight = "station/rail/era_c/station_3_end_l.mdl",
                 }
 
-                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, buildingTransform)
+                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, buildingTransform, tag)
                 ConstructionUtils.addModels(decorationModels, result.models, buildingTransform, tag)
                 
                 local platformHeight = asset:getParentGridElement():getPlatformHeight()
@@ -118,7 +118,8 @@ function data()
                     local stairway = Stairway:new{
                         height = platformHeight - 0.27,
                         stepWidth = 0.29,
-                        stepModel = "station/rail/motras/stairs_step_10m.mdl"
+                        stepModel = "station/rail/motras/stairs_step_10m.mdl",
+                        tag = tag
                     }
 
                     local leftOuterStairsTransformation = Transf.mul(buildingTransform, Transf.rotZTransl(math.pi, {x = -15, y = 0, z = 0.8}))
@@ -126,12 +127,12 @@ function data()
                     local rightInnerStairsTransformation = Transf.mul(buildingTransform, Transf.rotZTransl(math.pi, {x = 5, y = 0, z = 0.8}))
                     local rightOuterStairsTransformation = Transf.mul(buildingTransform, Transf.rotZTransl(math.pi, {x = 15, y = 0, z = 0.8}))
 
-                    stairway:addStepsToModels(result.models, leftOuterStairsTransformation)
-                    stairway:addStepsToModels(result.models, leftInnerStairsTransformation)
+                    stairway:addStepsToModels(result.models, leftOuterStairsTransformation, tag)
+                    stairway:addStepsToModels(result.models, leftInnerStairsTransformation, tag)
                     stairway:addPathToModels(result.models, 5, leftInnerStairsTransformation, 0, 2.5)
-                    stairway:addStepsToModels(result.models, rightInnerStairsTransformation)
+                    stairway:addStepsToModels(result.models, rightInnerStairsTransformation, tag)
                     stairway:addPathToModels(result.models, 5, rightInnerStairsTransformation, 0, 2.5)
-                    stairway:addStepsToModels(result.models, rightOuterStairsTransformation)
+                    stairway:addStepsToModels(result.models, rightOuterStairsTransformation, tag)
                     stairway:addPathToModels(result.models, 5, rightOuterStairsTransformation, 0, 2.5)
                 end
 

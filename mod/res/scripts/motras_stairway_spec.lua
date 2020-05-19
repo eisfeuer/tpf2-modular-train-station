@@ -84,6 +84,38 @@ describe('Stairway', function ()
             assertNearBy(0.3, models[2].transf[14])
             assertNearBy(0.18, models[2].transf[15])
         end) 
+
+        it('adds stairway to models with tag', function ()
+            local models = {}
+
+            local stairway = Stairway:new{
+                height = 0.36,
+                stepWidth = 0.3,
+                stepModel = 'step.mdl'
+            }
+
+
+            local transf = {
+                1, 0, 0, 0, 
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            }
+
+            stairway:addStepsToModels(models, transf, 'katze')
+
+            assert.are.equal(2, #models)
+            assert.are.equal('step.mdl', models[1].id)
+            assert.are.equal('step.mdl', models[2].id)
+            assert.are.equal('katze', models[1].tag)
+            assert.are.equal('katze', models[2].tag)
+
+            assertNearBy(0.0, models[1].transf[14])
+            assertNearBy(0.36, models[1].transf[15])
+
+            assertNearBy(0.3, models[2].transf[14])
+            assertNearBy(0.18, models[2].transf[15])
+        end) 
     end)
 
     describe('addPathToModels', function ()

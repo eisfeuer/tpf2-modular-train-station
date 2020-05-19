@@ -137,6 +137,28 @@ describe("Platform", function()
         end)
     end)
 
+    describe("applyPlatformHeightOnTransformation", function ()
+        it("applies platform height on any transformation matrix", function()
+            local originTranformation = {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                1, 2, 3, 1,
+            }
+            local expectedTranformation = {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                1, 2, 3 + c.DEFAULT_BASE_TRACK_HEIGHT + 0.96, 1,
+            }
+
+            local transformation = platform:applyPlatformHeightOnTransformation(originTranformation)
+            
+            assert.are_not.equal(originTranformation, transformation)
+            assert.are.same(expectedTranformation, transformation)
+        end)
+    end)
+
     describe("handleTerminals / callTerminalHandling", function ()
         it ('handles default terminal handling', function ()
             local stuff = {}

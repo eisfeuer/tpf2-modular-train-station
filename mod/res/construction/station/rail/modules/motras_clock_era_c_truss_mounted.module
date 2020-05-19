@@ -29,15 +29,18 @@ function data()
             decoration:handle(function ()
                 table.insert(result.models, {
                     id = "station/rail/asset/era_c_perron_holder.mdl",
-                    transf = transform
+                    transf = transform,
+                    tag = tag
                 })
                 table.insert(result.models, {
                     id = "station/rail/asset/era_c_small_clock.mdl",
-                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -0.235, y = -1.16, z = 0.0}))
+                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -0.235, y = -1.16, z = 0.0})),
+                    tag = tag
                 })
                 table.insert(result.models, {
                     id = "station/rail/asset/era_c_small_clock.mdl",
-                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -0.235, y = 1.16, z = 0.0}))
+                    transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -0.235, y = 1.16, z = 0.0})),
+                    tag = tag
                 })
             end)
         end,

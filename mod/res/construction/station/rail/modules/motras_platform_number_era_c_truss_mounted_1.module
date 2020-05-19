@@ -1,14 +1,15 @@
 local Transf = require("transf")
 local ModelUtils = require("motras_modelutils")
 
-local function addTopPlatformNumber(result, transform, label)
+local function addTopPlatformNumber(result, transform, label, tag)
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
         transf = Transf.mul(transform, Transf.scaleRotZYXTransl(
             {x = 0.5, y = -0.5, z = -1.0},
             {x = 0.0, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.0}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -16,24 +17,27 @@ local function addTopPlatformNumber(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = 0.0, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = -0.2}
-        ))
+        )),
+        tag = tag
     })
     ModelUtils.addLabeledModel(
         result,
         "station/rail/motras/platform_number_sign_era_c.mdl",
         {label, label},
-        Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.7, z = -0.1}))
+        Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.7, z = -0.1})),
+        tag
     )
 end
 
-local function addBottomPlatformNumber(result, transform, label)
+local function addBottomPlatformNumber(result, transform, label, tag)
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
         transf = Transf.mul(transform, Transf.scaleRotZYXTransl(
             {x = 0.5, y = -0.5, z = -1.0},
             {x = math.pi, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.0}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -41,13 +45,15 @@ local function addBottomPlatformNumber(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = math.pi, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = -0.2}
-        ))
+        )),
+        tag = tag
     })
     ModelUtils.addLabeledModel(
         result,
         "station/rail/motras/platform_number_sign_era_c.mdl",
         {label, label},
-        Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0.0, y = -0.7, z = -0.1}))
+        Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0.0, y = -0.7, z = -0.1})),
+        tag
     )
 end
 
@@ -109,16 +115,16 @@ function data()
                 local hasTrackBottom = gridElement:getNeighborBottom():isTrack()
 
                 if decoration:getAssetId() == 46 then
-                    addTopPlatformNumber(result, transform, lableForTopTrack)
-                    addBottomPlatformNumber(result, transform, lableForBottomTrack)
+                    addTopPlatformNumber(result, transform, lableForTopTrack, tag)
+                    addBottomPlatformNumber(result, transform, lableForBottomTrack, tag)
                 end
                 if hasTrackTop and not hasTrackBottom then
-                    addTopPlatformNumber(result, transform, lableForTopTrack)
+                    addTopPlatformNumber(result, transform, lableForTopTrack, tag)
                 elseif hasTrackBottom and not hasTrackTop then
-                    addBottomPlatformNumber(result, transform, lableForBottomTrack)
+                    addBottomPlatformNumber(result, transform, lableForBottomTrack, tag)
                 else
-                    addTopPlatformNumber(result, transform, lableForTopTrack)
-                    addBottomPlatformNumber(result, transform, lableForBottomTrack)
+                    addTopPlatformNumber(result, transform, lableForTopTrack, tag)
+                    addBottomPlatformNumber(result, transform, lableForBottomTrack, tag)
                 end
             end)
         end,

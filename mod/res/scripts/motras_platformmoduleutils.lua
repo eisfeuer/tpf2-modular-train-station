@@ -2,6 +2,10 @@ local PlatformSurface = require('motras_platform_surface')
 local Box = require('motras_box')
 local ModuleUtils = require('modulesutil')
 local Transf = require('transf')
+local ModuleUtils = require('motras_modelutils')
+local PlatformBuilder = require('motras_platform_builder')
+local PlatformEdge = require('motras_platform_edge')
+local PlatformSide = require('motras_platform_side')
 
 local c = require('motras_constants')
 local t = require('motras_types')
@@ -14,299 +18,6 @@ local function hasNoLargeUnderpassAtSlot(slotId, platform, oppositeNeighbor)
     end
     
     return not (platform:hasAsset(slotId) or oppositeNeighbor:hasAsset(slotId))
-end
-
-function PlatformModuleUtils.makePlatform(
-    platform,
-    models,
-    platformRepModel,
-    platformEdgeRepModel,
-    platformBackRepModel,
-    platformSideModel,
-    platformEdgeSideLeftModel,
-    platformEdgeSideRightModel,
-    platformBackSideLeftModel,
-    platformBackSideRightModel,
-    options
-)
-    if type(platformRepModel) == 'table' then
-        platformRepModel:addToModels(models)
-    else
-        table.insert(models, {
-            id = platformRepModel,
-            transf = {
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if not platformEdgeRepModel then
-        return
-    end
-
-    local topNeightbor = platform.grid:get(platform:getGridX(), platform:getGridY() + 1)
-    local btmNeightbor = platform.grid:get(platform:getGridX(), platform:getGridY() - 1)
-    local yOffset = platform.grid:getVerticalDistance() / 2
-
-    if topNeightbor:isTrack() then
-        table.insert(models, {
-            id = platformEdgeRepModel,
-            transf = {
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if btmNeightbor:isTrack() then
-        table.insert(models, {
-            id = platformEdgeRepModel,
-            transf = {
-                -1, 0, 0, 0,
-                0, -1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if not platformBackRepModel then
-        return
-    end
-
-    if topNeightbor:isBlank() then
-        table.insert(models, {
-            id = platformBackRepModel,
-            transf = {
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if btmNeightbor:isBlank() then
-        table.insert(models, {
-            id = platformBackRepModel,
-            transf = {
-                -1, 0, 0, 0,
-                0, -1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX(), platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if not platformSideModel then
-        return
-    end
-    if not (platformEdgeSideLeftModel and platformEdgeSideRightModel) then
-        error('makePlatform must have exact 1, 2, 3, 6, 8 or 9 parameters')
-    end
-
-    local leftNeighbor = platform.grid:get(platform:getGridX() - 1, platform:getGridY())
-    local rightNeighbor = platform.grid:get(platform:getGridX() + 1, platform:getGridY())
-    local xOffset = platform.grid:getHorizontalDistance() / 2
-    
-
-    if leftNeighbor:isBlank() or leftNeighbor:isTrack() then
-        table.insert(models, {
-            id = platformSideModel,
-            transf = {
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX() - xOffset, platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if rightNeighbor:isBlank() or rightNeighbor:isTrack() then
-        table.insert(models, {
-            id = platformSideModel,
-            transf = {
-                -1, 0, 0, 0,
-                0, -1, 0, 0,
-                0, 0, 1, 0,
-                platform:getAbsoluteX() + xOffset, platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
-            }
-        })
-    end
-
-    if topNeightbor:isTrack() then
-        if not (leftNeighbor:isPlatform() and platform.grid:get(platform:getGridX() - 1, platform:getGridY() + 1):isTrack()) then
-            table.insert(models, {
-                id = platformEdgeSideLeftModel,
-                transf = {
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                }
-            })
-        end
-
-        if not (rightNeighbor:isPlatform() and platform.grid:get(platform:getGridX() + 1, platform:getGridY() + 1):isTrack()) then
-            table.insert(models, {
-                id = platformEdgeSideRightModel,
-                transf = {
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                }
-            })
-        end 
-    end
-
-    if btmNeightbor:isTrack() then
-        if not (rightNeighbor:isPlatform() and platform.grid:get(platform:getGridX() + 1, platform:getGridY() - 1):isTrack()) then
-            table.insert(models, {
-                id = platformEdgeSideLeftModel,
-                transf = {
-                    -1, 0, 0, 0,
-                    0, -1, 0, 0,
-                    0, 0, 1, 0,
-                    platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-                }
-            })
-        end 
-
-        if not (leftNeighbor:isPlatform() and platform.grid:get(platform:getGridX() - 1, platform:getGridY() - 1):isTrack()) then
-            table.insert(models, {
-                id = platformEdgeSideRightModel,
-                transf = {
-                    -1, 0, 0, 0,
-                    0, -1, 0, 0,
-                    0, 0, 1, 0,
-                    platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-                }
-            })
-        end
-    end
-
-    if not platformBackSideLeftModel then
-        return
-    end
-    if not platformBackSideRightModel then
-        error('makePlatform must have exact 1, 2, 3, 6, 8 or 9 parameters')
-    end
-
-    local addBackEdgesOnConnect = options and options.addBackEdgesOnConnect == true
-
-    if topNeightbor:isBlank() or topNeightbor:isPlatform() then
-        if leftNeighbor:isBlank() or leftNeighbor:isTrack() then
-            if not addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideLeftModel,
-                    transf = {
-                        1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        else
-            if addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideLeftModel,
-                    transf = {
-                        1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        end
-
-        if rightNeighbor:isBlank() or rightNeighbor:isTrack() then
-            if not addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideRightModel,
-                    transf = {
-                        1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        else
-            if addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideRightModel,
-                    transf = {
-                        1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() + yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        end
-    end
-
-    if btmNeightbor:isBlank() or btmNeightbor:isPlatform() then
-        if rightNeighbor:isBlank() or rightNeighbor:isTrack() then
-            if not addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideLeftModel,
-                    transf = {
-                        -1, 0, 0, 0,
-                        0, -1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        else
-            if addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideLeftModel,
-                    transf = {
-                        -1, 0, 0, 0,
-                        0, -1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() + xOffset, platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        end
-
-        if leftNeighbor:isBlank() or leftNeighbor:isTrack() then
-            if not addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideRightModel,
-                    transf = {
-                        -1, 0, 0, 0,
-                        0, -1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        else
-            if addBackEdgesOnConnect then
-                table.insert(models, {
-                    id = platformBackSideRightModel,
-                    transf = {
-                        -1, 0, 0, 0,
-                        0, -1, 0, 0,
-                        0, 0, 1, 0,
-                        platform:getAbsoluteX() - xOffset, platform:getAbsoluteY() - yOffset, platform:getAbsolutePlatformHeight(), 1
-                    }
-                })
-            end
-        end
-    end
 end
 
 function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
@@ -509,13 +220,14 @@ function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
     end
 end
 
-function PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, transformation, mainModel)
+function PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, transformation, mainModel, tag)
     return PlatformSurface:new{
         platform = platform,
         transformation = transformation,
         mainPart = mainModel,
         smallUnderpassAssetIds = c.PLATFORM_40M_SMALL_UNDERPATH_SLOT_IDS,
-        largeUnderpassAssetIds = c.PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS
+        largeUnderpassAssetIds = c.PLATFORM_40M_LARGE_UNDERPATH_SLOT_IDS,
+        tag = tag
     }
 end
 
@@ -874,6 +586,7 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
     PlatformModuleUtils.addRoofSlots(platform, result.slots)
 
     platform:handle(function (moduleResult)
+        local platformHeightTransform = platform:applyPlatformHeightOnTransformation(transform)
         PlatformModuleUtils.makeLot(result, platform)
 
         local boundingBox = Box:new(
@@ -883,12 +596,12 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
 
         table.insert(result.terrainAlignmentLists, { type = "EQUAL", faces = { boundingBox:getGroundFace() } })
 
-        local platformRep = PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, {
+        local platformSurface = PlatformModuleUtils.makePlatformSurfaceWithUnderpathHoles(platform, {
             1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
             platform:getAbsoluteX(), platform:getAbsoluteY(), platform:getAbsolutePlatformHeight(), 1
-        }, 'station/rail/motras/platform_stairs_main.mdl'):addOuterLeftSegment(
+        }, 'station/rail/motras/platform_stairs_main.mdl', tag):addOuterLeftSegment(
             'station/rail/motras/platform_stairs_1_1.mdl', 'station/rail/motras/platform_stairs_1_2.mdl', 'station/rail/motras/platform_stairs_1_3.mdl', 'station/rail/motras/platform_stairs_1_4.mdl'
         ):addInnerLeftSegment(
             'station/rail/motras/platform_stairs_2_1.mdl', 'station/rail/motras/platform_stairs_2_2.mdl', 'station/rail/motras/platform_stairs_2_3.mdl', 'station/rail/motras/platform_stairs_2_4.mdl'
@@ -897,20 +610,36 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
         ):addOuterRightSegment(
             'station/rail/motras/platform_stairs_4_1.mdl', 'station/rail/motras/platform_stairs_4_2.mdl', 'station/rail/motras/platform_stairs_4_3.mdl', 'station/rail/motras/platform_stairs_4_4.mdl'
         )
+        local platformEdgeOnTrack = PlatformEdge:new{
+            platform = platform,
+            repeatingModel = 'station/rail/motras/platform_edge_rep.mdl',
+            leftEndModel = 'station/rail/motras/platform_edge_side_left.mdl',
+            rightEndModel = 'station/rail/motras/platform_edge_side_right.mdl',
+            transformation = platformHeightTransform,
+            tag = tag
+        }
+        local platformEdgeBack = PlatformEdge:new{
+            platform = platform,
+            repeatingModel = 'station/rail/motras/platform_back_rep.mdl',
+            leftConnectionModel = 'station/rail/motras/platform_back_side_left.mdl',
+            rightConnectionModel = 'station/rail/motras/platform_back_side_right.mdl',
+            transformation = platformHeightTransform,
+            tag = tag
+        }
+        local platformSide = PlatformSide:new{
+            platform = platform,
+            repeatingModel = 'station/rail/motras/platform_side.mdl',
+            transformation = platformHeightTransform,
+            tag = tag
+        }
 
-        PlatformModuleUtils.makePlatform(
-            platform,
-            result.models,
-            platformRep,
-            'station/rail/motras/platform_edge_rep.mdl',
-            'station/rail/motras/platform_back_rep.mdl',
-            'station/rail/motras/platform_side.mdl',
-            'station/rail/motras/platform_edge_side_left.mdl',
-            'station/rail/motras/platform_edge_side_right.mdl',
-            'station/rail/motras/platform_back_side_left.mdl',
-            'station/rail/motras/platform_back_side_right.mdl',
-            { addBackEdgesOnConnect = true }
-        )
+        PlatformBuilder:new{
+            platform = platform,
+            surface = platformSurface,
+            platformEdgeOnTrack = platformEdgeOnTrack,
+            platformEdge = platformEdgeBack,
+            platformSide = platformSide
+        }:addToModels(result.models)
 
         PlatformModuleUtils.makeFence(platform, result, transform, 'station/rail/motras/platform_wall.mdl')
     end)

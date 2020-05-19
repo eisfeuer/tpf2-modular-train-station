@@ -64,7 +64,7 @@ function data()
 			        endingRight = "station/rail/era_c/station_1_end_l.mdl",
                 }
 
-                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, buildingTransform)
+                local connectedLeft, connectedRight = BuildingUtils.makeConnectableBuilding(asset, result, buildingModels, buildingTransform, tag)
                 ConstructionUtils.addModels(decorationModels, result.models, buildingTransform, tag)
 
                 local platformHeight = asset:getParentGridElement():getPlatformHeight()
@@ -77,7 +77,7 @@ function data()
 
                     local stairsTransformation = Transf.mul(buildingTransform, Transf.rotZTransl(math.pi, {x = 0, y = 0, z = 0.8}))
 
-                    stairway:addStepsToModels(result.models, stairsTransformation)
+                    stairway:addStepsToModels(result.models, stairsTransformation, tag)
                     stairway:addPathToModels(result.models, 0, stairsTransformation, 0, 2.5)
                 end
 

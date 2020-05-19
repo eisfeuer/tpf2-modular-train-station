@@ -1,3 +1,5 @@
+local ModelUtils = require('motras_modelutils')
+
 local PlatformSurface = {}
 
 function PlatformSurface:new(o)
@@ -5,10 +7,11 @@ function PlatformSurface:new(o)
     o.models = {}
 
     if o.mainPart then
-        table.insert(o.models, {
-            id = o.mainPart,
-            transf = o.transformation
-        })
+        table.insert(o.models, ModelUtils.makeTaggedModel(
+            o.mainPart,
+            o.transformation,
+            o.tag
+        ))
     end
 
     setmetatable(o, self)
@@ -17,14 +20,16 @@ function PlatformSurface:new(o)
 end
 
 function PlatformSurface:addPartModels(part1, part2)
-    table.insert(self.models, {
-        id = part1,
-        transf = self.transformation
-    })
-    table.insert(self.models, {
-        id = part2,
-        transf = self.transformation
-    })
+    table.insert(self.models, ModelUtils.makeTaggedModel(
+        part1,
+        self.transformation,
+        self.tag
+    ))
+    table.insert(self.models, ModelUtils.makeTaggedModel(
+        part2,
+        self.transformation,
+        self.tag
+    ))
 end
 
 function PlatformSurface:addStairsSegment(stairsSmallAssetId, stairsLargeAssetId, topOuterSegmentModel, topInnerSegmentModel, bottomInnerSegmentModel, bottomOuterSegmentModel)

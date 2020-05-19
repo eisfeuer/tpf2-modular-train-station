@@ -1,8 +1,8 @@
 function data()
 return {
 	boundingInfo = {
-		bbMax = { 0.29999923706055, 0, 0.0099999997764826, },
-		bbMin = { 0, -0.29999995231628, 0.0099999997764826, },
+		bbMax = { 0.3, 0, 0.001, },
+		bbMin = { 0, -0.3, 0.009, },
 	},
 	collider = {
 		params = {
@@ -19,7 +19,7 @@ return {
 						materials = { "station/rail/era_c/era_c_trainstation_borders_3.mtl", },
 						mesh = "station/rail/motras/platform_back_side_right_lod0.msh",
 						name = "platform_back_side_right",
-						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+						transf = { -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
 					},
 				},
 				name = "RootNode",

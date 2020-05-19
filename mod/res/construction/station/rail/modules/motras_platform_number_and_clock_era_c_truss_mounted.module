@@ -1,7 +1,7 @@
 local Transf = require("transf")
 local ModelUtils = require("motras_modelutils")
 
-local function addTopPlatformNumberAndClock(result, transform, label)
+local function addTopPlatformNumberAndClock(result, transform, label, tag)
     -- clock
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -9,7 +9,8 @@ local function addTopPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = 0.0, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.7}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -17,11 +18,13 @@ local function addTopPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = 0.0, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.5}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_small_clock.mdl",
-        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 1.0, z = 0.6}))
+        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 1.0, z = 0.6})),
+        tag = tag
     })
 
     --platform number
@@ -31,7 +34,8 @@ local function addTopPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = 0.0, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.0}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -39,17 +43,19 @@ local function addTopPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = 0.0, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = -0.2}
-        ))
+        )),
+        tag = tag
     })
     ModelUtils.addLabeledModel(
         result,
         "station/rail/motras/platform_number_sign_era_c.mdl",
         { label, label },
-        Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.7, z = -0.1}))
+        Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = 0.0, y = 0.7, z = -0.1})),
+        tag
     )
 end
 
-local function addBottomPlatformNumberAndClock(result, transform, label)
+local function addBottomPlatformNumberAndClock(result, transform, label, tag)
     -- clock
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -57,7 +63,8 @@ local function addBottomPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = math.pi, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.7}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -65,11 +72,13 @@ local function addBottomPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = math.pi, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.5}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_small_clock.mdl",
-        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -0.0, y = -1.0, z = 0.6}))
+        transf = Transf.mul(transform, Transf.rotZTransl(math.pi / 2, {x = -0.0, y = -1.0, z = 0.6})),
+        tag = tag
     })
 
     --platform number
@@ -79,7 +88,8 @@ local function addBottomPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = math.pi, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = 0.0}
-        ))
+        )),
+        tag = tag
     })
     table.insert(result.models, {
         id = "station/rail/asset/era_c_street_pillar.mdl",
@@ -87,13 +97,15 @@ local function addBottomPlatformNumberAndClock(result, transform, label)
             {x = 0.5, y = -0.5, z = -1.0},
             {x = math.pi, y = 0.0, z = math.pi / 2},
             {x = 0.0, y = 0.0, z = -0.2}
-        ))
+        )),
+        tag = tag
     })
     ModelUtils.addLabeledModel(
         result,
         "station/rail/motras/platform_number_sign_era_c.mdl",
         { label, label },
-        Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0.0, y = -0.7, z = -0.1}))
+        Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0.0, y = -0.7, z = -0.1})),
+        tag
     )
 end
 
@@ -154,16 +166,16 @@ function data()
                 end
 
                 if decoration:getAssetId() == 46 then
-                    addTopPlatformNumberAndClock(result, transform, lableForTopTrack)
-                    addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack)
+                    addTopPlatformNumberAndClock(result, transform, lableForTopTrack, tag)
+                    addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack, tag)
                 end
                 if hasTrackTop and not hasTrackBottom then
-                    addTopPlatformNumberAndClock(result, transform, lableForTopTrack)
+                    addTopPlatformNumberAndClock(result, transform, lableForTopTrack, tag)
                 elseif hasTrackBottom and not hasTrackTop then
-                    addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack)
+                    addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack, tag)
                 else
-                    addTopPlatformNumberAndClock(result, transform, lableForTopTrack)
-                    addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack)
+                    addTopPlatformNumberAndClock(result, transform, lableForTopTrack, tag)
+                    addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack, tag)
                 end
             end)
         end,

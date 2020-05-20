@@ -239,16 +239,16 @@ function PlatformModuleUtils.makeLot(result, platform, options)
         {platform:getAbsoluteX() - halfHorizontalDistance, platform:getAbsoluteY() - halfVerticalDistance, platform:getGrid():getBaseHeight()},
         {platform:getAbsoluteX() + halfHorizontalDistance, platform:getAbsoluteY() + halfVerticalDistance, platform:getAbsolutePlatformHeight() + 0.2}
     )
-
-    local terrainAlignmentLists = {
-        { type = "EQUAL", faces = { boundingBox:getGroundFace() } },
-    }
     
     local mainGroundFace = boundingBox:getGroundFace()
     local forecourtGroundFace = Box:new(
         {boundingBox.pointNeg[1] - 1, boundingBox.pointNeg[2] - 1, boundingBox.pointNeg[3]},
         {boundingBox.pointPos[1] + 1, boundingBox.pointPos[2] + 1, boundingBox.pointPos[3]}
     ):getGroundFace()
+
+    local terrainAlignmentLists = {
+        { type = "EQUAL", faces = { forecourtGroundFace } },
+    }
     
     for i = 1, #terrainAlignmentLists do
         local t = terrainAlignmentLists[i]

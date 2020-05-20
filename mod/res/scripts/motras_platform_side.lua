@@ -10,21 +10,21 @@ function PlatformEdge:new(o)
     return o
 end
 
-function PlatformEdge:addBottomPartToModels(models, rotation, bottomPartModel, horizontalDistance, verticalDistance)
+function PlatformEdge:addBottomPartToModels(models, rotation, flipFactor, bottomPartModel, horizontalDistance, verticalDistance)
     if bottomPartModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             bottomPartModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2, y = -verticalDistance / 2, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = -verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end
 end
 
-function PlatformEdge:addTopPartToModels(models, rotation, topPartModel, horizontalDistance, verticalDistance)
+function PlatformEdge:addTopPartToModels(models, rotation, flipFactor, topPartModel, horizontalDistance, verticalDistance)
     if topPartModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             topPartModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2, y = verticalDistance / 2, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end
@@ -34,6 +34,7 @@ function PlatformEdge:addToModels(models, flipped)
     local horizontalDistance = self.platform:getGrid():getHorizontalDistance()
     local verticalDistance = self.platform:getGrid():getVerticalDistance()
     local rotation = flipped and math.pi or 0
+    local flipFactor = flipped and -1 or 1
 
     local neighborBottom = self.platform:getNeighborBottom()
     local neighborTop = self.platform:getNeighborTop()
@@ -41,36 +42,36 @@ function PlatformEdge:addToModels(models, flipped)
     if self.repeatingModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             self.repeatingModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2, y = 0, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = 0, z = 0})),
             self.tag
         ))
     end
 
     if neighborTop:isPlatform() or neighborTop:isPlace() then
         if flipped then
-            self:addBottomPartToModels(models, rotation, self.bottomConnectionModel, horizontalDistance, verticalDistance)
+            self:addBottomPartToModels(models, rotation, flipFactor, self.bottomConnectionModel, horizontalDistance, verticalDistance)
         else
-            self:addTopPartToModels(models, rotation, self.topConnectionModel, horizontalDistance, verticalDistance)
+            self:addTopPartToModels(models, rotation, flipFactor, self.topConnectionModel, horizontalDistance, verticalDistance)
         end
     else
         if flipped then
-            self:addBottomPartToModels(models, rotation, self.bottomEndModel, horizontalDistance, verticalDistance)
+            self:addBottomPartToModels(models, rotation, flipFactor, self.bottomEndModel, horizontalDistance, verticalDistance)
         else
-            self:addTopPartToModels(models, rotation, self.topEndModel, horizontalDistance, verticalDistance)
+            self:addTopPartToModels(models, rotation, flipFactor, self.topEndModel, horizontalDistance, verticalDistance)
         end
     end
 
     if neighborBottom:isPlatform() or neighborBottom:isPlace() then
         if flipped then
-            self:addTopPartToModels(models, rotation, self.topConnectionModel, horizontalDistance, verticalDistance)
+            self:addTopPartToModels(models, rotation, flipFactor, self.topConnectionModel, horizontalDistance, verticalDistance)
         else
-            self:addBottomPartToModels(models, rotation, self.bottomConnectionModel, horizontalDistance, verticalDistance)
+            self:addBottomPartToModels(models, rotation, flipFactor, self.bottomConnectionModel, horizontalDistance, verticalDistance)
         end
     else
         if flipped then
-            self:addTopPartToModels(models, rotation, self.topEndModel, horizontalDistance, verticalDistance)
+            self:addTopPartToModels(models, rotation, flipFactor, self.topEndModel, horizontalDistance, verticalDistance)
         else
-            self:addBottomPartToModels(models, rotation, self.bottomEndModel, horizontalDistance, verticalDistance)
+            self:addBottomPartToModels(models, rotation, flipFactor, self.bottomEndModel, horizontalDistance, verticalDistance)
         end
     end
 end

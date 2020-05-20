@@ -41,7 +41,7 @@ describe('PlatformEdge', function ()
 
             assert.are.same({{
                 id = 'rep.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = 0, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = 0, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
                 tag = 'katze'
             }}, models)
         end)
@@ -96,13 +96,13 @@ describe('PlatformEdge', function ()
 
             assert.are.same({{
                 id = 'rep.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = 0, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = 0, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
             }, {
                 id = 'right_con.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = -c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
             }, {
                 id = 'left_con.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = -c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
             }}, models)
         end)
 
@@ -126,13 +126,13 @@ describe('PlatformEdge', function ()
 
             assert.are.same({{
                 id = 'rep.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = 0, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = 0, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
             }, {
                 id = 'right_end.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = -c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
             },  {
                 id = 'left_con.mdl',
-                transf = Transf.rotZTransl(math.pi, {x = -c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = -c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
+                transf = Transf.rotZTransl(math.pi, {x = c.DEFAULT_HORIZONTAL_GRID_DISTANCE / 2, y = c.DEFAULT_VERTICAL_GRID_DISTANCE / 2, z = 0}),
             }}, models)
         end)
     end)

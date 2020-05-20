@@ -350,7 +350,7 @@ function data()
                             key = "motras_platform_height",
                             uiType = "COMBOBOX",
                             name = _("platform_height_in_mm"),
-                            values = { _("default_platform_height"), _("200"), _("250"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1250")},
+                            values = { _("default_platform_height"), _("200"), _("250"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1219"), _("1250")},
                             defaultIndex = 0
                         },
                         {
@@ -398,6 +398,7 @@ function data()
                 'station/rail/modules/motras_platform_1080_era_c.module',
                 'station/rail/modules/motras_platform_1100_era_c.module',
                 'station/rail/modules/motras_platform_1150_era_c.module',
+                'station/rail/modules/motras_platform_1219_era_c.module',
                 'station/rail/modules/motras_platform_1250_era_c.module',
             }
 

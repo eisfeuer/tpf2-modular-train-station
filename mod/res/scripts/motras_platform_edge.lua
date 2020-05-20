@@ -14,7 +14,7 @@ function PlatformEdge:addLeftPartToModels(models, rotation, flipFactor, leftPart
     if leftPartModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             leftPartModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = horizontalDistance / 2 * flipFactor, y = -verticalDistance / 2 * flipFactor, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = -verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end
@@ -24,7 +24,7 @@ function PlatformEdge:addRightPartToModels(models, rotation, flipFactor, rightPa
     if rightPartModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             rightPartModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = -horizontalDistance / 2 * flipFactor, y = verticalDistance / 2 * flipFactor, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = horizontalDistance / 2 * flipFactor, y = -verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end
@@ -34,7 +34,7 @@ function PlatformEdge:addToModels(models, flipped)
     local horizontalDistance = self.platform:getGrid():getHorizontalDistance()
     local verticalDistance = self.platform:getGrid():getVerticalDistance()
     local rotation = flipped and math.pi or 0
-    local flipFactor = flipped and 1 or -1
+    local flipFactor = flipped and -1 or 1
 
     local leftNeighbor = self.platform:getNeighborLeft()
     local rightNeighbor = self.platform:getNeighborRight()
@@ -42,7 +42,7 @@ function PlatformEdge:addToModels(models, flipped)
     if self.repeatingModel then
         table.insert(models, ModelUtils.makeTaggedModel(
             self.repeatingModel,
-            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = 0, y = verticalDistance / 2 * flipFactor, z = 0})),
+            Transf.mul(self.transformation, Transf.rotZTransl(rotation, {x = 0, y = -verticalDistance / 2 * flipFactor, z = 0})),
             self.tag
         ))
     end

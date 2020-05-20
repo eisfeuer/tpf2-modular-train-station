@@ -8,7 +8,7 @@ local Stairway = require('motras_stairway')
 function data()
     return {
         cost = {
-            price = 700,
+            price = 5000,
         },
         category = {
             categories = { "passenger buildings", },

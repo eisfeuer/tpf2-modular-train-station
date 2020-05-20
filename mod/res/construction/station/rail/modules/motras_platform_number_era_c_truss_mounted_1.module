@@ -60,7 +60,7 @@ end
 function data()
     return {
         cost = {
-            price = 10000,
+            price = 0,
         },
         category = {
             categories = { "decoration", },

@@ -304,7 +304,7 @@ function data()
         values = { "0", "1" },
         default_index = 0
     }}
-    local commonApiTracks = ParamUtils.addCommonApiTrackParams(params)
+    -- local commonApiTracks = ParamUtils.addCommonApiTrackParams(params)
 
     return { 
         type = 'RAIL_STATION',

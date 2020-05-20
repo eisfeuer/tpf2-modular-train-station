@@ -15,7 +15,7 @@ function data()
         }, 
         availability = {
             yearFrom = 0,
-            yearTo = commonapi and 0 or 1849
+            yearTo = 1849 --commonapi and 0 or 1849
         },
         type = "motras_track",
         order = {

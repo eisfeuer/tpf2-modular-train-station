@@ -70,7 +70,7 @@ function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid)
     local tracksAndPlatformsTop = {}
     local tracksAndPlatformsBottom = {}
 
-    grid:eachActivePosition(function (gridElement, iX, iY) 
+    grid:eachActivePositionReversed(function (gridElement, iX, iY) 
         if gridElement:isTrack() then
             local topNeighborGridElement = grid:get(iX, iY + 1)
             if topNeighborGridElement:isPlatform() then

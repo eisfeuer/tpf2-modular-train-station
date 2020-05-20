@@ -33,7 +33,7 @@ function data()
             asset:handle(function (moduleResult)
                 local stairsTransformation = Transf.mul(transform, Transf.transl(Vec3.new(3, 0, -1)))
             
-                local stairsHoleGroundFace = Box:new({-7.0, -1.8, 0.0}, {2.81, 1.8, 1.0}):getGroundFace()
+                local stairsHoleGroundFace = Box:new({-8.0, -2.4, 0.0}, {2.9, 2.4, 1.0}):getGroundFace()
                 Modulesutil.TransformFaces(transform, stairsHoleGroundFace)
                 table.insert(result.groundFaces, {  
                     face = stairsHoleGroundFace,

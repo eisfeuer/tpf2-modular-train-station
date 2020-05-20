@@ -121,6 +121,14 @@ function Grid:eachActivePosition(callable)
     end
 end
 
+function Grid:eachActivePositionReversed(callable)
+    for iY = self.activeBounds.top, self.activeBounds.bottom, -1 do
+        for iX = self.activeBounds.left, self.activeBounds.right do
+            callable(self:get(iX, iY), iX, iY)
+        end
+    end
+end
+
 function Grid:eachActiveSlotPosition(callable)
     local bounds = self:getActiveGridSlotBounds()
     for iY = bounds.bottom, bounds.top do

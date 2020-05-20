@@ -8,7 +8,7 @@ function TrackIdMapper:new(o)
 end
 
 function TrackIdMapper:getDisplayedId(trackId, platformId)
-    return trackId or ''
+    return (trackId or '') .. ''
 end
 
 function TrackIdMapper:getDisplayedDestination()

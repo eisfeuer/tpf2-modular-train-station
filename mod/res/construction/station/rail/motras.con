@@ -7,6 +7,8 @@ local t = require('motras_types')
 
 local TallPlatformPattern = require('motras_blueprint_patterns.tall_platform_station')
 local WidePlatformPattern = require('motras_blueprint_patterns.wide_platform_station')
+local TrackIdMapper = require('motras_displayed_name_mappers.track_id_mapper')
+local PlatformIdMapper = require('motras_displayed_name_mappers.platform_id_mapper')
 
 local function hasDistanceFromCenter(platformLength, position, distance)
     if platformLength % 2 == 0 then
@@ -295,7 +297,13 @@ local function placeDecoration(platformBlueprint, platformWidth, buildingSize)
 end
 
 function data()
-    local params = {}
+    local params = {{
+        key = "motras_use_track_ids",
+        uiType = "CHECKBOX",
+        name = _("motras_use_track_ids"),
+        values = { "0", "1" },
+        default_index = 0
+    }}
     local commonApiTracks = ParamUtils.addCommonApiTrackParams(params)
 
     return { 
@@ -359,13 +367,6 @@ function data()
                             name = _("Building"),
                             values = {_("motras_none"), _("motras_auto"), _("motras_tiny"), _("motras_small"), _("motras_medium_1"), _("motras_medium_2"), _("motras_large"), _("motras_huge")},
                             defaultIndex = 1
-                        },
-                        {
-                            key = "motras_use_track_ids",
-                            uiType = "CHECKBOX",
-                            name = _("motras_use_track_ids"),
-                            values = { "0", "1" },
-                            default_index = 0
                         }
                     }
                 }
@@ -433,7 +434,8 @@ function data()
         updateFn = function(params)
             local station = Station:new{
                 customTrack1 = params.motras_track_commonapi_1 and commonApiTracks[params.motras_track_commonapi_1 + 1],
-                customTrack2 = params.motras_track_commonapi_2 and commonApiTracks[params.motras_track_commonapi_2 + 1]
+                customTrack2 = params.motras_track_commonapi_2 and commonApiTracks[params.motras_track_commonapi_2 + 1],
+                displayedNameMapper = params.motras_use_track_ids > 0 and TrackIdMapper:new{} or PlatformIdMapper:new{}
             }
             station:initializeAndRegisterAll(params.modules or {})
 

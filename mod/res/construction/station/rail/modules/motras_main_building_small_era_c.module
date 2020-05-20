@@ -62,7 +62,7 @@ function data()
 		    icon = "ui/construction/station/rail/modular_station/main_building_1_era_c.tga"
         }, 
         availability = {
-            yearFrom = 0,
+            yearFrom = 1980,
             yearTo = 0
         },
         type = "motras_building_platform40m_medium",

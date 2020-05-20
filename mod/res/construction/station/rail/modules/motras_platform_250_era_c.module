@@ -14,7 +14,7 @@ function data()
             icon = "ui/construction/station/rail/motras/platform_250_era_c.tga"
         }, 
         availability = {
-            yearFrom = 0,
+            yearFrom = 1980,
             yearTo = 0
         },
         type = "motras_platform",

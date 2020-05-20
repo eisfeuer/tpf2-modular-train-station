@@ -123,7 +123,7 @@ function data()
 		    icon = "ui/construction/station/rail/motras/decoration_platform_number_and_clock_truss_mounted_era_c.tga"
         }, 
         availability = {
-            yearFrom = 0,
+            yearFrom = 1980,
             yearTo = 0
         },
         type = "motras_decoration_truss_mounted",

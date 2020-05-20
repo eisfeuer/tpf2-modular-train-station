@@ -15,7 +15,7 @@ function data()
 		    icon = "ui/construction/station/rail/motras/decoration_platform_numbers_ceiling_mounted_era_c.tga"
         }, 
         availability = {
-            yearFrom = 0,
+            yearFrom = 1980,
             yearTo = 0
         },
         type = "motras_decoration_ceiling_mounted",

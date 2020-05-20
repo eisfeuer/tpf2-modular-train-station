@@ -30,7 +30,22 @@ return {
 			visibleTo = 1502.2524414063,
 		},
 	},
-	metadata = { },
+	metadata = {
+		transportNetworkProvider = {
+			laneLists = {{
+				nodes = {
+					{ {  -5.0, -3.5, 0.0}, { 5.0, 0.0, 0.0}, 2.5 },
+					{ {  0.0, -3.5, 0.0}, { 5.0, 0.0, 0.0}, 2.5 },
+
+					{ { 0.0, -3.5, 0.0}, { 5.0, 0.0, 0.0}, 2.5 },
+					{ { 5.0, -3.5, 0.0}, { 5.0, 0.0, 0.0}, 2.5 },
+				},
+				transportModes = {"PERSON"},
+				linked = true
+			}},
+			terminals = {},
+		}
+	},
 	version = 1,
 }
 end

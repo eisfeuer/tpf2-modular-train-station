@@ -24,7 +24,7 @@ function data()
         },
         type = "motras_building_platform40m_access",
         order = {
-            value = 1,
+            value = 19000,
         },
         metadata = {
         },

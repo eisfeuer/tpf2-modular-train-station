@@ -41,7 +41,7 @@ function data()
         },
         type = "motras_building_platform40m_small",
         order = {
-            value = 1,
+            value = 19002,
         },
         metadata = {
         },

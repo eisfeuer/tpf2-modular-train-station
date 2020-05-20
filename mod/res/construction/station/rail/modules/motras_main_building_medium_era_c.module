@@ -4,6 +4,7 @@ local BuildingUtils = require("motras_buildingutils")
 local Transf = require('transf')
 local Vec3 = require('vec3')
 local Stairway = require('motras_stairway')
+local t = require('motras_types')
 
 local decorationModels = {
     models = {
@@ -64,12 +65,25 @@ function data()
         },
         type = "motras_building_platform40m_medium",
         order = {
-            value = 1,
+            value = 19003,
         },
         metadata = {
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})
+            asset:addDecorationSlot(result.slots, 1, {
+                position = {0.00520, -9.197161, 7.71253},
+                slotType = 'motras_wall_mounted_decoration',
+                transformation = transform,
+                assetDecorationType = t.ASSET_DECORATION_WALL_MOUNTED
+            })
+            asset:addDecorationSlot(result.slots, 2, {
+                position = {0.00520, 2.29284, 7.07253},
+                slotType = 'motras_wall_mounted_decoration',
+                transformation = transform,
+                rotation = 180,
+                assetDecorationType = t.ASSET_DECORATION_WALL_MOUNTED
+            })
 
             asset:handle(function (moduleResult)
                 local buildingTransform = Transf.mul(transform, Transf.transl({x = 0.0, y = 7.5, z = 0.0}))

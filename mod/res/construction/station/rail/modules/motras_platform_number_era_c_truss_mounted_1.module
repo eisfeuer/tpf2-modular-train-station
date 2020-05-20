@@ -76,7 +76,7 @@ function data()
         },
         type = "motras_decoration_truss_mounted",
         order = {
-            value = 1,
+            value = 49002,
         },
         metadata = {
         },

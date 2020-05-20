@@ -21,7 +21,7 @@ function data()
         -- buildMode = "MULTI",
         type = "motras_roof_small",
         order = {
-            value = 805,
+            value = 29020,
         },
         metadata = {
             platform_roof = true,

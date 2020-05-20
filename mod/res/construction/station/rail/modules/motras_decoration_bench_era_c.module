@@ -19,7 +19,7 @@ function data()
         },
         type = "motras_decoration_asset",
         order = {
-            value = 1,
+            value = 19001,
         },
         metadata = {
         },

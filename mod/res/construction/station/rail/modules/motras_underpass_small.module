@@ -23,7 +23,7 @@ function data()
         },
         type = "motras_underpass_small",
         order = {
-            value = 1,
+            value = 19021,
         },
         metadata = {
         },

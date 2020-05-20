@@ -20,7 +20,7 @@ function data()
         },
         type = "motras_decoration_lamps",
         order = {
-            value = 1,
+            value = 29001,
         },
         metadata = {
         },

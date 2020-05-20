@@ -19,7 +19,7 @@ function data()
         },
         type = "motras_decoration_ceiling_mounted",
         order = {
-            value = 1,
+            value = 59001,
         },
         metadata = {
         },

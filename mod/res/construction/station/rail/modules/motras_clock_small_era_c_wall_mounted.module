@@ -19,7 +19,7 @@ function data()
         },
         type = "motras_wall_mounted_decoration",
         order = {
-            value = 1,
+            value = 59100,
         },
         metadata = {
         },

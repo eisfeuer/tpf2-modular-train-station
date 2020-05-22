@@ -137,7 +137,6 @@ end
 
 local function placeRoof(platformBlueprint, platformLength, platformWidth)
     local halfLength = math.floor(platformLength / 2)
-    print(platformBlueprint:getHorizontalSize())
 
     if platformBlueprint:getGridX() == 0 and platformLength % 2 == 1 then
         if platformLength > 4 then

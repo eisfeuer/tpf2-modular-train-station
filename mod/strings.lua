@@ -79,7 +79,7 @@ function data()
         ["motras_menu_name"] = "Verbesserter moderner Bahnhof",
         ["motras_menu_desc"] = "Verbesserter moderner Vanilla-Bahnhof mit anpassbarer Bahnsteighöhe und Deko-Modulen.",
         ["MOTRAS Base Kit"] = "MOTRAS Basisset",
-        ["motras_mod_desc"] = "Diese Paket beinhaltet die Kernlogik von MOTRAS, sowie den verbesserten modernen Vanilla-Bahnhof."
+        ["motras_mod_desc"] = "Dieses Paket beinhaltet die Kernlogik von MOTRAS, sowie den verbesserten modernen Vanilla-Bahnhof."
       },
     }
 end

@@ -20,8 +20,6 @@ function AssetDecorationSlotCache:addAssetDecorationSlotToCache(assetDecorationS
     local decorationSlotsForGivenAsset = getOrNew(getOrNew(getOrNew(getOrNew(self.assetDecorationSlots, assetDecorationSlot.gridX), assetDecorationSlot.gridY), assetDecorationSlot.assetId), assetDecorationSlot.type)
 
     if decorationSlotsForGivenAsset[assetDecorationSlot.assetDecorationId] then
-        print(require('inspect')(self.assetDecorationSlots))
-        print(require('inspect')(assetDecorationSlot:debug()))
         error('decoration slot is occupied')
     end
 

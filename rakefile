@@ -67,6 +67,7 @@ end
 task :remove_tests do
     puts 'removing test files'
     sh "rm #{staging_area_path}/res/scripts/*_spec.lua"
+    sh "rm #{staging_area_path}/res/scripts/motras_testutils.lua"
 end
 
 task :remove_debug do

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="motras_logo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="239.30839"
+     inkscape:cy="825.56463"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       position="63.311011,228.22676"
+       orientation="1,0"
+       id="guide1943"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="43.573567,228.40393"
+       orientation="1,0"
+       id="guide1945"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="61.435894,230.66293"
+       orientation="0,1"
+       id="guide1947"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="22.300594"
+       y="83.821426"
+       id="text817"><tspan
+         sodipodi:role="line"
+         id="tspan815"
+         x="22.300594"
+         y="83.821426"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.57777786px;font-family:'Microsoft Yi Baiti';-inkscape-font-specification:'Microsoft Yi Baiti';stroke-width:0.26458332"><tspan
+           style="font-size:23.98888956px"
+           id="tspan2249">M</tspan><tspan
+           style="line-height:2;letter-spacing:-5.22816648px;font-size:23.98888956px"
+           id="tspan841">O</tspan><tspan
+           style="font-size:35.27777863px;line-height:2;letter-spacing:-5.22816648px"
+           id="tspan819">T</tspan><tspan
+           style="font-size:23.98888889px"
+           id="tspan2245">RAS</tspan></tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1917"
+       width="21.247927"
+       height="9.822156"
+       x="20.245667"
+       y="50.377045"
+       ry="0.033408672" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.23090187;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1919"
+       width="8.4847975"
+       height="2.5136235"
+       x="44.812016"
+       y="66.826843"
+       ry="0.019949386" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.23090187;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1919-9"
+       width="8.4847975"
+       height="2.5136235"
+       x="55.842422"
+       y="66.826843"
+       ry="0.019949386" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33253065;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1936"
+       width="19.737442"
+       height="1.3739324"
+       x="44.698719"
+       y="64.959938"
+       ry="0.039255191" />
+  </g>
+</svg>

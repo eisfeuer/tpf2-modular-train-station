@@ -89,8 +89,8 @@ function data()
                 end
 
                 local platformTransformation = Transf.mul(buildingTransform, Transf.transl({x = 0, y = 0, z = asset:getParentGridElement():getAbsolutePlatformHeight()}))
-                table.insert(result.models, PathUtils.makePassengerPathModel({-5.0, 1.5, 0.0}, {0.0, 0.0, 0.0}, platformTransformation))
-                table.insert(result.models, PathUtils.makePassengerPathModel({0.0, 0.0, 0.0}, {5.0, 1.5, 0.0}, platformTransformation))
+                table.insert(result.models, PathUtils.makePassengerPathModel({-5.0, 0.5, 0.0}, {0.0, 0.0, 0.0}, platformTransformation))
+                table.insert(result.models, PathUtils.makePassengerPathModel({0.0, 0.0, 0.0}, {5.0, 0.5, 0.0}, platformTransformation))
 
                 if not connectedLeft then
                     table.insert(result.models, {

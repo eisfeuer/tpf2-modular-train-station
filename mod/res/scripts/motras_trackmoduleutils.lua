@@ -54,10 +54,6 @@ function TrackModuleUtils.makeLot(result, track, options)
     }
     
     local mainGroundFace = boundingBox:getGroundFace()
-    local forecourtGroundFace = Box:new(
-        {boundingBox.pointNeg[1] - 1, boundingBox.pointNeg[2] - 1, boundingBox.pointNeg[3]},
-        {boundingBox.pointPos[1] + 1, boundingBox.pointPos[2] + 1, boundingBox.pointPos[3]}
-    ):getGroundFace()
     
     for i = 1, #terrainAlignmentLists do
         local t = terrainAlignmentLists[i]
@@ -74,19 +70,6 @@ function TrackModuleUtils.makeLot(result, track, options)
             {
                 type = "STROKE_OUTER",
                 key = options.mainStroke or "street_border.lua"
-            },
-        },
-    })
-    table.insert(result.groundFaces, {  
-        face = forecourtGroundFace,
-        modes = {
-            {
-                type = "FILL",
-                key = options.forecourtFill or "shared/gravel_03.gtex.lua"
-            },
-            {
-                type = "STROKE_OUTER",
-                key = options.forecourtStroke or "street_border.lua"
             },
         },
     })

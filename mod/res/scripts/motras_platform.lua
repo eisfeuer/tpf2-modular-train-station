@@ -3,7 +3,7 @@ local c = require('motras_constants')
 local PlatformClass = {}
 
 function PlatformClass:new(gridElement)
-    Platform = gridElement
+    local Platform = gridElement
 
     function Platform:isPlatform()
         return true

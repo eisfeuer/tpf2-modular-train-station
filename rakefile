@@ -73,6 +73,8 @@ end
 task :remove_debug do
     puts 'removing debug stuff'
     sh "rm #{staging_area_path}/res/scripts/inspect.lua"
+    sh "rm #{staging_area_path}/res/scripts/env.lua"
+    sh "rm -rf #{staging_area_path}/res/models/model/vehicle"
 end
 
 task cleanpush: [:clean_staging_area, :push]

@@ -3,7 +3,7 @@ local c = require('motras_constants')
 local TrackClass = {}
 
 function TrackClass:new(gridElement)
-    Track = gridElement
+    local Track = gridElement
 
     function Track:isTrack()
         return true

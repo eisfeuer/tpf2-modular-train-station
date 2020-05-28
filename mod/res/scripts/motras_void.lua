@@ -17,7 +17,7 @@ function voidClass:new(gridElement, grid)
         gridElement = makeGridElement(gridElement.gridX, gridElement.gridY, grid)
     end
 
-    Void = gridElement
+    local Void = gridElement
 
     function Void:getSlotId()
         return nil

@@ -45,6 +45,9 @@ function data()
         },
         metadata = {
             platform_roof = true,
+            motras = {
+                poleRadius = 0.17
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId, { groups = {'roof_ug_era_3_curved'}})

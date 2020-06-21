@@ -100,15 +100,15 @@ function Station:getData()
     return result;
 end
 
-function Station:initializeAndRegister(slotId)
-    local slot = Slot:new{id = slotId}
+function Station:initializeAndRegister(slotId, moduleData)
+    local slot = Slot:new{id = slotId, moduleData = moduleData}
     --slot:debug()
 
     if slot.gridType == t.GRID_ASSET_DECORATION and slot.assetDecorationId > 0 then
         if self.grid:has(slot.gridX, slot.gridY) then
             local gridElement = self.grid:get(slot.gridX, slot.gridY)
             if gridElement:hasAsset(slot.assetId) then
-                return gridElement:getAsset(slot.assetId):registerDecoration(slot.assetDecorationId, slot)
+                return gridElement:getAsset(slot.assetId):registerDecoration(slot.assetDecorationId, slot, slot:getOptions())
             end
             return self.assetDecorationSlotCache:addAssetDecorationSlotToCache(slot)
         end
@@ -117,7 +117,7 @@ function Station:initializeAndRegister(slotId)
 
     if slot.gridType == t.GRID_ASSET and  slot.assetId > 0 then
         if self.grid:has(slot.gridX, slot.gridY) then
-            local asset = self.grid:get(slot.gridX, slot.gridY):registerAsset(slot.assetId, slot)
+            local asset = self.grid:get(slot.gridX, slot.gridY):registerAsset(slot.assetId, slot, slot:getOptions())
             self.assetDecorationSlotCache:bindAssetDecorationSlotsToAsset(asset)
             return asset
         end
@@ -126,7 +126,8 @@ function Station:initializeAndRegister(slotId)
 
     local gridElement = GridElement:new{
         slot = slot,
-        grid = self.grid
+        grid = self.grid,
+        options = slot:getOptions()
     }
     self.assetSlotCache:bindAssetSlotsToGridElement(gridElement, self.assetDecorationSlotCache)
 
@@ -177,8 +178,8 @@ function Station:register(slotId, options)
 end
 
 function Station:initializeAndRegisterAll(slots)
-    for slotId, module in pairs(slots) do
-        self:initializeAndRegister(slotId)
+    for slotId, moduleData in pairs(slots) do
+        self:initializeAndRegister(slotId, moduleData)
     end
 end
 

@@ -52,7 +52,7 @@ end
 function AssetDecorationSlotCache:bindAssetDecorationSlotsToAsset(asset)
     for assetDecorationType, assetDecorationSlotList in pairs(self:getAllAssetDecorationSlotsForAsset(asset)) do
         for assetDecorationId, assetDecorationSlot in pairs(assetDecorationSlotList) do
-            asset:registerDecoration(assetDecorationId, assetDecorationSlot) 
+            asset:registerDecoration(assetDecorationId, assetDecorationSlot, assetDecorationSlot:getOptions()) 
         end
     end
 end

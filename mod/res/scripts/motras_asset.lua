@@ -66,11 +66,25 @@ function Asset:call(result)
 end
 
 function Asset:setOptions(options)
-    self.options = options
+    for key, value in pairs(options) do
+        self:setOption(key, value)
+    end
+end
+
+function Asset:setOption(key, value)
+    if not self.options then
+        self.options = {}
+    end
+
+    self.options[key] = value
 end
 
 function Asset:getOption(option, default)
     return self.options and self.options[option] or default
+end
+
+function Asset:getPoleRadius()
+    return self:getOption('poleRadius', 0)
 end
 
 function Asset:registerDecoration(assetDecorationId, assetDecorationSlot, options)

@@ -83,4 +83,49 @@ function TrackModuleUtils.makeLot(result, track, options)
     })
 end
 
+function TrackModuleUtils.assignTrackToModule(trackModule, track, filename, hasCatenary, sortIndex)
+    local electrifiedFilename = 'motras_generic_track_' .. string.gsub(filename, '.lua', '_catenary.module')
+    local notElectrifiedFilename = 'motras_generic_track_' .. string.gsub(filename, '.lua', '.module')
+
+    trackModule.fileName = hasCatenary and electrifiedFilename or notElectrifiedFilename
+
+    trackModule.availability.yearFrom = track.yearFrom
+    trackModule.availability.yearTo = track.yearTo
+
+    trackModule.cost.price = math.ceil(track.cost / 75 * 18000)
+
+    trackModule.description.name = track.name .. (hasCatenary and (' ' .. _("with_catenary")) or "")
+    trackModule.description.description = track.desc
+    trackModule.description.icon = track.icon
+
+    if trackModule.description.icon and trackModule.description.icon ~= "" then
+        trackModule.description.icon = string.gsub(trackModule.description.icon, ".tga", "")
+        trackModule.description.icon = trackModule.description.icon .. "_module" .. (hasCatenary and "_catenary" or "") .. ".tga"
+    else
+        trackModule.description.icon = 'ui/tracks/' .. string.gsub(filename, '.lua', '.tga')
+    end
+
+    trackModule.type = "motras_track"
+    trackModule.order.value = 100000 + sortIndex * 10 + (hasCatenary and 1 or 0)
+
+    trackModule.category.categories = { "tracks", }
+
+    trackModule.updateScript.fileName = "construction/station/rail/generic_modules/motras_track.updateFn"
+    trackModule.updateScript.params = {
+        trackType = filename,
+        catenary = hasCatenary
+    }
+    trackModule.getModelsScript.fileName = "construction/station/rail/generic_modules/motras_track.getModelsFn"
+    trackModule.getModelsScript.params = {
+        trackType = filename,
+        catenary = hasCatenary
+    }
+
+    trackModule.metadata = {
+        motras_electrified = hasCatenary,
+        motras_toggleElectrificationTo = hasCatenary and notElectrifiedFilename or electrifiedFilename,
+        motras_speedLimit = track.speedLimit
+    }
+end
+
 return TrackModuleUtils

@@ -2,6 +2,7 @@ local Station = require('motras_station')
 local Slot = require('motras_slot')
 local c = require('motras_constants')
 local t = require('motras_types')
+local TestUtils = require('motras_testutils')
 
 local TrackModuleUtils = require('motras_trackmoduleutils')
 
@@ -48,6 +49,78 @@ describe('TrackModuleUtils', function ()
             assert.are.same({
                 2, 0, 8, 10
             }, track:getStopNodes())
+        end)
+    end)
+
+    describe('assignTrackToModule', function ()
+        it('generates track module', function ()
+            TestUtils.mockTranslations()
+
+            local track = {
+                yearFrom = 1900,
+                yearTo = 1988,
+                cost = 150,
+                name = 'Third Rails',
+                desc = 'Side Contact',
+                icon = 'third_rails_side_contact.tga',
+                speedLimit = 120,
+            }
+            local trackModule = {
+                availability = {},
+                description = {},
+                order = {},
+                category = {},
+                updateScript = {},
+                getModelsScript = {},
+                cost = {},
+                metadata = {
+                    
+                }
+            }
+
+            TrackModuleUtils.assignTrackToModule(trackModule, track, 'third_rails_side_contact.lua', true, 2)
+
+            assert.are.same({
+                fileName = 'motras_generic_track_third_rails_side_contact_catenary.module',
+                availability = {
+                    yearFrom = 1900,
+                    yearTo = 1988,
+                },
+                description = {
+                    name = "Third Rails with_catenary",
+                    description = "Side Contact",
+                    icon = "third_rails_side_contact_module_catenary.tga"
+                },
+                type = "motras_track",
+                order = {
+                    value = 100021
+                },
+                category = {
+                    categories = { "tracks", }
+                },
+                cost = {
+                    price = 36000
+                },
+                updateScript = {
+                    fileName = "construction/station/rail/generic_modules/motras_track.updateFn",
+                    params = {
+                        trackType = 'third_rails_side_contact.lua',
+                        catenary = true
+                    }
+                },
+                getModelsScript = {
+                    fileName = "construction/station/rail/generic_modules/motras_track.getModelsFn",
+                    params = {
+						trackType = 'third_rails_side_contact.lua',
+						catenary = true
+					}
+                },
+                metadata = {
+                    motras_electrified = true,
+                    motras_toggleElectrificationTo = "motras_generic_track_third_rails_side_contact.module",
+                    motras_speedLimit = 120
+                }
+            }, trackModule)
         end)
     end)
 end)

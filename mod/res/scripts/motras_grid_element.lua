@@ -96,7 +96,9 @@ function GridElement:getAsset(assetId)
 end
 
 function GridElement:setOptions(options)
-    self.options = options
+    for key, value in pairs(options) do
+        self:setOption(key, value)
+    end
 end
 
 function GridElement:setOption(key, value)

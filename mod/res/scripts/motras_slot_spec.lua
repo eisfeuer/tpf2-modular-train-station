@@ -87,6 +87,53 @@ describe("slot", function ()
         end)
     end)
 
+    describe('getModuleData', function ()
+        it ('returns empty table when not module data given', function ()
+            local slotId = Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.same({}, slot:getModuleData())
+        end)
+
+        it ('returns module data', function ()
+            local moduleData = {name = 'a.module'}
+
+            local slotId = Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})
+            local slot = Slot:new{id = slotId, moduleData = moduleData}
+            assert.are.equal(moduleData, slot:getModuleData())
+        end)
+    end)
+
+    describe('getOptions', function ()
+        it ('returns empty array when no module data given', function ()
+            local slotId = Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})
+            local slot = Slot:new{id = slotId}
+
+            assert.are.same({}, slot:getOptions())
+        end)
+
+        it ('returns options', function ()
+            local moduleData = {
+                name = 'a.module',
+                metadata = {
+                    motras = {
+                        speed = 120
+                    },
+                    motras_hasCatenary = true,
+                    katze = 'Mauz'
+                }
+            }
+
+            local slotId = Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})
+            local slot = Slot:new{id = slotId, moduleData = moduleData}
+            assert.are.same({
+                moduleName = 'a.module',
+                speed = 120,
+                hasCatenary = true
+            }, slot:getOptions())
+        end)
+    end)
+
     describe('addGridSlotsToCollection', function ()
         local station = Station:new{horizontalGridDistance = 10, verticalGridDistance = 10}
         station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))

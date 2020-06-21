@@ -64,6 +64,36 @@ function Slot.addGridSlotsToCollection(slotCollection, grid, slotPlacementClass)
     end)
 end
 
+function Slot:getModuleData()
+    return self.moduleData or {}
+end
+
+function Slot:getOptions()
+    local options = {}
+    local moduleData = self:getModuleData()
+
+    if moduleData.name then
+        options.moduleName = moduleData.name
+    end
+
+    if moduleData.metadata then
+        for key, value in pairs(moduleData.metadata) do
+            if key == 'motras' then
+                for k, v in pairs(value) do
+                    options[k] = v
+                end
+            end
+
+            local optionKey =  string.match(key, '^motras_(.*)$')
+            if optionKey then
+                options[optionKey] = value
+            end
+        end
+    end
+
+    return options
+end
+
 function Slot:debug()
     print('ID: ' .. self.id)
     print('Type: ' .. self.type .. '(Grid Type: ' .. self.gridType .. ')')

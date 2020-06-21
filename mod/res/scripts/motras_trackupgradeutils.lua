@@ -8,18 +8,18 @@ function TrackUpgdateUtils.upgradeFromParams(params)
         return {}
     end
 
-    if not (params.modules[params.slotId] and params.modules[params.slotId].metadata and params.modules[params.slotId].metadata.motras) then
+    if not (params.modules[params.slotId] and params.modules[params.slotId].metadata) then
         return {}
     end
 
     local affectedModules = TrackUpgdateUtils.filterAffectedModules(params.modules, params.slotId)
 
-    if params.catenaryToggle == 1 and type(params.modules[params.slotId].metadata.motras.electrified) == 'boolean' then
-        return TrackUpgdateUtils.toggleElectrification(affectedModules, not params.modules[params.slotId].metadata.motras.electrified)
+    if params.catenaryToggle == 1 and type(params.modules[params.slotId].metadata.motras_electrified) == 'boolean' then
+        return TrackUpgdateUtils.toggleElectrification(affectedModules, not params.modules[params.slotId].metadata.motras_electrified)
     end
 
-    if params.trackTypeToggle == 1 and type(params.modules[params.slotId].metadata.motras.highspeed) == 'boolean' then
-        return TrackUpgdateUtils.toggleHighspeed(affectedModules, not params.modules[params.slotId].metadata.motras.highspeed)
+    if params.trackTypeToggle == 1 and type(params.modules[params.slotId].metadata.motras_highspeed) == 'boolean' then
+        return TrackUpgdateUtils.toggleHighspeed(affectedModules, not params.modules[params.slotId].metadata.motras_highspeed)
     end
 
     return {}
@@ -63,11 +63,10 @@ function TrackUpgdateUtils.toggleElectrification(modules, shouldElectrify)
 
     for slotId, trackModule in pairs(modules) do
         if trackModule.metadata
-            and trackModule.metadata.motras
-            and trackModule.metadata.motras.toggleElectrificationTo
-            and trackModule.metadata.motras.electrified == not shouldElectrify
+            and trackModule.metadata.motras_toggleElectrificationTo
+            and trackModule.metadata.motras_electrified == not shouldElectrify
         then
-            table.insert(moduleChanges, {slotId, trackModule.metadata.motras.toggleElectrificationTo})
+            table.insert(moduleChanges, {slotId, trackModule.metadata.motras_toggleElectrificationTo})
         end
     end
 
@@ -79,11 +78,10 @@ function TrackUpgdateUtils.toggleHighspeed(modules, shouldLevelUp)
 
     for slotId, trackModule in pairs(modules) do
         if trackModule.metadata
-            and trackModule.metadata.motras
-            and trackModule.metadata.motras.toggleHighspeedTo
-            and trackModule.metadata.motras.highspeed == not shouldLevelUp
+            and trackModule.metadata.motras_toggleHighspeedTo
+            and trackModule.metadata.motras_highspeed == not shouldLevelUp
         then
-            table.insert(moduleChanges, {slotId, trackModule.metadata.motras.toggleHighspeedTo})
+            table.insert(moduleChanges, {slotId, trackModule.metadata.motras_toggleHighspeedTo})
         end
     end
 

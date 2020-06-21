@@ -29,7 +29,7 @@ end
 
 function AssetSlotCache:bindAssetSlotsToGridElement(gridElement, assetDecorationSlotCache)
     for i, assetSlot in ipairs(self:getAllAssetSlotsForGridElement(gridElement)) do
-        local asset = gridElement:registerAsset(assetSlot.assetId, assetSlot)
+        local asset = gridElement:registerAsset(assetSlot.assetId, assetSlot, assetSlot:getOptions())
         if assetDecorationSlotCache then
             assetDecorationSlotCache:bindAssetDecorationSlotsToAsset(asset)
         end

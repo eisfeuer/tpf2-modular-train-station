@@ -119,7 +119,7 @@ function data()
         },
         description = {
             name = _("platform_number_sign_and_clock"),
-		    description = _("truss_mountable") .. "\n" .. _("suitable_for_curved_roof"),
+		    description = _("truss_mountable") .. "\n" .. _("suitable_for_curved_roof") .. "\n" .. _("manual_placement"),
 		    icon = "ui/construction/station/rail/motras/decoration_platform_number_and_clock_truss_mounted_era_c.tga"
         }, 
         availability = {
@@ -143,6 +143,8 @@ function data()
                 local lableForBottomTrack = ''
                 local lableForTopTrack = ''
 
+                local variant = ((params.modules[slotId].variant or 0) % 4)
+
                 if decoration:getAssetId() == 34 or decoration:getAssetId() == 46 then
                     local bottomTrack = gridElement:getGrid():get(decoration:getGridX(), decoration:getGridY() - 2)
                     local topTrack = gridElement:getNeighborTop()
@@ -165,13 +167,12 @@ function data()
                     end
                 end
 
-                if decoration:getAssetId() == 46 then
+                if (decoration:getAssetId() == 46 and variant == 0) or variant == 1 then
                     addTopPlatformNumberAndClock(result, transform, lableForTopTrack, tag)
                     addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack, tag)
-                end
-                if hasTrackTop and not hasTrackBottom then
+                elseif (hasTrackTop and not hasTrackBottom and variant == 0) or variant == 2 then
                     addTopPlatformNumberAndClock(result, transform, lableForTopTrack, tag)
-                elseif hasTrackBottom and not hasTrackTop then
+                elseif (hasTrackBottom and not hasTrackTop and variant == 0) or variant == 3 then
                     addBottomPlatformNumberAndClock(result, transform, lableForBottomTrack, tag)
                 else
                     addTopPlatformNumberAndClock(result, transform, lableForTopTrack, tag)

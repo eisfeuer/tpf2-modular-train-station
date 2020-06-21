@@ -12,48 +12,40 @@ describe('TrackUpgradeUtils', function ()
                 modules = {
                     [Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})] = {
                         metadata = {
-                            motras = {
-                                electrified = false,
-                                highspeed = false,
-                                toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                                toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                            }
+                            motras_electrified = false,
+                            motras_highspeed = false,
+                            motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                            motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                         },
                         name = "station/rail/modules/motras_track_train_normal.module",
                         variant = 0
                     },
                     [Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0})] = {
                         metadata = {
-                            motras = {
-                                electrified = false,
-                                highspeed = false,
-                                toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                                toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                            }
+                            motras_electrified = false,
+                            motras_highspeed = false,
+                            motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                            motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                         },
                         name = "station/rail/modules/motras_track_train_normal.module",
                         variant = 0
                     },
                     [Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1})] = {
                         metadata = {
-                            motras = {
-                                electrified = false,
-                                highspeed = false,
-                                toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                                toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                            }
+                            motras_electrified = false,
+                            motras_highspeed = false,
+                            motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                            motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                         },
                         name = "station/rail/modules/motras_track_train_normal.module",
                         variant = 0
                     },
                     [Slot.makeId({type = t.TRACK, gridX = 1, gridY = -1})] = {
                         metadata = {
-                            motras = {
-                                electrified = false,
-                                highspeed = false,
-                                toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                                toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                            }
+                            motras_electrified = false,
+                            motras_highspeed = false,
+                            motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                            motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                         },
                         name = "station/rail/modules/motras_track_train_normal.module",
                         variant = 0
@@ -106,48 +98,40 @@ describe('TrackUpgradeUtils', function ()
             local modules = {
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
@@ -177,24 +161,20 @@ describe('TrackUpgradeUtils', function ()
             assert.are.same({
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
@@ -206,24 +186,20 @@ describe('TrackUpgradeUtils', function ()
             local modules = {
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
@@ -235,12 +211,10 @@ describe('TrackUpgradeUtils', function ()
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 3, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
@@ -250,24 +224,20 @@ describe('TrackUpgradeUtils', function ()
             assert.are.same({
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = 0})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
@@ -281,46 +251,38 @@ describe('TrackUpgradeUtils', function ()
             local modules = {
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 2, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 3, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
@@ -339,47 +301,39 @@ describe('TrackUpgradeUtils', function ()
             local modules = {
                 [Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 1, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 2, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = true,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                            toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = true,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
+                        motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_highspeed.module"
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0
                 },
                 [Slot.makeId({type = t.TRACK, gridX = 3, gridY = -1})] = {
                     metadata = {
-                        motras = {
-                            electrified = false,
-                            highspeed = false,
-                            toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
-                        }
+                        motras_electrified = false,
+                        motras_highspeed = false,
+                        motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_normal_catenary.module",
                     },
                     name = "station/rail/modules/motras_track_train_normal.module",
                     variant = 0

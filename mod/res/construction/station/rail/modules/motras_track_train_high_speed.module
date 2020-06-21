@@ -22,12 +22,11 @@ function data()
             value = 3,
         },
         metadata = {
-            motras = {
-                electrified = false,
-                highspeed = true,
-                toggleElectrificationTo = "station/rail/modules/motras_track_train_high_speed_catenary.module",
-                toggleHighspeedTo = "station/rail/modules/motras_track_train_normal.module"
-            }
+            motras_electrified = false,
+            motras_highspeed = true,
+            motras_toggleElectrificationTo = "station/rail/modules/motras_track_train_high_speed_catenary.module",
+            motras_toggleHighspeedTo = "station/rail/modules/motras_track_train_normal.module",
+            motras_speedLimit = 300.0 / 3.6,
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local track = result.motras:register(slotId)

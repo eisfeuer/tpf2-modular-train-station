@@ -10,7 +10,7 @@ describe('Asset', function ()
     local station = Station:new{}
     local platform = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 2, gridY = 4}))
     local assetSlot = Slot:new{id = Slot.makeId({type = t.ROOF, gridX = 2, gridY = 4, assetId = 1})}
-    local asset = Asset:new{slot = assetSlot, parent = platform, options = {height = 23}}
+    local asset = Asset:new{slot = assetSlot, parent = platform, options = {height = 23, poleRadius = 2}}
     local decorationAssetSlot = Slot:new{id = Slot.makeId({type = t.ASSET_DECORATION, gridX = 2, gridY = 4, assetId = 1, assetDecorationId = 2 })}
     local decoration = asset:registerDecoration(2, decorationAssetSlot, {anOption = 'value'})
 
@@ -80,6 +80,29 @@ describe('Asset', function ()
         it("returns nil when no asset is at given slot", function ()
             assert.is_nil(asset:getDecoration(3))
             assert.is_false(asset:hasDecoration(3))
+        end)
+    end)
+
+    describe('setOptions', function ()
+        it('set options', function ()
+            local station = Station:new{}
+            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local testAsset = station:initializeAndRegister(Slot.makeId({type = t.ASSET, gridX = 0, gridY = 0, assetId = 1}))
+
+            testAsset:setOptions({opt1 = 'val1', opt2 = 'val2'})
+            assert.are.equal('val1', testAsset:getOption('opt1'))
+            assert.are.equal('val2', testAsset:getOption('opt2'))
+        end)
+
+        it('keeps old options', function ()
+            local station = Station:new{}
+            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            local testAsset = station:initializeAndRegister(Slot.makeId({type = t.ASSET, gridX = 0, gridY = 0, assetId = 1}))
+
+            testAsset:setOption('opt1', 'val1')
+            testAsset:setOptions({opt2 = 'val2'})
+            assert.are.equal('val1', testAsset:getOption('opt1'))
+            assert.are.equal('val2', testAsset:getOption('opt2'))
         end)
     end)
 
@@ -219,6 +242,12 @@ describe('Asset', function ()
                 spacing = {1, 1, 1, 1},
                 shape = 2
             }}, slots)
+        end)
+    end)
+
+    describe('getPoleRadius', function ()
+        it ('returns pole radius', function ()
+            assert.are.equal(2, asset:getPoleRadius())
         end)
     end)
 

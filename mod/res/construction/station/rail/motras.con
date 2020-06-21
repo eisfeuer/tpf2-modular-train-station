@@ -317,7 +317,6 @@ function data()
         values = { "0", "1" },
         default_index = 0
     }}
-    -- local commonApiTracks = ParamUtils.addCommonApiTrackParams(params)
 
     return { 
         type = 'RAIL_STATION',
@@ -349,7 +348,7 @@ function data()
                         {
                             key = "motras_tracks",
                             name = _("Tracks"),
-                            values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12") },
+                            values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18") },
                             defaultIndex = 0,
                         },
                         UgParamUtils.makeTrackTypeParam(),
@@ -446,8 +445,6 @@ function data()
         end,
         updateFn = function(params)
             local station = Station:new{
-                customTrack1 = params.motras_track_commonapi_1 and commonApiTracks[params.motras_track_commonapi_1 + 1],
-                customTrack2 = params.motras_track_commonapi_2 and commonApiTracks[params.motras_track_commonapi_2 + 1],
                 displayedNameMapper = params.motras_use_track_ids > 0 and TrackIdMapper:new{} or PlatformIdMapper:new{}
             }
             station:initializeAndRegisterAll(params.modules or {})

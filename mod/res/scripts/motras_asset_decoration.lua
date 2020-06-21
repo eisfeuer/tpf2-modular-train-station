@@ -47,7 +47,17 @@ function AssetDecoration:getParentGridElement()
 end
 
 function AssetDecoration:setOptions(options)
-    self.options = options
+    for key, value in pairs(options) do
+        self:setOption(key, value)
+    end
+end
+
+function AssetDecoration:setOption(key, value)
+    if not self.options then
+        self.options = {}
+    end
+
+    self.options[key] = value
 end
 
 function AssetDecoration:getOption(option, default)

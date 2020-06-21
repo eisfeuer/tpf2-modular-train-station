@@ -38,7 +38,9 @@ function data()
         ["motras_use_track_ids"] = "track numbers for tracks without platforms",
         ["motras_menu_name"] = "Advanced modern station",
         ["motras_menu_desc"] = "Advanced modern vanilla station with adjustable platform height and decoration modules",
-        ["motras_mod_desc"] = "This package contains the MOTRAS core logic and the advanced modern vanilla station."
+        ["motras_mod_desc"] = "This package contains the MOTRAS core logic and the advanced modern vanilla station.",
+        ["with_catenary"] = "with Catenary",
+        ["manual_placement"] = "Press m or n to select placement (Automatic, Left Side, Right Side, Both Sides).",
       },
       de = {
         ["truss_mountable"] = "Befestigung an Trägern, Säulen oder Lampen",
@@ -79,7 +81,9 @@ function data()
         ["motras_menu_name"] = "Verbesserter moderner Bahnhof",
         ["motras_menu_desc"] = "Verbesserter moderner Vanilla-Bahnhof mit anpassbarer Bahnsteighöhe und Deko-Modulen.",
         ["MOTRAS Base Kit"] = "MOTRAS Basisset",
-        ["motras_mod_desc"] = "Dieses Paket beinhaltet die Kernlogik von MOTRAS, sowie den verbesserten modernen Vanilla-Bahnhof."
+        ["motras_mod_desc"] = "Dieses Paket beinhaltet die Kernlogik von MOTRAS, sowie den verbesserten modernen Vanilla-Bahnhof.",
+        ["with_catenary"] = "mit Oberleitung",
+        ["manual_placement"] = "Drücke n oder m um die Positionierung anzupassen (Automatisch, Linke Seite, Rechte Seite, Beide Seiten)."
       },
     }
 end

@@ -259,8 +259,8 @@ describe("Station", function ()
 
             local station = Station:new()
             station:initializeAndRegisterAll({
-                [trackSlotId] = 'track.module',
-                [platformSlotId] = 'platform.module'
+                [trackSlotId] = {name = 'track.module'},
+                [platformSlotId] = {name = 'platform.module'}
             })
 
             local track = station.grid:get(2,5)
@@ -275,6 +275,85 @@ describe("Station", function ()
             assert.are.equal(3, platform:getGridX())
             assert.are.equal(4, platform:getGridY())
 
+        end)
+
+        it("takes options from metadata", function ()
+            local trackSlotId = Slot.makeId({
+                type = t.TRACK,
+                gridX = 2,
+                gridY = 5
+            })
+            local platformSlotId = Slot.makeId({
+                type = t.PLATFORM,
+                gridX = 3,
+                gridY = 4
+            })
+            local assetSlotId = Slot.makeId({
+                type = t.ASSET,
+                gridX = 3,
+                gridY = 4,
+                assetId = 1,
+            })
+            local assetDecorationSlotId = Slot.makeId({
+                type = t.ASSET_DECORATION,
+                gridX = 3,
+                gridY = 4,
+                assetId = 1,
+                assetDecorationId = 1,
+            })
+
+            local station = Station:new()
+            station:initializeAndRegisterAll({
+                [trackSlotId] = {
+                    name = 'track.module',
+                    metadata = {
+                        motras = {
+                            speed = 120,
+                        },
+                        motras_hasCatenary = true
+                    }
+                },
+                [platformSlotId] = {
+                    name = 'platform.module',
+                    metadata = {
+                        motras = {
+                            platformHeight = 0.96
+                        },
+                    }
+                },
+                [assetSlotId] = {
+                    name = 'bench.module',
+                    metadata = {
+                        motras_era = 'Era C'
+                    }
+                },
+                [assetDecorationSlotId] = {
+                    name = 'destinationDisplay.module',
+                    metadata = {
+                        motras = {
+                            era = 'Era C'
+                        }
+                    }
+                }
+            })
+
+            local track = station.grid:get(2,5)
+            local platform = station.grid:get(3,4)
+            local asset = platform:getAsset(1)
+            local deco = asset:getDecoration(1, t.ASSET_DECORATION)
+
+            assert.are.equal('track.module', track:getOption('moduleName'))
+            assert.are.equal(120, track:getOption('speed'))
+            assert.is_true(track:getOption('hasCatenary'))
+
+            assert.are.equal('platform.module', platform:getOption('moduleName'))
+            assert.are.equal(0.96, platform:getOption('platformHeight'))
+
+            assert.are.equal('bench.module', asset:getOption('moduleName'))
+            assert.are.equal('Era C', asset:getOption('era'))
+
+            assert.are.equal('destinationDisplay.module', deco:getOption('moduleName'))
+            assert.are.equal('Era C', deco:getOption('era'))
         end)
     end)
 

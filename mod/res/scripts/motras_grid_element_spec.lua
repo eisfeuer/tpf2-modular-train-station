@@ -314,4 +314,23 @@ describe("GridElement", function()
             assert.are.equal(neighborBottom, testGridElement:getNeighborBottom())
         end)
     end)
+
+    describe('setOptions', function ()
+        it('set options', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            testGridElement:setOptions({opt1 = 'val1', opt2 = 'val2'})
+            assert.are.equal('val1', testGridElement:getOption('opt1'))
+            assert.are.equal('val2', testGridElement:getOption('opt2'))
+        end)
+
+        it('keeps old options', function ()
+            local station = Station:new{}
+            local testGridElement = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            testGridElement:setOption('opt1', 'val1')
+            testGridElement:setOptions({opt2 = 'val2'})
+            assert.are.equal('val1', testGridElement:getOption('opt1'))
+            assert.are.equal('val2', testGridElement:getOption('opt2'))
+        end)
+    end)
 end)

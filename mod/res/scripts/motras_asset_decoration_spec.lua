@@ -73,6 +73,31 @@ describe("AssetDecoration", function ()
         end)
     end)
 
+    describe('setOptions', function ()
+        it('set options', function ()
+            local testStation = Station:new{}
+            testStation:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            testStation:initializeAndRegister(Slot.makeId({type = t.ASSET, gridX = 0, gridY = 0, assetId = 2}))
+            local testDeco = testStation:initializeAndRegister(Slot.makeId({type = t.ASSET_DECORATION, gridX = 0, gridY = 0, assetId = 2, assetDecorationId = 2}))
+
+            testDeco:setOptions({opt1 = 'val1', opt2 = 'val2'})
+            assert.are.equal('val1', testDeco:getOption('opt1'))
+            assert.are.equal('val2', testDeco:getOption('opt2'))
+        end)
+
+        it('keeps old options', function ()
+            local testStation = Station:new{}
+            testStation:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            testStation:initializeAndRegister(Slot.makeId({type = t.ASSET, gridX = 0, gridY = 0, assetId = 2}))
+            local testDeco = testStation:initializeAndRegister(Slot.makeId({type = t.ASSET_DECORATION, gridX = 0, gridY = 0, assetId = 2, assetDecorationId = 2}))
+
+            testDeco:setOption('opt1', 'val1')
+            testDeco:setOptions({opt2 = 'val2'})
+            assert.are.equal('val1', testDeco:getOption('opt1'))
+            assert.are.equal('val2', testDeco:getOption('opt2'))
+        end)
+    end)
+
     describe('handle / call', function ()
         it ("does not change anything when handle function is not definded", function ()
             local result = {

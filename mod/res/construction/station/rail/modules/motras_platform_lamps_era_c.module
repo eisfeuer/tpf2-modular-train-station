@@ -23,6 +23,9 @@ function data()
             value = 29001,
         },
         metadata = {
+            motras = {
+                poleRadius = 0.05
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId)

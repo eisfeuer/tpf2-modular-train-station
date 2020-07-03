@@ -641,7 +641,7 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
             platformSide = platformSide
         }:addToModels(result.models)
 
-        PlatformModuleUtils.makeFence(platform, result, transform, 'station/rail/motras/platform_wall.mdl')
+        --PlatformModuleUtils.makeFence(platform, result, transform, 'station/rail/motras/platform_wall.mdl')
     end)
     
     platform:handleTerminals(function (addTerminal, directionFactor)

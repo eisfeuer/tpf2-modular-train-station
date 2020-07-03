@@ -73,14 +73,6 @@ function TrackModuleUtils.makeLot(result, track, options)
             },
         },
     })
-
-    table.insert(result.colliders, { 
-        type = "BOX",
-        transf = Transf.transl(boundingBox:getCenterPointAsVec3()),
-        params = {
-            halfExtents = boundingBox:getHalfExtends(),
-        }
-    })
 end
 
 function TrackModuleUtils.assignTrackToModule(trackModule, track, filename, hasCatenary, sortIndex)

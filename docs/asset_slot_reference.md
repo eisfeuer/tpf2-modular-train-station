@@ -1,5 +1,5 @@
 # Asset Slot Reference
-MOTRAS v1.0
+MOTRAS v1.1
 
 |Asset Slot ID | Track                                  | Passenger Platform                     | Cargo Platform                         |
 |--------------|----------------------------------------|----------------------------------------|----------------------------------------|
@@ -49,8 +49,8 @@ MOTRAS v1.0
 |44            | -                                      | Decoration (double platf. outer right) | -                                      |
 |45            | -                                      | Lamps (single platform)                | -                                      |
 |46            | -                                      | Lamps (double platform)                | -                                      |
-|47            | -                                      | -                                      | -                                      |
-|48            | -                                      | -                                      | -                                      |
+|47            | Fence (top)                            | Fence (top)                            | -                                      |
+|48            | Fence (bottom)                         | Fence (bottom)                         | -                                      |
 |49            | -                                      | -                                      | -                                      |
 |50            | -                                      | -                                      | -                                      |
 |51            | -                                      | -                                      | -                                      |

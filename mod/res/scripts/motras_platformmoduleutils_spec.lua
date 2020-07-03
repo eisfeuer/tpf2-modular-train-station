@@ -283,9 +283,55 @@ describe('PlatformModuleUtils', function ()
                 rotation = 0,
                 shape = 3
                 --spacing = c.UNDERPASS_SMALL_SPACING
+            })            
+        end)
+    end)
+
+    describe('addFenceSlots', function ()
+        it ('add slots for fences', function ()
+            local expectedSlots = {}
+            local slots = {}
+
+            local station = Station:new()
+            local platform = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+
+            platform:addAssetSlot(expectedSlots, 47, {
+                assetType = t.DECORATION,
+                slotType = 'motras_fence',
+                position = {0, 2.5, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 0,
+            })
+            platform:addAssetSlot(expectedSlots, 48, {
+                assetType = t.DECORATION,
+                slotType = 'motras_fence',
+                position = {0, -2.5, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 180,
             })
 
-            
+            PlatformModuleUtils.addFenceSlots(platform, slots)
+
+            assert.are.same(expectedSlots, slots)
         end)
+
+        it ('has not bottom slot when platform has bottom neighbor', function ()
+            local expectedSlots = {}
+            local slots = {}
+
+            local station = Station:new()
+            local platform = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 0}))
+            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = -1}))
+
+            platform:addAssetSlot(expectedSlots, 47, {
+                assetType = t.DECORATION,
+                slotType = 'motras_fence',
+                position = {0, 2.5, platform:getAbsolutePlatformHeight() + 1},
+                rotation = 0,
+            })
+
+            PlatformModuleUtils.addFenceSlots(platform, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+
     end)
 end)

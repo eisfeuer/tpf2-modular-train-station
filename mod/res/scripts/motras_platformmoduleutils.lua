@@ -498,6 +498,23 @@ function PlatformModuleUtils.addRoofSlots(platform, slots)
     end
 end
 
+function PlatformModuleUtils.addFenceSlots(platform, slots)
+    platform:addAssetSlot(slots, 47, {
+        assetType = t.DECORATION,
+        slotType = 'motras_fence',
+        position = {0, 2.5, platform:getAbsolutePlatformHeight() + 1},
+        rotation = 0,
+    })
+    if not platform:hasNeighborBottom() then
+        platform:addAssetSlot(slots, 48, {
+            assetType = t.DECORATION,
+            slotType = 'motras_fence',
+            position = {0, -2.5, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 180,
+        })
+    end
+end
+
 function PlatformModuleUtils.makeFence(platform, result, transform, fenceModel)
     local leftNeighbor = platform:getNeighborLeft()
     local rightNeighbor = platform:getNeighborRight()

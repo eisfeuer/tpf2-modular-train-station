@@ -1,6 +1,7 @@
 local Box = require('motras_box')
 local ModuleUtils = require('modulesutil')
 local Transf = require('transf')
+local t = require('motras_types')
 
 local TrackModuleUtils = {}
 
@@ -118,6 +119,25 @@ function TrackModuleUtils.assignTrackToModule(trackModule, track, filename, hasC
         motras_toggleElectrificationTo = hasCatenary and notElectrifiedFilename or electrifiedFilename,
         motras_speedLimit = track.speedLimit
     }
+end
+
+function TrackModuleUtils.addFenceSlots(track, slots)
+    if not track:hasNeighborTop() then
+        track:addAssetSlot(slots, 47, {
+            assetType = t.DECORATION,
+            slotType = 'motras_fence',
+            position = {0, 2.5, 1},
+            rotation = 0,
+        })
+    end
+    if not track:hasNeighborBottom() then
+        track:addAssetSlot(slots, 48, {
+            assetType = t.DECORATION,
+            slotType = 'motras_fence',
+            position = {0, -2.5, 1},
+            rotation = 180,
+        })
+    end
 end
 
 return TrackModuleUtils

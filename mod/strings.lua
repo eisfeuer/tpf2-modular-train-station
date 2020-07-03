@@ -41,6 +41,11 @@ function data()
         ["motras_mod_desc"] = "This package contains the MOTRAS core logic and the advanced modern vanilla station.",
         ["with_catenary"] = "with Catenary",
         ["manual_placement"] = "Press m or n to select placement (Automatic, Left Side, Right Side, Both Sides).",
+        ["placeable_on_platform_and_tracks"] = "Placeable on platforms and tracks",
+        ["metal_wall"] = "Metal wall",
+        ["noise_barrier"] = "Noise barrier",
+        ["mesh_wire_fence"] = "Mesh wire fence",
+        ["railing"] = "Railing"
       },
       de = {
         ["truss_mountable"] = "Befestigung an Trägern, Säulen oder Lampen",
@@ -83,7 +88,12 @@ function data()
         ["MOTRAS Base Kit"] = "MOTRAS Basisset",
         ["motras_mod_desc"] = "Dieses Paket beinhaltet die Kernlogik von MOTRAS, sowie den verbesserten modernen Vanilla-Bahnhof.",
         ["with_catenary"] = "mit Oberleitung",
-        ["manual_placement"] = "Drücke n oder m um die Positionierung anzupassen (Automatisch, Linke Seite, Rechte Seite, Beide Seiten)."
+        ["manual_placement"] = "Drücke n oder m um die Positionierung anzupassen (Automatisch, Linke Seite, Rechte Seite, Beide Seiten).",
+        ["placeable_on_platform_and_tracks"] = "Auf Bahnsteigen und Gleisen platzierbar",
+        ["metal_wall"] = "Metallmauer",
+        ["noise_barrier"] = "Schallschutzwand",
+        ["mesh_wire_fence"] = "Maschendrahtzaun",
+        ["railing"] = "Geländer"
       },
     }
 end

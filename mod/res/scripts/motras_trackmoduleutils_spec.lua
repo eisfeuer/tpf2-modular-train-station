@@ -123,4 +123,52 @@ describe('TrackModuleUtils', function ()
             }, trackModule)
         end)
     end)
+
+    describe('addFenceSlots', function ()
+        it ('add slots for fences', function ()
+            local expectedSlots = {}
+            local slots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+
+            track:addAssetSlot(expectedSlots, 47, {
+                assetType = t.DECORATION,
+                slotType = 'motras_fence',
+                position = {0, 2.5, 0},
+                rotation = 0,
+            })
+            track:addAssetSlot(expectedSlots, 48, {
+                assetType = t.DECORATION,
+                slotType = 'motras_fence',
+                position = {0, -2.5, 0},
+                rotation = 180,
+            })
+
+            TrackModuleUtils.addFenceSlots(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+
+        it ('has not bottom slot when track has bottom neighbor', function ()
+            local expectedSlots = {}
+            local slots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1}))
+
+            track:addAssetSlot(expectedSlots, 47, {
+                assetType = t.DECORATION,
+                slotType = 'motras_fence',
+                position = {0, 2.5, 0},
+                rotation = 0,
+            })
+
+            TrackModuleUtils.addFenceSlots(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+
+    end)
 end)

@@ -1,0 +1,85 @@
+local Transf = require("transf")
+local PlatformModuleUtils = require("motras_platformmoduleutils")
+
+function data()
+    return {
+        cost = {
+            price = 0,
+        },
+        category = {
+            categories = { "decoration", },
+        },
+        description = {
+            name = _("mesh_wire_fence"),
+		    description = _("placeable_on_platform_and_tracks"),
+		    icon = "ui/construction/station/rail/motras/fence_metal_mesh_wire_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0
+        },
+        type = "motras_fence",
+        order = {
+            value = 79004,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+            local variant = (params.modules[slotId].variant or 0) % 2
+            
+            PlatformModuleUtils.makeFence(
+                asset,
+                Transf.mul(transform, Transf.transl({x = 0, y = -0.1, z = 0})),
+                -1.9,
+                variant * math.pi,
+                function (fenceTransform)
+                    table.insert(result.models, {
+                        id = "station/air/asset/fence_metal.mdl",
+                        transf = Transf.mul(fenceTransform, Transf.scaleXYZRotZTransl({x = 10/9, y = 1, z = 1}, 0, {x = -10/3, y = 0, z = 0})),
+                        tag = tag,
+                    })
+                    table.insert(result.models, {
+                        id = "station/air/asset/fence_metal.mdl",
+                        transf = Transf.mul(fenceTransform, Transf.scaleXYZRotZTransl({x = 10/9, y = 1, z = 1}, 0, {x = 0, y = 0, z = 0})),
+                        tag = tag,
+                    })
+                    table.insert(result.models, {
+                        id = "station/air/asset/fence_metal.mdl",
+                        transf = Transf.mul(fenceTransform, Transf.scaleXYZRotZTransl({x = 10/9, y = 1, z = 1}, 0, {x = 10/3, y = 0, z = 0})),
+                        tag = tag,
+                    })
+                end
+            )
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/air/asset/fence_metal.mdl",
+                    transf = {
+                        10/9, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        -10/3, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/air/asset/fence_metal.mdl",
+                    transf = {
+                        10/9, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/air/asset/fence_metal.mdl",
+                    transf = {
+                        10/9, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        10/3, 0, 0, 1
+                    },
+                }
+            }
+        end
+    }
+end

@@ -1,0 +1,82 @@
+local Transf = require("transf")
+local PlatformModuleUtils = require("motras_platformmoduleutils")
+
+function data()
+    return {
+        cost = {
+            price = 0,
+        },
+        category = {
+            categories = { "decoration", },
+        },
+        description = {
+            name = _("noise_barrier"),
+		    description = _("placeable_on_platform_and_tracks"),
+		    icon = "ui/construction/station/rail/motras/fence_metal_noise_barrier_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0
+        },
+        type = "motras_fence",
+        order = {
+            value = 79004,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+            
+            PlatformModuleUtils.makeFence(
+                asset,
+                transform,
+                asset:getParentGridElement():isPlatform() and -1.9 or -1,
+                ((params.modules[slotId].variant or 0) % 2) * math.pi,
+                function (fenceTransform)
+                    table.insert(result.models, {
+                        id = "asset/track_multi_sound_insulation_10m.mdl",
+                        transf = Transf.mul(fenceTransform, Transf.transl({x = 0, y = 3.4, z = 0})),
+                        tag = tag,
+                    })
+                end
+            )
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "asset/track_multi_sound_insulation_10m.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        -15, 0, 0, 1
+                    },
+                }, { 
+                    id = "asset/track_multi_sound_insulation_10m.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        -5, 0, 0, 1
+                    },
+                }, { 
+                    id = "asset/track_multi_sound_insulation_10m.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        5, 0, 0, 1
+                    },
+                }, { 
+                    id = "asset/track_multi_sound_insulation_10m.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        15, 0, 0, 1
+                    },
+                },
+            }
+        end
+    }
+end

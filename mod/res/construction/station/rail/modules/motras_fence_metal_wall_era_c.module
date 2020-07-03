@@ -1,0 +1,82 @@
+local Transf = require("transf")
+local PlatformModuleUtils = require("motras_platformmoduleutils")
+
+function data()
+    return {
+        cost = {
+            price = 0,
+        },
+        category = {
+            categories = { "decoration", },
+        },
+        description = {
+            name = _("metal_wall"),
+		    description = _("placeable_on_platform_and_tracks"),
+		    icon = "ui/construction/station/rail/motras/fence_metal_wall_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0
+        },
+        type = "motras_fence",
+        order = {
+            value = 79003,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+            
+            PlatformModuleUtils.makeFence(
+                asset,
+                transform,
+                asset:getParentGridElement():isPlatform() and -1 or 0.18,
+                ((params.modules[slotId].variant or 0) % 2) * math.pi,
+                function (fenceTransform)
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_wall.mdl",
+                        transf = Transf.mul(fenceTransform, Transf.rotZTransl(math.pi, {x = 0, y = -2.5, z = 0})),
+                        tag = tag,
+                    })
+                end
+            )
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/motras/platform_wall.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        -15, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/motras/platform_wall.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        -5, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/motras/platform_wall.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        5, 0, 0, 1
+                    },
+                }, { 
+                    id = "station/rail/motras/platform_wall.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        15, 0, 0, 1
+                    },
+                },
+            }
+        end
+    }
+end

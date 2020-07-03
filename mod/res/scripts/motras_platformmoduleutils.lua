@@ -499,12 +499,14 @@ function PlatformModuleUtils.addRoofSlots(platform, slots)
 end
 
 function PlatformModuleUtils.addFenceSlots(platform, slots)
-    platform:addAssetSlot(slots, 47, {
-        assetType = t.DECORATION,
-        slotType = 'motras_fence',
-        position = {0, 2.5, platform:getAbsolutePlatformHeight() + 1},
-        rotation = 0,
-    })
+    if not platform:hasNeighborTop() then
+        platform:addAssetSlot(slots, 47, {
+            assetType = t.DECORATION,
+            slotType = 'motras_fence',
+            position = {0, 2.5, platform:getAbsolutePlatformHeight() + 1},
+            rotation = 0,
+        })
+    end
     if not platform:hasNeighborBottom() then
         platform:addAssetSlot(slots, 48, {
             assetType = t.DECORATION,
@@ -515,10 +517,11 @@ function PlatformModuleUtils.addFenceSlots(platform, slots)
     end
 end
 
-function PlatformModuleUtils.makeFence(platform, result, transform, fenceModel)
+function PlatformModuleUtils.makeFence(asset, transform, zOffset, rotation, addModelFn)
+    local platform = asset:getParentGridElement()
+
     local leftNeighbor = platform:getNeighborLeft()
     local rightNeighbor = platform:getNeighborRight()
-    local getAbsolutePlatformHeight = platform:getAbsolutePlatformHeight()
 
     local hasNoOccupiedSlot = function (slotList)
         for i, slotItem in ipairs(slotList) do
@@ -530,67 +533,43 @@ function PlatformModuleUtils.makeFence(platform, result, transform, fenceModel)
         return true
     end
 
-    if not platform:hasNeighborTop() then
+    if asset:getId() == 47 then
         local outerLeft = {{platform, 1}, {platform, 5}, {platform, 6}, {leftNeighbor, 12}, {platform, 9}, {platform, 10}, {platform, 11}}
         local innerLeft = {{platform, 2}, {platform, 35}, {platform, 6}, {platform, 7}, {platform, 9}, {platform, 10}, {platform, 11}, {platform, 12}}
         local innerRight = {{platform, 3}, {platform, 35}, {platform, 7}, {platform, 8}, {platform, 10}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}}
         local outerRight = {{platform, 4}, {platform, 8}, {rightNeighbor, 5}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}, {rightNeighbor, 10}}
 
         if hasNoOccupiedSlot(outerLeft) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -15, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = -15, y = 0.0, z = zOffset})))
         end
         if hasNoOccupiedSlot(innerLeft) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = -5, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = -5, y = 0.0, z = zOffset})))
         end
         if hasNoOccupiedSlot(innerRight) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 5, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = 5, y = 0.0, z = zOffset})))
         end
         if hasNoOccupiedSlot(outerRight) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.rotZTransl(math.pi, {x = 15, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = 15, y = 0.0, z = zOffset})))
         end
     end
 
-    if not platform:hasNeighborBottom() then
+    if asset:getId() == 48 then
         local outerLeft = {{platform, 13}, {platform, 17}, {platform, 18}, {rightNeighbor, 24}, {platform, 21}, {platform, 12}, {platform, 23}}
         local innerLeft = {{platform, 14}, {platform, 36}, {platform, 18}, {platform, 19}, {platform, 21}, {platform, 22}, {platform, 23}, {platform, 24}}
         local innerRight = {{platform, 15}, {platform, 36}, {platform, 19}, {platform, 20}, {platform, 22}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}}
         local outerRight = {{platform, 16}, {platform, 20}, {leftNeighbor, 17}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}, {leftNeighbor, 22}}
 
         if hasNoOccupiedSlot(outerLeft) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.transl({x = 15, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = 15, y = 0.0, z = zOffset})))
         end
         if hasNoOccupiedSlot(innerLeft) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.transl({x = 5, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = 5, y = 0.0, z = zOffset})))
         end
         if hasNoOccupiedSlot(innerRight) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.transl({x = -5, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = -5, y = 0.0, z = zOffset})))
         end
         if hasNoOccupiedSlot(outerRight) then
-            table.insert(result.models, {
-                id = fenceModel,
-                transf = Transf.mul(transform, Transf.transl({x = -15, y = 0.0, z = getAbsolutePlatformHeight}))
-            })
+            addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = -15, y = 0.0, z = zOffset})))
         end
     end
 end
@@ -601,6 +580,7 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
 
     PlatformModuleUtils.addDecorationSlots(platform, result.slots)
     PlatformModuleUtils.addRoofSlots(platform, result.slots)
+    PlatformModuleUtils.addFenceSlots(platform, result.slots)
 
     platform:handle(function (moduleResult)
         local platformHeightTransform = platform:applyPlatformHeightOnTransformation(transform)
@@ -657,8 +637,6 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
             platformEdge = platformEdgeBack,
             platformSide = platformSide
         }:addToModels(result.models)
-
-        --PlatformModuleUtils.makeFence(platform, result, transform, 'station/rail/motras/platform_wall.mdl')
     end)
     
     platform:handleTerminals(function (addTerminal, directionFactor)

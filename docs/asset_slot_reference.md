@@ -51,10 +51,10 @@ MOTRAS v1.1
 |46            | -                                      | Lamps (double platform)                | -                                      |
 |47            | Fence (top)                            | Fence (top)                            | -                                      |
 |48            | Fence (bottom)                         | Fence (bottom)                         | -                                      |
-|49            | -                                      | -                                      | -                                      |
-|50            | -                                      | -                                      | -                                      |
-|51            | -                                      | -                                      | -                                      |
-|52            | -                                      | -                                      | -                                      |
+|49            | Underpass entrance (top, mid)          | Underpass entrance (top)               | -                                      |
+|50            | Underpass entrance (bottom, mid)       | Underpass entrance (bottom)            | -                                      |
+|51            | Underpass entrance (top, side)         | Underpass entrance (top, side)         | -                                      |
+|52            | Underpass entrance (bottom side)       | Underpass entrance (bottom side)       | -                                      |
 |53            | -                                      | -                                      | -                                      |
 |54            | -                                      | -                                      | -                                      |
 |55            | -                                      | -                                      | -                                      |

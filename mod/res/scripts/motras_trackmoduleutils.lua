@@ -2,6 +2,7 @@ local Box = require('motras_box')
 local ModuleUtils = require('modulesutil')
 local Transf = require('transf')
 local t = require('motras_types')
+local c = require('motras_constants')
 
 local TrackModuleUtils = {}
 
@@ -138,6 +139,55 @@ function TrackModuleUtils.addFenceSlots(track, slots)
             rotation = 180,
         })
     end
+end
+
+function TrackModuleUtils.addBuildingSlots(track, slots)
+    if not (track:isTrack()) then
+        error('Track building slots can only placed on tracks')
+    end
+
+    if not track:hasNeighborTop() then
+        track:addAssetSlot(slots, 35, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_access',
+            position = {0, 10, 0},
+            rotation = 180,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        if track:hasNeighborRight() then
+            track:addAssetSlot(slots, 49, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {20, 10, 0},
+                rotation = 180,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+        end
+    end
+
+    if not track:hasNeighborBottom() then
+        track:addAssetSlot(slots, 36, {
+            assetType = t.BUILDING,
+            slotType = 'motras_building_platform40m_access',
+            position = {0, -10, 0},
+            rotation = 0,
+            spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+        })
+        if track:hasNeighborLeft() then
+            track:addAssetSlot(slots, 50, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {-20, -10, 0},
+                rotation = 0,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+        end
+    end
+end
+
+function TrackModuleUtils.addBasicTrackSlots(track, slots)
+    TrackModuleUtils.addFenceSlots(track, slots)
+    TrackModuleUtils.addBuildingSlots(track, slots)
 end
 
 return TrackModuleUtils

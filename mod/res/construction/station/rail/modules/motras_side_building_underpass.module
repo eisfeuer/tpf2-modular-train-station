@@ -1,0 +1,68 @@
+local ConstructionUtils = require('constructionutil')
+local Box = require("motras_box")
+local BuildingUtils = require('motras_buildingutils')
+local Transf = require('transf')
+local Vec3 = require('vec3')
+local Stairway = require('motras_stairway')
+local Modulesutil = require "modulesutil"
+
+function data()
+    return {
+        cost = {
+            price = 5000,
+        },
+        category = {
+            categories = { "passenger buildings", },
+        },
+        description = {
+            name = _("Side entrance"),
+            description = _("Street access for passengers and cargo."),
+            icon = "ui/construction/station/rail/modular_station/stairs.tga"
+        }, 
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0
+        },
+        type = "motras_building_platform40m_access",
+        order = {
+            value = 19000,
+        },
+        metadata = {
+            motras = {
+                keepFence = true
+            }
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+
+            asset:handle(function ()
+                local underpassTransformation = Transf.mul(transform, Transf.rotZTransl(-math.pi / 2, {x = 0, y = -7.5, z = 0.0}))
+
+                BuildingUtils.makeLot(result, Box:new({ -5, -7.5, 0 }, { 5, 8.5, 5 }), Transf.mul(transform, Transf.rotZ(math.pi)))
+
+                local stairsHoleGroundFace = Box:new({-10.5, -3.2, 0.0}, {0.22, 3.2, 1.0}):getGroundFace()
+                Modulesutil.TransformFaces(underpassTransformation, stairsHoleGroundFace)
+                table.insert(result.groundFaces, {  
+                    face = stairsHoleGroundFace,
+                    modes = {
+                        {
+                            type = "FILL",
+                            key = "hole.lua"
+                        }
+                    }
+                })
+
+                table.insert(result.models, {
+                    id = "station/rail/motras/stairs_entrance.mdl",
+                    transf = underpassTransformation,
+                    tag = tag
+                })
+            end)
+        end,
+        getModelsFn = function()
+            return {
+             
+            }
+        end
+    }
+end

@@ -1,0 +1,112 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 1.110011100769, 5, 5.8530883789063, },
+		bbMin = { -14.989999771118, -5, -4.8000030517578, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 8.0500049591064, 5, 5.326545715332, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_borders_1.mtl", "station/rail/era_b/station_floor_1.mtl", "station/rail/era_c/era_c_trainstation_wall_white.mtl", "station/rail/era_c/era_c_trainstation_wall_grey.mtl", "station/rail/era_c/era_c_trainstation_assets.mtl", "station/air/airfield/concrete_001.mtl", "station/rail/era_c/era_c_trainstation_glass.mtl", "station/rail/era_c/era_c_trainstation_roof_wood.mtl", "street/new_medium_sidewalk_curb.mtl"},
+						mesh = "station/rail/motras/stairs_entrance_lod0.msh",
+						name = "stairs_entrance",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 80,
+		}, {
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_borders_1.mtl", "station/rail/era_b/station_floor_1.mtl", "station/rail/era_c/era_c_trainstation_wall_white.mtl", "station/rail/era_c/era_c_trainstation_wall_grey.mtl", "station/air/airfield/concrete_001.mtl", "station/rail/era_c/era_c_trainstation_glass.mtl", "station/rail/era_c/era_c_trainstation_roof_wood.mtl", "street/new_medium_sidewalk_curb.mtl" },
+						mesh = "station/rail/motras/stairs_entrance_lod1.msh",
+						name = "stairs_entrance",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 80,
+			visibleTo = 200,
+		}, {
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_c/era_c_trainstation_borders_1.mtl", "station/rail/era_b/station_floor_1.mtl", "station/rail/era_c/era_c_trainstation_wall_white.mtl", "station/air/airfield/concrete_001.mtl", "station/rail/era_c/era_c_trainstation_glass.mtl", },
+						mesh = "station/rail/motras/stairs_entrance_lod2.msh",
+						name = "stairs_entrance",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 200,
+			visibleTo = 2751.5002441406,
+		},
+	},
+	metadata = {
+		transportNetworkProvider = {
+			laneLists = {{
+				nodes = {
+					{ { -15.0, 0, -4.8}, { 4.3, 1.5, 0.0}, 2.4 },
+					{ { -10.7, 1.5, -4.8}, { 4.3, 1.5, 0.0}, 2.4 },
+
+					{ { -10.7, 1.5, -4.8}, { 4.35, 0.0, 2.4}, 2.4 },
+					{ { -6.35, 1.5, -2.4}, { 4.35, 0.0, 2.4}, 2.4 },
+
+					{ { -6.35, 1.5, -2.4}, { 1.51, 0.0, 0.0}, 2.4 },
+					{ { -4.84, 1.5, -2.4}, { 1.51, 0.0, 0.0}, 2.4 },
+
+					{ { -4.84, 1.5, -2.4}, { 4.35, 0.0, 2.4}, 2.4 },
+					{ { -0.49, 1.5, 0.0}, { 4.35, 0.0, 2.4}, 2.4 },
+
+					{ { -0.49, 1.5, 0.0}, { 1.69, 0.0, 0.0}, 2.4 },
+					{ {  1.2, 1.5, 0.0}, { 1.69, 0.0, 0.0}, 2.4 },
+
+					{ { -15.0, 0.0, -4.8}, { 4.3, -1.5, 0.0}, 2.4 },
+					{ { -10.7, -1.5, -4.8}, { 4.3, -1.5, 0.0}, 2.4 },
+
+					{ { -10.7, -1.5, -4.8}, { 4.35, 0.0, 2.4}, 2.4 },
+					{ { -6.35, -1.5, -2.4}, { 4.35, 0.0, 2.4}, 2.4 },
+
+					{ { -6.35, -1.5, -2.4}, { 1.51, 0.0, 0.0}, 2.4 },
+					{ { -4.84, -1.5, -2.4}, { 1.51, 0.0, 0.0}, 2.4 },
+
+					{ { -4.84, -1.5, -2.4}, { 4.35, 0.0, 2.4}, 2.4 },
+					{ { -0.49, -1.5, 0.0}, { 4.35, 0.0, 2.4}, 2.4 },
+
+					{ { -0.49, -1.5, 0.0}, { 1.69, -0.0, 0.0}, 2.4 },
+					{ {  1.2, -1.5, 0.0}, { 1.69, -0.0, 0.0}, 2.4 },
+				},
+				transportModes = {"PERSON"},
+			}, {
+				nodes = {
+					{ {  1.2, -1.5, 0.0}, { 0.0, 3.0, 0.0}, 2.4 },
+					{ { 1.2, 1.5, 0.0}, { 0.0, 3.0, 0.0}, 2.4 },
+				},
+				transportModes = {"PERSON"},
+				linkable = true
+			}},
+		}
+	},
+	version = 1,
+}
+end

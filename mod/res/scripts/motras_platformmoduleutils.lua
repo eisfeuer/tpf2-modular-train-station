@@ -120,6 +120,16 @@ function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
             rotation = 180,
             spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
         })
+
+        if platform:hasNeighborRight() then
+            platform:addAssetSlot(slots, 49, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {20, 10, 0},
+                rotation = 180,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+        end
     end
 
     if not platform:hasNeighborBottom() then
@@ -217,6 +227,16 @@ function PlatformModuleUtils.addBuildingSlotsFor40mPlatform(platform, slots)
             rotation = 0,
             spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
         })
+
+        if platform:hasNeighborLeft() then
+            platform:addAssetSlot(slots, 50, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {-20, -10, 0},
+                rotation = 0,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+        end
     end
 end
 
@@ -525,7 +545,7 @@ function PlatformModuleUtils.makeFence(asset, transform, zOffset, rotation, addM
 
     local hasNoOccupiedSlot = function (slotList)
         for i, slotItem in ipairs(slotList) do
-            if slotItem[1]:hasAsset(slotItem[2]) then
+            if slotItem[1]:hasAsset(slotItem[2]) and not slotItem[1]:getAsset(slotItem[2]):getOption('keepFence', false) then
                 return false
             end
         end
@@ -534,10 +554,10 @@ function PlatformModuleUtils.makeFence(asset, transform, zOffset, rotation, addM
     end
 
     if asset:getId() == 47 then
-        local outerLeft = {{platform, 1}, {platform, 5}, {platform, 6}, {leftNeighbor, 12}, {platform, 9}, {platform, 10}, {platform, 11}}
+        local outerLeft = {{platform, 1}, {platform, 5}, {platform, 6}, {leftNeighbor, 12}, {platform, 9}, {platform, 10}, {platform, 11}, {leftNeighbor, 49}}
         local innerLeft = {{platform, 2}, {platform, 35}, {platform, 6}, {platform, 7}, {platform, 9}, {platform, 10}, {platform, 11}, {platform, 12}}
         local innerRight = {{platform, 3}, {platform, 35}, {platform, 7}, {platform, 8}, {platform, 10}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}}
-        local outerRight = {{platform, 4}, {platform, 8}, {rightNeighbor, 5}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}, {rightNeighbor, 10}}
+        local outerRight = {{platform, 4}, {platform, 8}, {rightNeighbor, 5}, {platform, 11}, {platform, 12}, {rightNeighbor, 9}, {rightNeighbor, 10}, {platform, 49}}
 
         if hasNoOccupiedSlot(outerLeft) then
             addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = -15, y = 0.0, z = zOffset})))
@@ -554,10 +574,10 @@ function PlatformModuleUtils.makeFence(asset, transform, zOffset, rotation, addM
     end
 
     if asset:getId() == 48 then
-        local outerLeft = {{platform, 13}, {platform, 17}, {platform, 18}, {rightNeighbor, 24}, {platform, 21}, {platform, 12}, {platform, 23}}
+        local outerLeft = {{platform, 13}, {platform, 17}, {platform, 18}, {rightNeighbor, 24}, {platform, 21}, {platform, 12}, {platform, 23}, {platform, 50}}
         local innerLeft = {{platform, 14}, {platform, 36}, {platform, 18}, {platform, 19}, {platform, 21}, {platform, 22}, {platform, 23}, {platform, 24}}
         local innerRight = {{platform, 15}, {platform, 36}, {platform, 19}, {platform, 20}, {platform, 22}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}}
-        local outerRight = {{platform, 16}, {platform, 20}, {leftNeighbor, 17}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}, {leftNeighbor, 22}}
+        local outerRight = {{platform, 16}, {platform, 20}, {leftNeighbor, 17}, {platform, 23}, {platform, 24}, {leftNeighbor, 21}, {leftNeighbor, 22}, {rightNeighbor, 50}}
 
         if hasNoOccupiedSlot(outerLeft) then
             addModelFn(Transf.mul(transform, Transf.rotZTransl(rotation, {x = 15, y = 0.0, z = zOffset})))

@@ -135,13 +135,13 @@ describe('TrackModuleUtils', function ()
             track:addAssetSlot(expectedSlots, 47, {
                 assetType = t.DECORATION,
                 slotType = 'motras_fence',
-                position = {0, 2.5, 0},
+                position = {0, 2.5, 1},
                 rotation = 0,
             })
             track:addAssetSlot(expectedSlots, 48, {
                 assetType = t.DECORATION,
                 slotType = 'motras_fence',
-                position = {0, -2.5, 0},
+                position = {0, -2.5, 1},
                 rotation = 180,
             })
 
@@ -161,7 +161,7 @@ describe('TrackModuleUtils', function ()
             track:addAssetSlot(expectedSlots, 47, {
                 assetType = t.DECORATION,
                 slotType = 'motras_fence',
-                position = {0, 2.5, 0},
+                position = {0, 2.5, 1},
                 rotation = 0,
             })
 
@@ -170,5 +170,35 @@ describe('TrackModuleUtils', function ()
             assert.are.same(expectedSlots, slots)
         end)
 
+    end)
+    
+    describe('addBuildingSlots', function ()
+        it ('adds slot for buildings', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+
+            TrackModuleUtils.addBuildingSlots(track, slots)
+
+            track:addAssetSlot(expectedSlots, 35, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {0, 10, 0},
+                rotation = 180,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+
+            track:addAssetSlot(expectedSlots, 36, {
+                assetType = t.BUILDING,
+                slotType = 'motras_building_platform40m_access',
+                position = {0, -10, 0},
+                rotation = 0,
+                spacing = c.BUILDING_PLATFORM40M_SMALL_SPACING
+            })
+
+            assert.are.same(expectedSlots, slots)
+        end)
     end)
 end)

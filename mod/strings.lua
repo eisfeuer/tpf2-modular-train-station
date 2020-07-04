@@ -45,7 +45,11 @@ function data()
         ["metal_wall"] = "Metal wall",
         ["noise_barrier"] = "Noise barrier",
         ["mesh_wire_fence"] = "Mesh wire fence",
-        ["railing"] = "Railing"
+        ["railing"] = "Railing",
+        ["fence_or_wall_platform"] = "Fence/wall on side platform",
+        ["fence_or_wall_track"] = "Fence/wall on side track",
+        ["opposite_entrance"] = "Small entrance on the opposite site",
+        ["motras_no_fence"] = "No fence",
       },
       de = {
         ["truss_mountable"] = "Befestigung an Trägern, Säulen oder Lampen",
@@ -93,7 +97,11 @@ function data()
         ["metal_wall"] = "Metallmauer",
         ["noise_barrier"] = "Schallschutzwand",
         ["mesh_wire_fence"] = "Maschendrahtzaun",
-        ["railing"] = "Geländer"
+        ["railing"] = "Geländer",
+        ["fence_or_wall_platform"] = "Zaun/Mauen an Seitenbahnsteigen",
+        ["fence_or_wall_track"] = "Zaun/Mauen an seitlichen Gleisen",
+        ["opposite_entrance"] = "Kleiner Eingang auf der gegenüberliegenden Seite",
+        ["motras_no_fence"] = "Kein Zaun",
       },
     }
 end

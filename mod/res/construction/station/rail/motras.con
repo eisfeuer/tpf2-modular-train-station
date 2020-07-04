@@ -309,6 +309,22 @@ local function placeDecoration(platformBlueprint, platformWidth, buildingSize)
     end
 end
 
+local function placeFences(platformBlueprint, fenceOption)
+    local fences = {
+        "station/rail/modules/motras_fence_metal_wall_era_c.module",
+        "station/rail/modules/motras_fence_metal_railing_era_c.module",
+        "station/rail/modules/motras_fence_metal_noise_barrier_era_c.module",
+        "station/rail/modules/motras_fence_metal_mesh_wire_era_c.module",
+    }
+
+    if platformBlueprint:isSidePlatformTop() then
+        platformBlueprint:addAsset(t.DECORATION, fences[fenceOption], 47)
+    end
+    if platformBlueprint:isSidePlatformBottom() then
+        platformBlueprint:addAsset(t.DECORATION, fences[fenceOption], 48)
+    end
+end
+
 function data()
     local params = {{
         key = "motras_use_track_ids",
@@ -377,8 +393,29 @@ function data()
                             key = "motras_building_size",
                             uiType = "COMBOBOX",
                             name = _("Building"),
-                            values = {_("motras_none"), _("motras_auto"), _("motras_tiny"), _("motras_small"), _("motras_medium_1"), _("motras_medium_2"), _("motras_large"), _("motras_huge")},
+                            values = { _("motras_no_fence"), _("motras_auto"), _("motras_tiny"), _("motras_small"), _("motras_medium_1"), _("motras_medium_2"), _("motras_large"), _("motras_huge")},
                             defaultIndex = 1
+                        },
+                        {
+                            key = "motras_fence_platform",
+                            uiType = "COMBOBOX",
+                            name = _("fence_or_wall_platform"),
+                            values = { _("motras_no_fence"), _("metal_wall"), _("railing"), _("noise_barrier"), _("mesh_wire_fence") },
+                            defaultIndex = 1
+                        },
+                        {
+                            key = "motras_fence_track",
+                            uiType = "COMBOBOX",
+                            name = _("fence_or_wall_track"),
+                            values = { _("motras_no_fence"), _("metal_wall"), _("railing"), _("noise_barrier"), _("mesh_wire_fence") },
+                            defaultIndex = 0
+                        },
+                        {
+                            key = "motras_opposite_entrance",
+                            uiType = "CHECKBOX",
+                            name = _("opposite_entrance"),
+                            values = {"0", "1"},
+                            defaultIndex = 0
                         }
                     }
                 }
@@ -429,10 +466,36 @@ function data()
                 if trackCount > 1 then
                     placeStairs(platformBlueprint, length, platformWidth)
                 end
+
                 placeRoof(platformBlueprint, length, platformWidth)
                 placeDecoration(platformBlueprint, platformWidth, buildingSize)
+
                 if params.motras_building_size > 0 then
                     placeBuilding(platformBlueprint, length, trackCount, params.motras_building_size - 1)
+                end
+
+                if params.motras_fence_platform > 0 then
+                    placeFences(platformBlueprint, params.motras_fence_platform)
+                end
+
+                if params.motras_opposite_entrance > 0 and platformBlueprint:getGridX() == 0 and platformBlueprint:isSidePlatformBottom() then
+                    if platformBlueprint:horizontalSizeIsOdd() then
+                        platformBlueprint:addAsset(t.BUILDING, 'station/rail/modules/motras_side_building_stairs.module', 36)
+                    else
+                        platformBlueprint:addAsset(t.BUILDING, 'station/rail/modules/motras_side_building_stairs.module', 50)
+                    end
+                end
+            end):decorateEachTrack(function(trackBlueprint)
+                if params.motras_fence_track > 0 then
+                    placeFences(trackBlueprint, params.motras_fence_track)
+                end
+
+                if params.motras_opposite_entrance > 0 and trackBlueprint:getGridX() == 0 and trackBlueprint:isSidePlatformBottom() then
+                    if trackBlueprint:horizontalSizeIsOdd() then
+                        trackBlueprint:addAsset(t.BUILDING, 'station/rail/modules/motras_side_building_underpass.module', 36)
+                    else
+                        trackBlueprint:addAsset(t.BUILDING, 'station/rail/modules/motras_side_building_underpass.module', 50)
+                    end
                 end
             end):createStation(
                 params.motras_platform_width > 0 and WidePlatformPattern:new(patternOptions) or TallPlatformPattern:new(patternOptions)

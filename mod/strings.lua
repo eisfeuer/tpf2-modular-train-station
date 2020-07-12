@@ -50,6 +50,9 @@ function data()
         ["fence_or_wall_track"] = "Fence/wall on side track",
         ["opposite_entrance"] = "Small entrance on the opposite site",
         ["motras_no_fence"] = "No fence",
+        ["placeable_on_tracks"] = "Placeable on tracks",
+        ["platform_without_functionality"] = "This platform is only decoration and has no functionality",
+        ["luggage_platform_tall"] = "Tall luggage or maintenance platform"
       },
       de = {
         ["truss_mountable"] = "Befestigung an Trägern, Säulen oder Lampen",
@@ -102,6 +105,9 @@ function data()
         ["fence_or_wall_track"] = "Zaun/Mauen an seitlichen Gleisen",
         ["opposite_entrance"] = "Kleiner Eingang auf der gegenüberliegenden Seite",
         ["motras_no_fence"] = "Kein Zaun",
+        ["placeable_on_tracks"] = "Auf/An Gleisen platzierbar",
+        ["platform_without_functionality"] = "Dieser Bahnsteig dient nur zur Dekoration und hat keinerlei Funktion",
+        ["luggage_platform_tall"] = "Schmaler Gepäck-/Wartungsbahnsteig"
       },
     }
 end

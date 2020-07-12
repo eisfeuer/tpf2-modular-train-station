@@ -212,7 +212,7 @@ describe('TrackModuleUtils', function ()
 
             track:addAssetSlot(expectedSlots, 29, {
                 assetType = t.ASSET,
-                slotType = 'motras_luggage_platform',
+                slotType = 'motras_maintenance_platform',
                 position = {0, 2.5, 1},
                 rotation = 0,
                 spacing = c.DEFAULT_ASSET_SLOT_SPACING
@@ -220,13 +220,13 @@ describe('TrackModuleUtils', function ()
 
             track:addAssetSlot(expectedSlots, 30, {
                 assetType = t.ASSET,
-                slotType = 'motras_luggage_platform',
+                slotType = 'motras_maintenance_platform',
                 position = {0, -2.5, 1},
                 rotation = 0,
                 spacing = c.DEFAULT_ASSET_SLOT_SPACING
             })
 
-            TrackModuleUtils.addLuggagePlatformSlot(track, slots)
+            TrackModuleUtils.addMaintenancePlatformSlot(track, slots)
             
             assert.are.same(expectedSlots, slots)
         end)
@@ -241,13 +241,13 @@ describe('TrackModuleUtils', function ()
 
             track:addAssetSlot(expectedSlots, 30, {
                 assetType = t.ASSET,
-                slotType = 'motras_luggage_platform',
+                slotType = 'motras_maintenance_platform',
                 position = {0, -2.5, 1},
                 rotation = 0,
                 spacing = c.DEFAULT_ASSET_SLOT_SPACING
             })
 
-            TrackModuleUtils.addLuggagePlatformSlot(track, slots)
+            TrackModuleUtils.addMaintenancePlatformSlot(track, slots)
 
             assert.are.same(expectedSlots, slots)
         end)

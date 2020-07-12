@@ -183,28 +183,18 @@ function data()
                         --     },
                         -- },
                         {
-                            materials = { "station/air/asset/asset_tf2/asset_transparent.mtl", },
-                            mesh = "station/air/asset/handrail_3m/handrail_3m_lod0.msh",
-                            name = "handrail_3m",
-                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3, 0, 0, 1, },
-                        },{
-                            materials = { "station/air/asset/asset_tf2/asset_transparent.mtl", },
-                            mesh = "station/air/asset/handrail_3m/handrail_3m_lod0.msh",
-                            name = "handrail_3m",
+                            materials = { "station/rail/cargo/cargo_station_concrete_1.mtl", },
+                            mesh = "station/rail/motras/luggage_platform_tall_lod0.msh",
+                            name = "luggage_platform_tall_lod0",
                             transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
-                        },{
-                            materials = { "station/air/asset/asset_tf2/asset_transparent.mtl", },
-                            mesh = "station/air/asset/handrail_3m/handrail_3m_lod0.msh",
-                            name = "handrail_3m",
-                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -3, 0, 0, 1, },
                         },
 
                     },
                     name = "RootNode",
                     transf = { 
-                        0, 1.2, 0, 0,
-                        -1.2, 0, 0, 0,
-                        0, 0, 1.2, 0,
+                        0, 1, 0, 0,
+                        -1, 0, 0, 0,
+                        0, 0, 1, 0,
                         0, 0, 0.0, 1
                     },
                 },

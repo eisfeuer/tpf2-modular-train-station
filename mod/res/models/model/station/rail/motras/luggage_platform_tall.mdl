@@ -1,0 +1,36 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 20, 0.89999997615814, 0.8299999833107, },
+		bbMin = { -20, -0.89999997615814, -0.69999998807907, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 20, 0.89999997615814, 0.76499998569489, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/cargo/cargo_station_concrete_1.mtl", },
+						mesh = "station/rail/motras/luggage_platform_tall_lod0.msh",
+						name = "luggage_platform_tall_lod0",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 2291.1279296875,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

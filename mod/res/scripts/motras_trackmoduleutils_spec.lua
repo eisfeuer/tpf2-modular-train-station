@@ -202,8 +202,8 @@ describe('TrackModuleUtils', function ()
         end)
     end)
 
-    describe('addLuggagePlatform', function ()
-        it ('adds slot for luggage platform', function ()
+    describe('addMaintenancePlatform', function ()
+        it ('adds slot for maintenance platform', function ()
             local slots = {}
             local expectedSlots = {}
 
@@ -248,6 +248,28 @@ describe('TrackModuleUtils', function ()
             })
 
             TrackModuleUtils.addMaintenancePlatformSlot(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+    end)
+
+    describe('addRailroadCrossingSlots', function ()
+        it ('adds slots for railroad crossing', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+
+            track:addAssetSlot(expectedSlots, 31, {
+                assetType = t.ASSET,
+                slotType = 'motras_railroad_crossing',
+                position = {0, 0, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            TrackModuleUtils.addRailroadCrossingSlots(track, slots)
 
             assert.are.same(expectedSlots, slots)
         end)

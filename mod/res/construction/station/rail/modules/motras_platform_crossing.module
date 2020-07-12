@@ -1,0 +1,195 @@
+local PlatformModuleUtils = require('motras_platformmoduleutils')
+local Box = require('motras_box')
+local Transf = require('transf')
+
+function data()
+    return {
+        cost = {
+            price = 18000,
+        },
+        category = {
+            categories = { "passenger", },
+        },
+        description = {
+            name = _("platform_access_for_railroad_crossing"),
+		    description = _("270mm"),
+            icon = "ui/construction/station/rail/motras/platform_270_era_c.tga"
+        }, 
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0
+        },
+        type = "motras_platform",
+        order = {
+            value = 10270,
+        },
+        metadata = {
+            motras = {
+                platformHeight = 0,
+                isRailroadCrossingAccess = true
+            }
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local platform = result.motras:register(slotId)
+
+            platform:handle(function (moduleResult)
+                local platformTransformation = Transf.mul(transform, Transf.transl({x = 0, y = 0, z = platform:getAbsolutePlatformHeight()}))
+
+                table.insert(result.models, {
+                    id = "station/rail/motras/platform_crossing_rep_mid_era_c.mdl",
+                    transf = platformTransformation
+                })
+
+                local needsWallTop = not (platform:getNeighborTop():isPlatform() and platform:getNeighborTop():getOption('isRailroadCrossingAccess', false))
+                local needsWallBottom = not (platform:getNeighborBottom():isPlatform() and platform:getNeighborBottom():getOption('isRailroadCrossingAccess', false))
+
+                if needsWallTop then
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_crossing_side_mid_top_era_c.mdl",
+                        transf = platformTransformation
+                    })
+                end
+                if needsWallBottom then
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_crossing_side_mid_bottom_era_c.mdl",
+                        transf = platformTransformation
+                    })
+                end
+
+                local terrainAlignmentLeft = 5
+                local terrainAlignmentRight = 5
+
+                if platform:getNeighborLeft():isPlatform() then
+                    terrainAlignmentLeft = 20
+
+                    local scaleTransformation = Transf.mul(
+                        platformTransformation,
+                        Transf.scale({x = 1, y = 1, z = math.max(platform:getNeighborLeft():getPlatformHeight(), 0.01)})
+                    )
+
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_crossing_rep_left_era_c.mdl",
+                        transf = scaleTransformation
+                    })
+
+                    if needsWallTop then
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c.mdl",
+                            transf = scaleTransformation
+                        })
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_left_top_era_c.mdl",
+                            transf = platformTransformation
+                        })
+                    end
+                    if needsWallBottom then
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c.mdl",
+                            transf = scaleTransformation
+                        })
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_left_bottom_era_c.mdl",
+                            transf = platformTransformation
+                        })
+                    end
+                else
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_crossing_side_mid_right_era_c.mdl",
+                        transf = platformTransformation
+                    })
+                end
+
+                if platform:getNeighborRight():isPlatform() then
+                    terrainAlignmentRight = 20
+                    
+                    local scaleTransformation = Transf.mul(
+                        platformTransformation,
+                        Transf.scale({x = 1, y = 1, z = math.max(platform:getNeighborRight():getPlatformHeight(), 0.01)})
+                    )
+
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_crossing_rep_right_era_c.mdl",
+                        transf = scaleTransformation
+                    })
+
+                    if needsWallTop then
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_right_top_ramp_era_c.mdl",
+                            transf = scaleTransformation
+                        })
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_right_top_era_c.mdl",
+                            transf = platformTransformation
+                        })
+                    end
+                    if needsWallBottom then
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_right_bottom_ramp_era_c.mdl",
+                            transf = scaleTransformation
+                        })
+                        table.insert(result.models, {
+                            id = "station/rail/motras/platform_crosssing_side_right_bottom_era_c.mdl",
+                            transf = platformTransformation
+                        })
+                    end
+                else
+                    table.insert(result.models, {
+                        id = "station/rail/motras/platform_crossing_side_mid_left_era_c.mdl",
+                        transf = platformTransformation
+                    })
+                end
+
+                local boundingBox = Box:new(
+                    {platform:getAbsoluteX() - terrainAlignmentLeft, platform:getAbsoluteY() - 2.5, 0},
+                    {platform:getAbsoluteX() + terrainAlignmentRight, platform:getAbsoluteY() + 2.5, platform:getAbsolutePlatformHeight()}
+                )
+                local mainGroundFace = boundingBox:getGroundFace()
+                local forecourtGroundFace = Box:new(
+                    {boundingBox.pointNeg[1] - 1, boundingBox.pointNeg[2] - 1, boundingBox.pointNeg[3]},
+                    {boundingBox.pointPos[1] + 1, boundingBox.pointPos[2] + 1, boundingBox.pointPos[3]}
+                ):getGroundFace()
+
+                local terrainAlignmentLists = {
+                    { type = "EQUAL", faces = { forecourtGroundFace } },
+                }
+                
+                for i = 1, #terrainAlignmentLists do
+                    local t = terrainAlignmentLists[i]
+                    table.insert(result.terrainAlignmentLists, t)
+                end
+            
+                table.insert(result.groundFaces, {  
+                    face = mainGroundFace,
+                    modes = {
+                        {
+                            type = "FILL",
+                            key = "shared/asphalt_01.gtex.lua"
+                        },
+                        {
+                            type = "STROKE_OUTER",
+                            key = "street_border.lua"
+                        },
+                    },
+                })
+                table.insert(result.groundFaces, {  
+                    face = forecourtGroundFace,
+                    modes = {
+                        {
+                            type = "FILL",
+                            key = "shared/gravel_03.gtex.lua"
+                        },
+                        {
+                            type = "STROKE_OUTER",
+                            key = "street_border.lua"
+                        },
+                    },
+                })
+            end)
+
+            platform:handleTerminals(function (addTerminal, directionFactor) end)
+        end,
+        getModelsFn = function()
+            return { }
+        end
+    }
+end

@@ -1,0 +1,51 @@
+local Transf = require("transf")
+
+function data()
+    return {
+        cost = {
+            price = 0,
+        },
+        category = {
+            categories = { "misc", },
+        },
+        description = {
+            name = _("railroad_crossing_concrete"),
+		    description = _("placeable_on_tracks"),
+		    icon = "ui/construction/station/rail/motras/luggage_platform_tall.tga"
+        }, 
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0
+        },
+        type = "motras_railroad_crossing",
+        order = {
+            value = 89001,
+        },
+        metadata = {
+        },
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local asset = result.motras:register(slotId)
+
+            asset:handle(function ()
+                table.insert(result.models, {
+                    id = "station/rail/motras/railroad_crossing_concrete.mdl",
+                    transf = Transf.mul(transform, Transf.transl({x = 0, y = 0, z = -1})),
+                    tag = tag
+                })
+            end)
+        end,
+        getModelsFn = function()
+            return {
+                { 
+                    id = "station/rail/motras/railroad_crossing_concrete.mdl",
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1
+                    },
+                },
+            }
+        end
+    }
+end

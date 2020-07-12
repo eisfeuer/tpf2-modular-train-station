@@ -31,9 +31,9 @@ MOTRAS v1.1
 |26            | -                                      | Underpass small (inner left)           | -                                      |
 |27            | -                                      | Underpass small (inner right)          | -                                      |
 |28            | -                                      | Underpass small (outer right)          | -                                      |
-|29            | -                                      | Underpass large (outer left)           | -                                      |
-|30            | -                                      | Underpass large (inner left)           | -                                      |
-|31            | -                                      | Underpass large (inner right)          | -                                      |
+|29            | Maintenance platform (top)             | Underpass large (outer left)           | -                                      |
+|30            | Maintenance platform (bottom)          | Underpass large (inner left)           | -                                      |
+|31            | Railroad crossing                      | Underpass large (inner right)          | -                                      |
 |32            | -                                      | Underpass large (outer right)          | -                                      |
 |33            | -                                      | Roof for single platform               | -                                      |
 |34            | -                                      | Roof for double platform               | -                                      |

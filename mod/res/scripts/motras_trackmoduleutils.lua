@@ -204,10 +204,20 @@ function TrackModuleUtils.addMaintenancePlatformSlot(track, slots)
     end
 end
 
+function TrackModuleUtils.addRailroadCrossingSlots(track, slots)
+    track:addAssetSlot(slots, 31, {
+        assetType = t.ASSET,
+        slotType = 'motras_railroad_crossing',
+        position = {0, 0, 1},
+        rotation = 0,
+    })
+end
+
 function TrackModuleUtils.addBasicTrackSlots(track, slots)
     TrackModuleUtils.addFenceSlots(track, slots)
     TrackModuleUtils.addBuildingSlots(track, slots)
     TrackModuleUtils.addMaintenancePlatformSlot(track, slots)
+    TrackModuleUtils.addRailroadCrossingSlots(track, slots)
 end
 
 return TrackModuleUtils

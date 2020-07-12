@@ -16,14 +16,36 @@ function data()
                 },
             },
             params = {
-                -- {
-                -- key = "motras_tracks",
-                -- name = _("Tracks"),
-                -- values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12") },
-                -- defaultIndex = 0,
-                -- }
+                {
+                    key = "motras_initial_platform_height",
+                    uiType = "COMBOBOX",
+                    name = _("initial_platform_height_in_mm"),
+                    values = { _("default_platform_height"), _("200"), _("250"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1219"), _("1250")},
+                    defaultIndex = 0
+                },
             },
         },
+        -- runFn = function (settings, globalParams)
+        --     local modParams = globalParams[getCurrentModId()]
+        --     if modParams.motras_initial_platform_height and modParams.motras_initial_platform_height > 0 then
+        --         addModifier("loadConstruction", function (fileName, data)
+        --             if fileName == "res/construction/station/rail/motras.con" then
+        --                 for _, template in ipairs(data.constructionTemplates) do
+        --                     if template.data and template.data.params then
+        --                         for _, param in ipairs(template.data.params) do
+        --                             if param.key == "motras_platform_height" then
+        --                                 param.defaultIndex = modParams.motras_initial_platform_height
+        --                             end
+        --                         end
+        --                     end
+        --                 end
+        --                 print(require('inspect')(data))
+        --             end
+
+        --             return data
+        --         end)
+        --     end
+        -- end,
         postRunFn = function(settings, params)
             local tracks = api.res.trackTypeRep.getAll()
             

@@ -185,6 +185,25 @@ function TrackModuleUtils.addBuildingSlots(track, slots)
     end
 end
 
+function TrackModuleUtils.addLuggagePlatformSlot(track, slots)
+    if (not track:hasNeighborTop()) or track:getNeighborTop():isTrack() then
+        track:addAssetSlot(slots, 29, {
+            assetType = t.ASSET,
+            slotType = 'motras_luggage_platform',
+            position = {0, 2.5, 1},
+            rotation = 0,
+        })
+    end
+    if not track:hasNeighborBottom() then
+        track:addAssetSlot(slots, 30, {
+            assetType = t.ASSET,
+            slotType = 'motras_luggage_platform',
+            position = {0, -2.5, 1},
+            rotation = 0,
+        })
+    end
+end
+
 function TrackModuleUtils.addBasicTrackSlots(track, slots)
     TrackModuleUtils.addFenceSlots(track, slots)
     TrackModuleUtils.addBuildingSlots(track, slots)

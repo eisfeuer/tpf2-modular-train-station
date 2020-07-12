@@ -201,4 +201,55 @@ describe('TrackModuleUtils', function ()
             assert.are.same(expectedSlots, slots)
         end)
     end)
+
+    describe('addLuggagePlatform', function ()
+        it ('adds slot for luggage platform', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+
+            track:addAssetSlot(expectedSlots, 29, {
+                assetType = t.ASSET,
+                slotType = 'motras_luggage_platform',
+                position = {0, 2.5, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            track:addAssetSlot(expectedSlots, 30, {
+                assetType = t.ASSET,
+                slotType = 'motras_luggage_platform',
+                position = {0, -2.5, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            TrackModuleUtils.addLuggagePlatformSlot(track, slots)
+            
+            assert.are.same(expectedSlots, slots)
+        end)
+
+        it ('adds no slot for luggage platform when track is on platform', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = 0, gridY = 1}))
+
+            track:addAssetSlot(expectedSlots, 30, {
+                assetType = t.ASSET,
+                slotType = 'motras_luggage_platform',
+                position = {0, -2.5, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            TrackModuleUtils.addLuggagePlatformSlot(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+    end)
 end)

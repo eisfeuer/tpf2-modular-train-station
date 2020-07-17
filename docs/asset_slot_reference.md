@@ -55,8 +55,8 @@ MOTRAS v1.1
 |50            | Underpass entrance (bottom, mid)       | Underpass entrance (bottom)            | -                                      |
 |51            | Underpass entrance (top, side)         | Underpass entrance (top, side)         | -                                      |
 |52            | Underpass entrance (bottom side)       | Underpass entrance (bottom side)       | -                                      |
-|53            | -                                      | -                                      | -                                      |
-|54            | -                                      | -                                      | -                                      |
+|53            | Hall roof start                        | Hall roof start                        | -                                      |
+|54            | Hall roof end                          | Hall roof end                          | -                                      |
 |55            | -                                      | -                                      | -                                      |
 |56            | -                                      | -                                      | -                                      |
 |57            | -                                      | -                                      | -                                      |

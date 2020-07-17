@@ -311,6 +311,24 @@ function PlatformModuleUtils.makeLot(result, platform, options)
     })
 end
 
+function PlatformModuleUtils.addHallRoofSlots(track, slots)
+    if not track:hasNeighborBottom() or track:getNeighborBottom():hasAsset(54) then
+        track:addAssetSlot(slots, 53, {
+            assetType = t.ROOF,
+            slotType = 'motras_hall_roof',
+            position = {0, -2.5, 2},
+            rotation = 0,
+        })
+    end
+
+    track:addAssetSlot(slots, 54, {
+        assetType = t.ROOF,
+        slotType = 'motras_hall_roof',
+        position = {0, 2.5, 1},
+        rotation = 0,
+    })
+end
+
 function PlatformModuleUtils.addUnderpassSlots(platform, slots)
     if (not platform:hasAsset(37) or platform:hasAsset(41)) then
         platform:addAssetSlot(slots, 25, {
@@ -601,6 +619,7 @@ function PlatformModuleUtils.makePlatformModule(platform, result, transform, tag
     PlatformModuleUtils.addDecorationSlots(platform, result.slots)
     PlatformModuleUtils.addRoofSlots(platform, result.slots)
     PlatformModuleUtils.addFenceSlots(platform, result.slots)
+    PlatformModuleUtils.addHallRoofSlots(platform, result.slots)
 
     platform:handle(function (moduleResult)
         local platformHeightTransform = platform:applyPlatformHeightOnTransformation(transform)

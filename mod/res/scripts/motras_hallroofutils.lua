@@ -15,23 +15,23 @@ local function hasMatchingHallRoofAtSlot(slot, gridElement, asset)
 end
 
 function HallRoofUtils.buildHallRoof(asset, buildFunc)
-    if asset:getId() == 53 then
-        buildFunc(false, 0)
-    elseif asset:getId() == 54 then
+    if asset:getId() == 54 then
         local grid = asset:getGrid()
         for iY = asset:getGridX(), grid:getActiveGridBounds().bottom, -1 do
             local currentGridElement = grid:get(asset:getGridX(), iY)
 
             if hasMatchingHallRoofAtSlot(53, currentGridElement, asset) then
-                buildFunc(true, (asset:getGridY() - iY + 1) * grid:getVerticalDistance())
+                buildFunc(true, (asset:getGridY() - iY + 1) * grid:getVerticalDistance(), -1)
                 return
             elseif hasMatchingHallRoofAtSlot(54, currentGridElement, asset) then
-                buildFunc(true, (asset:getGridY() - iY) * grid:getVerticalDistance())
+                buildFunc(true, (asset:getGridY() - iY) * grid:getVerticalDistance(), -1)
                 return
             end
         end
 
-        buildFunc(false, 0)
+        buildFunc(false, 0, -1)
+    elseif asset:getId() == 53 then
+        buildFunc(false, 0, -2)
     else
         error('hall roofes must be placed on hall roof slots')
     end

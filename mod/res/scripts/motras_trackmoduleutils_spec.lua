@@ -274,4 +274,83 @@ describe('TrackModuleUtils', function ()
             assert.are.same(expectedSlots, slots)
         end)
     end)
+
+    describe('addHallRoofSlots', function ()
+        it ('adds start and end slot', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+
+            track:addAssetSlot(expectedSlots, 53, {
+                assetType = t.ROOF,
+                slotType = 'motras_hall_roof',
+                position = {0, -2.5, 2},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+            track:addAssetSlot(expectedSlots, 54, {
+                assetType = t.ROOF,
+                slotType = 'motras_hall_roof',
+                position = {0, 2.5, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            TrackModuleUtils.addHallRoofSlots(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+
+        it ('adds end slots only when track has bottom neighbor', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1}))
+
+            track:addAssetSlot(expectedSlots, 54, {
+                assetType = t.ROOF,
+                slotType = 'motras_hall_roof',
+                position = {0, 2.5, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            TrackModuleUtils.addHallRoofSlots(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+        
+        it ('adds start roof slot when end roof slot is occupied', function ()
+            local slots = {}
+            local expectedSlots = {}
+
+            local station = Station:new()
+            local track = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = 0}))
+            station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 0, gridY = -1}))
+            station:initializeAndRegister(Slot.makeId({type = t.ASSET, gridX = 0, gridY = -1, assetId = 54}))
+
+            track:addAssetSlot(expectedSlots, 53, {
+                assetType = t.ROOF,
+                slotType = 'motras_hall_roof',
+                position = {0, -2.5, 2},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+            track:addAssetSlot(expectedSlots, 54, {
+                assetType = t.ROOF,
+                slotType = 'motras_hall_roof',
+                position = {0, 2.5, 1},
+                rotation = 0,
+                spacing = c.DEFAULT_ASSET_SLOT_SPACING
+            })
+
+            TrackModuleUtils.addHallRoofSlots(track, slots)
+
+            assert.are.same(expectedSlots, slots)
+        end)
+    end)
 end)

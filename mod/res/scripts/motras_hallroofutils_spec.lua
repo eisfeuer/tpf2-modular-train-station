@@ -15,7 +15,7 @@ describe('HallRoofUtils', function ()
 
             local buildFunc = spy.new(function() end)
             HallRoofUtils.buildHallRoof(roofAsset, buildFunc)
-            assert.spy(buildFunc).was.called_with(false, 0)
+            assert.spy(buildFunc).was.called_with(false, 0, -1)
         end)
 
         it('cannot build roof and has a lengt of 0 when slot is a starting slot', function ()
@@ -25,7 +25,7 @@ describe('HallRoofUtils', function ()
 
             local buildFunc = spy.new(function() end)
             HallRoofUtils.buildHallRoof(roofAsset, buildFunc)
-            assert.spy(buildFunc).was.called_with(false, 0)
+            assert.spy(buildFunc).was.called_with(false, 0, -2)
         end)
 
         it('cannot build roof and has a lengt of 0 when slots are in different groups', function ()
@@ -37,7 +37,7 @@ describe('HallRoofUtils', function ()
 
             local buildFunc = spy.new(function() end)
             HallRoofUtils.buildHallRoof(roofAsset, buildFunc)
-            assert.spy(buildFunc).was.called_with(false, 0)
+            assert.spy(buildFunc).was.called_with(false, 0, -1)
         end)
 
         it('builds roof from start to end', function ()
@@ -51,7 +51,7 @@ describe('HallRoofUtils', function ()
 
             local buildFunc = spy.new(function() end)
             HallRoofUtils.buildHallRoof(roofAsset, buildFunc)
-            assert.spy(buildFunc).was.called_with(true, 10)
+            assert.spy(buildFunc).was.called_with(true, 10, -1)
         end)
 
         it('builds roof from end to end', function ()
@@ -65,7 +65,7 @@ describe('HallRoofUtils', function ()
 
             local buildFunc = spy.new(function() end)
             HallRoofUtils.buildHallRoof(roofAsset, buildFunc)
-            assert.spy(buildFunc).was.called_with(true, 5)
+            assert.spy(buildFunc).was.called_with(true, 5, -1)
         end)
     end)
 end)

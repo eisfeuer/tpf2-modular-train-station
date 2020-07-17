@@ -213,11 +213,30 @@ function TrackModuleUtils.addRailroadCrossingSlots(track, slots)
     })
 end
 
+function TrackModuleUtils.addHallRoofSlots(track, slots)
+    if not track:hasNeighborBottom() or track:getNeighborBottom():hasAsset(54) then
+        track:addAssetSlot(slots, 53, {
+            assetType = t.ROOF,
+            slotType = 'motras_hall_roof',
+            position = {0, -2.5, 2},
+            rotation = 0,
+        })
+    end
+
+    track:addAssetSlot(slots, 54, {
+        assetType = t.ROOF,
+        slotType = 'motras_hall_roof',
+        position = {0, 2.5, 1},
+        rotation = 0,
+    })
+end
+
 function TrackModuleUtils.addBasicTrackSlots(track, slots)
     TrackModuleUtils.addFenceSlots(track, slots)
     TrackModuleUtils.addBuildingSlots(track, slots)
     TrackModuleUtils.addMaintenancePlatformSlot(track, slots)
     TrackModuleUtils.addRailroadCrossingSlots(track, slots)
+    TrackModuleUtils.addHallRoofSlots(track, slots)
 end
 
 return TrackModuleUtils

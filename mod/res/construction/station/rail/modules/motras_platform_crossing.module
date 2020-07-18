@@ -2,6 +2,82 @@ local PlatformModuleUtils = require('motras_platformmoduleutils')
 local Box = require('motras_box')
 local Transf = require('transf')
 
+local function setupLeftRamps(platformTransformation, height)
+    if height < 0.49 then
+        local scaleTransformation = Transf.mul(
+            platformTransformation,
+            Transf.scale({x = 1, y = 1, z = math.max(height / 0.2, 0.01)})
+        )
+
+        return scaleTransformation, {
+            repLeft = "station/rail/motras/platform_crossing_rep_left_era_c_20cm.mdl",
+            sideLeftTop = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c_20cm.mdl",
+            sideLeftBottom = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c_20cm.mdl"
+        }
+    end
+
+    if height < 0.9 then
+        local scaleTransformation = Transf.mul(
+            platformTransformation,
+            Transf.scale({x = 1, y = 1, z = math.max(height / 0.5, 0.01)})
+        )
+
+        return scaleTransformation, {
+            repLeft = "station/rail/motras/platform_crossing_rep_left_era_c_50cm.mdl",
+            sideLeftTop = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c_50cm.mdl",
+            sideLeftBottom = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c_50cm.mdl"
+        }
+    end
+
+    local scaleTransformation = Transf.mul(
+        platformTransformation,
+        Transf.scale({x = 1, y = 1, z = math.max(height, 0.01)})
+    )
+    return scaleTransformation, {
+        repLeft = "station/rail/motras/platform_crossing_rep_left_era_c.mdl",
+        sideLeftTop = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c.mdl",
+        sideLeftBottom = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c.mdl"
+    }
+end
+
+local function setupRightRamps(platformTransformation, height)
+    if height < 0.49 then
+        local scaleTransformation = Transf.mul(
+            platformTransformation,
+            Transf.scale({x = 1, y = 1, z = math.max(height / 0.2, 0.01)})
+        )
+
+        return scaleTransformation, {
+            repRight = "station/rail/motras/platform_crossing_rep_right_era_c_20cm.mdl",
+            sideRightTop = "station/rail/motras/platform_crosssing_side_right_top_ramp_era_c_20cm.mdl",
+            sideRightBottom = "station/rail/motras/platform_crosssing_side_right_bottom_ramp_era_c_20cm.mdl"
+        }
+    end
+
+    if height < 0.9 then
+        local scaleTransformation = Transf.mul(
+            platformTransformation,
+            Transf.scale({x = 1, y = 1, z = math.max(height / 0.5, 0.01)})
+        )
+
+        return scaleTransformation, {
+            repRight = "station/rail/motras/platform_crossing_rep_right_era_c_50cm.mdl",
+            sideRightTop = "station/rail/motras/platform_crosssing_side_right_top_ramp_era_c_50cm.mdl",
+            sideRightBottom = "station/rail/motras/platform_crosssing_side_right_bottom_ramp_era_c_50cm.mdl"
+        }
+    end
+
+    local scaleTransformation = Transf.mul(
+        platformTransformation,
+        Transf.scale({x = 1, y = 1, z = math.max(height, 0.01)})
+    )
+    return scaleTransformation, {
+        repLeft = "station/rail/motras/platform_crossing_rep_left_era_c.mdl",
+        sideLeftTop = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c.mdl",
+        sideLeftBottom = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c.mdl"
+    }
+end
+
 function data()
     return {
         cost = {
@@ -62,19 +138,19 @@ function data()
                 if platform:getNeighborLeft():isPlatform() then
                     terrainAlignmentLeft = 20
 
-                    local scaleTransformation = Transf.mul(
+                    local scaleTransformation, rampModels = setupLeftRamps(
                         platformTransformation,
-                        Transf.scale({x = 1, y = 1, z = math.max(platform:getNeighborLeft():getPlatformHeight(), 0.01)})
+                        platform:getNeighborLeft():getPlatformHeight()
                     )
 
                     table.insert(result.models, {
-                        id = "station/rail/motras/platform_crossing_rep_left_era_c.mdl",
+                        id = rampModels['repLeft'],
                         transf = scaleTransformation
                     })
 
                     if needsWallTop then
                         table.insert(result.models, {
-                            id = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c.mdl",
+                            id = rampModels["sideLeftTop"],
                             transf = scaleTransformation
                         })
                         table.insert(result.models, {
@@ -84,7 +160,7 @@ function data()
                     end
                     if needsWallBottom then
                         table.insert(result.models, {
-                            id = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c.mdl",
+                            id = rampModels["sideLeftBottom"],
                             transf = scaleTransformation
                         })
                         table.insert(result.models, {
@@ -102,19 +178,19 @@ function data()
                 if platform:getNeighborRight():isPlatform() then
                     terrainAlignmentRight = 20
                     
-                    local scaleTransformation = Transf.mul(
+                    local scaleTransformation, rampModels = setupRightRamps(
                         platformTransformation,
-                        Transf.scale({x = 1, y = 1, z = math.max(platform:getNeighborRight():getPlatformHeight(), 0.01)})
+                        platform:getNeighborRight():getPlatformHeight()
                     )
 
                     table.insert(result.models, {
-                        id = "station/rail/motras/platform_crossing_rep_right_era_c.mdl",
+                        id = rampModels["repRight"],
                         transf = scaleTransformation
                     })
 
                     if needsWallTop then
                         table.insert(result.models, {
-                            id = "station/rail/motras/platform_crosssing_side_right_top_ramp_era_c.mdl",
+                            id = rampModels["sideRightTop"],
                             transf = scaleTransformation
                         })
                         table.insert(result.models, {
@@ -124,7 +200,7 @@ function data()
                     end
                     if needsWallBottom then
                         table.insert(result.models, {
-                            id = "station/rail/motras/platform_crosssing_side_right_bottom_ramp_era_c.mdl",
+                            id = rampModels["sideRightBottom"],
                             transf = scaleTransformation
                         })
                         table.insert(result.models, {

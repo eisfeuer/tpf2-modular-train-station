@@ -72,9 +72,9 @@ local function setupRightRamps(platformTransformation, height)
         Transf.scale({x = 1, y = 1, z = math.max(height, 0.01)})
     )
     return scaleTransformation, {
-        repLeft = "station/rail/motras/platform_crossing_rep_left_era_c.mdl",
-        sideLeftTop = "station/rail/motras/platform_crosssing_side_left_top_ramp_era_c.mdl",
-        sideLeftBottom = "station/rail/motras/platform_crosssing_side_left_bottom_ramp_era_c.mdl"
+        repRight = "station/rail/motras/platform_crossing_rep_right_era_c.mdl",
+        sideRightTop = "station/rail/motras/platform_crosssing_side_right_top_ramp_era_c.mdl",
+        sideRightBottom = "station/rail/motras/platform_crosssing_side_right_bottom_ramp_era_c.mdl"
     }
 end
 

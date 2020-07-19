@@ -47,7 +47,7 @@ function PlatformEdge:addToModels(models, flipped)
         ))
     end
 
-    if leftNeighbor:isPlatform() or leftNeighbor:isPlace() then
+    if (leftNeighbor:isPlatform() and not leftNeighbor:getOption('isRailroadCrossingAccess')) or leftNeighbor:isPlace() then
         if flipped then
             self:addRightPartToModels(models, rotation, flipFactor, self.rightConnectionModel, horizontalDistance, verticalDistance)
         else
@@ -61,7 +61,7 @@ function PlatformEdge:addToModels(models, flipped)
         end
     end
 
-    if rightNeighbor:isPlatform() or rightNeighbor:isPlace() then
+    if (rightNeighbor:isPlatform() and not rightNeighbor:getOption('isRailroadCrossingAccess')) or rightNeighbor:isPlace() then
         if flipped then
             self:addLeftPartToModels(models, rotation, flipFactor, self.leftConnectionModel, horizontalDistance, verticalDistance)
         else

@@ -1,4 +1,5 @@
 local TrackModuleUtils = require('motras_trackmoduleutils')
+local Stylelist = require('motras_gamescript.stylelist')
 
 function data()
     return {
@@ -25,27 +26,6 @@ function data()
                 },
             },
         },
-        -- runFn = function (settings, globalParams)
-        --     local modParams = globalParams[getCurrentModId()]
-        --     if modParams.motras_initial_platform_height and modParams.motras_initial_platform_height > 0 then
-        --         addModifier("loadConstruction", function (fileName, data)
-        --             if fileName == "res/construction/station/rail/motras.con" then
-        --                 for _, template in ipairs(data.constructionTemplates) do
-        --                     if template.data and template.data.params then
-        --                         for _, param in ipairs(template.data.params) do
-        --                             if param.key == "motras_platform_height" then
-        --                                 param.defaultIndex = modParams.motras_initial_platform_height
-        --                             end
-        --                         end
-        --                     end
-        --                 end
-        --                 print(require('inspect')(data))
-        --             end
-
-        --             return data
-        --         end)
-        --     end
-        -- end,
         postRunFn = function(settings, params)
             local tracks = api.res.trackTypeRep.getAll()
             
@@ -60,6 +40,40 @@ function data()
                     end
                 end
             end
+
+            -- local styleList = {}
+
+            -- local findStyle = function (styleList, styleName)
+            --     for pos, style in ipairs(styleList) do
+            --         if styleName == style.metadata.name then
+            --             return style
+            --         end
+            --     end
+
+            --     local style = {
+            --         metadata = {
+            --             name = styleName
+            --         }
+            --     }
+            --     table.insert(styleList, style)
+
+            --     return style
+            -- end
+
+            -- for _, moduleFile in pairs(api.res.moduleRep.getAll()) do
+            --     local conModule = api.res.moduleRep.get(api.res.moduleRep.find(moduleFile))
+            --     if conModule.metadata and conModule.metadata.motras_style_group and conModule.metadata.motras_style_type then
+            --         local style = findStyle(styleList, conModule.metadata.motras_style_group)
+            --         style[conModule.metadata.motras_style_type] = moduleFile
+            --     end
+            -- end
+
+            local stylelist = Stylelist:new()
+            stylelist:collectFromModules()
+
+            local motrasStation = api.res.constructionRep.get(api.res.constructionRep.find('station/rail/motras.con'))
+            motrasStation.createTemplateScript.fileName = "construction/station/rail/motras.createTemplateFn"
+            motrasStation.createTemplateScript.params = {themes = stylelist:get()}
         end
     }
     end

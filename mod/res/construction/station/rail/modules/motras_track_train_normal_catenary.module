@@ -33,8 +33,6 @@ function data()
             TrackModuleUtils.addBasicTrackSlots(track, result.slots)
             
             track:handle(function (moduleResult)
-                TrackModuleUtils.makeLot(result, track)
-
                 local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
                 local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())
                 TrackModuleUtils.makeTrack(track, 'standard.lua', true, snapLeft, snapRight)

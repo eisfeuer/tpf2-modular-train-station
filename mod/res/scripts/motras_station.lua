@@ -13,6 +13,7 @@ local AssetSlotCache = require("motras_asset_slot_cache")
 local UnderpassUtils = require("motras_underpassutils")
 local AssetDecorationSlotCache = require('motras_asset_decoration_slot_cache')
 local PlatformIdMapper = require('motras_displayed_name_mappers.platform_id_mapper')
+local RailroadCrossing = require('motras_railroad_crossing')
 
 local c = require("motras_constants")
 local t = require("motras_types")
@@ -38,6 +39,8 @@ function Station:new(o)
     o.assetSlotCache = AssetSlotCache:new{}
     o.assetDecorationSlotCache = AssetDecorationSlotCache:new{}
 
+    o.railroadCrossing = RailroadCrossing:new{}
+
     setmetatable(o, self)
     self.__index = self
 
@@ -49,6 +52,8 @@ function Station:processResult(result)
 
     TrackUtils.addTrackIdsToAllTracksOnGrid(self.grid, self.displayedNameMapper or PlatformIdMapper:new{})
     self.grid:handleModules(result)
+
+    self.railroadCrossing:addToEdgeLists(result.edgeLists)
 
     local edgeListMap = EdgeListMap:new{edgeLists = result.edgeLists}
     self.grid:each(function (gridElement)

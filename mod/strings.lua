@@ -1,5 +1,8 @@
 function data()
     return {
+      da = {
+        ["motras_menu_name"] = "Katze",
+      },
       en = {
         ["truss_mountable"] = "Can be mounted on truss, lamps or pillars",
         ["wall_mountable"] = "Can be mounted on walls",
@@ -52,7 +55,8 @@ function data()
         ["motras_no_fence"] = "No fence",
         ["placeable_on_tracks"] = "Placeable on tracks",
         ["platform_without_functionality"] = "This platform is only decoration and has no functionality",
-        ["luggage_platform_tall"] = "Tall luggage or maintenance platform"
+        ["luggage_platform_tall"] = "Tall luggage or maintenance platform",
+        ["motras_theme"] = "Appearance / Corporate Identity",
       },
       de = {
         ["truss_mountable"] = "Befestigung an Trägern, Säulen oder Lampen",
@@ -107,7 +111,8 @@ function data()
         ["motras_no_fence"] = "Kein Zaun",
         ["placeable_on_tracks"] = "Auf/An Gleisen platzierbar",
         ["platform_without_functionality"] = "Dieser Bahnsteig dient nur zur Dekoration und hat keinerlei Funktion",
-        ["luggage_platform_tall"] = "Schmaler Gepäck-/Wartungsbahnsteig"
+        ["luggage_platform_tall"] = "Schmaler Gepäck-/Wartungsbahnsteig",
+        ["motras_theme"] = "Aussehen / Corporate Identity"
       },
     }
 end

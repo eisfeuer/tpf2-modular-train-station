@@ -69,6 +69,7 @@ end
 function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid)
     local tracksAndPlatformsTop = {}
     local tracksAndPlatformsBottom = {}
+    local zigZags = {}
 
     grid:eachActivePositionReversed(function (gridElement, iX, iY) 
         if gridElement:isTrack() then
@@ -87,11 +88,20 @@ function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid)
                 TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsBottom)
                 tracksAndPlatformsBottom = {}
             end
+
+            if gridElement:getOption('zigZag', false) then
+                table.insert(zigZags, {gridElement, gridElement})
+            else
+                TerminalUtils.addTerminal(terminalGroups, models, zigZags)
+                zigZags = {}
+            end
         else
             TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsTop)
             tracksAndPlatformsTop = {}
             TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsBottom)
             tracksAndPlatformsBottom = {}
+            TerminalUtils.addTerminal(terminalGroups, models, zigZags)
+            zigZags = {}
         end
 
         if iX == grid.activeBounds.right then
@@ -99,6 +109,8 @@ function TerminalUtils.addTerminalsFromGrid(terminalGroups, models, grid)
             tracksAndPlatformsTop = {}
             TerminalUtils.addTerminal(terminalGroups, models, tracksAndPlatformsBottom)
             tracksAndPlatformsBottom = {}
+            TerminalUtils.addTerminal(terminalGroups, models, zigZags)
+            zigZags = {}
         end
 
     end)

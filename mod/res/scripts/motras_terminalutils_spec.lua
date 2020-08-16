@@ -55,11 +55,13 @@ describe('TerminalUtils', function ()
     track3:setTrackType('standard.lua'):setCatenary(true):setEdges(trackEdges):setStopNodes(trackStopNodes)
     track3:setEdgeListMap(edgeListMap)
     track3:setFirstNode(#edgeLists[1].edges)
+    track3:setOption('zigZag', true)
     TrackUtils.addEdgesToEdgeList(edgeLists[1], track3:getEdges(), {})
     local track4 = station:initializeAndRegister(Slot.makeId({type = t.TRACK, gridX = 2, gridY = 0}))
     track4:setTrackType('standard.lua'):setCatenary(true):setEdges(trackEdges):setStopNodes(trackStopNodes)
     track4:setEdgeListMap(edgeListMap)
     track4:setFirstNode(#edgeLists[1].edges)
+    track4:setOption('zigZag', true)
     TrackUtils.addEdgesToEdgeList(edgeLists[1], track4:getEdges(), {})
 
     local topPlatform1 = station:initializeAndRegister(Slot.makeId({type = t.PLATFORM, gridX = -1, gridY = 1}))
@@ -145,7 +147,7 @@ describe('TerminalUtils', function ()
                 {
                     id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
                     transf = btmPlatform4:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
-                }
+                },
             }, models)
 
             assert.are.same({
@@ -201,6 +203,24 @@ describe('TerminalUtils', function ()
                 {
                     id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
                     transf = btmPlatform4:getGlobalTransformationBasedOnPlatformTop({y = c.DEFAULT_PLATFORM_WAITING_EDGE_OFFSET})
+                },
+                {
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        track3:getAbsoluteX(), track3:getAbsoluteY(),  -10, 1,
+                    }
+                },
+                {
+                    id = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                    transf = {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        track4:getAbsoluteX(), track4:getAbsoluteY(), -10, 1,
+                    }
                 }
             }, models)
 
@@ -212,6 +232,10 @@ describe('TerminalUtils', function ()
                 {
                     terminals = {{4, 0}, {5, 0}, {6, 0}, {7, 0}},
                     vehicleNodeOverride = 20
+                },
+                {
+                    terminals = {{8, 0}, {9, 0}},
+                    vehicleNodeOverride = 30
                 }
             }, terminalGroups)
         end)

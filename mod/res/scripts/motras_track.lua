@@ -140,6 +140,24 @@ function TrackClass:new(gridElement)
         return self:getOption('displayedDestination')
     end
 
+    function Track:callTerminalHandling(addTerminalFunc, directionFactor)
+        local handleFunc = self.terminalHandlingFunc or function (addTerminalFuncParam)
+            local transformation = {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                self:getAbsoluteX(), self:getAbsoluteY(), self:getGrid():getBaseHeight() - 10, 1
+            }
+            addTerminalFuncParam(c.DEFAULT_PASSENGER_TERMINAL_MODEL, transformation, 0)
+        end
+
+        handleFunc(addTerminalFunc, directionFactor)
+    end
+
+    function Track:handleTerminals(terminalHandlingFunc)
+        self.terminalHandlingFunc = terminalHandlingFunc
+    end
+
     return Track
 end
 

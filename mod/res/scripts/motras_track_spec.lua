@@ -2,6 +2,7 @@ local Slot = require("motras_slot")
 local t = require("motras_types")
 local Grid = require("motras_grid")
 local EdgeListMap = require("motras_edge_list_map")
+local c = require("motras_constants")
 
 local GridElement = require("motras_grid_element")
 local Track = require("motras_track")
@@ -37,7 +38,7 @@ describe("Track", function()
         gridY = 2,
     })
     local slot = Slot:new{id = slotId}
-    local gridElement = GridElement:new{slot = slot, grid = Grid:new{}}
+    local gridElement = GridElement:new{slot = slot, grid = Grid:new{horizontalDistance = 40, verticalDistance = 5, baseHeight = 0}}
     local track = Track:new(gridElement)
     track:setEdgeListMap(EdgeListMap:new{edgeLists = edgeLists})
 
@@ -278,6 +279,65 @@ describe("Track", function()
             assert.is_nil(track:getDisplayedDestination())
             track:setOption('displayedDestination', 34)
             assert.are.equal(34, track:getDisplayedDestination())
+        end)
+    end)
+
+    describe("handleTerminals / callTerminalHandling", function ()
+        it ('handles default terminal handling', function ()
+            local stuff = {}
+
+            local addTerminalFunc = function (model, transformation, terminalId)
+                stuff.model = model
+                stuff.transformation = transformation
+                stuff.terminalId = terminalId
+            end
+
+            track:callTerminalHandling(addTerminalFunc, -1)
+
+            assert.are.same({
+                model = c.DEFAULT_PASSENGER_TERMINAL_MODEL,
+                transformation = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track:getAbsoluteX(), track:getAbsoluteY(), -10, 1,
+                },
+                terminalId = 0
+            }, stuff)
+        end)
+        it ('handles terminals', function ()
+            local stuff = {}
+
+            local addTerminalFunc = function (model, transformation, terminalId)
+                stuff.model = model
+                stuff.transformation = transformation
+                stuff.terminalId = terminalId
+            end
+
+            track:handleTerminals(function (addTerminalFunc)
+                addTerminalFunc(
+                    'a_terminal_model', 
+                    {
+                        1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        track:getAbsoluteX(), track:getAbsoluteY(), -8, 1,
+                    },
+                    1
+                )
+            end)
+            track:callTerminalHandling(addTerminalFunc, 1)
+            
+            assert.are.same({
+                model = 'a_terminal_model',
+                transformation = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    track:getAbsoluteX(), track:getAbsoluteY(), -8, 1,
+                },
+                terminalId = 1
+            }, stuff)
         end)
     end)
 end)

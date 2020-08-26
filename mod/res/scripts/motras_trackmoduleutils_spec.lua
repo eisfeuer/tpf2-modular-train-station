@@ -124,6 +124,79 @@ describe('TrackModuleUtils', function ()
         end)
     end)
 
+    describe('assignZigZagToModule', function ()
+        it('generates zigzag module', function ()
+            TestUtils.mockTranslations()
+
+            local track = {
+                yearFrom = 1900,
+                yearTo = 1988,
+                cost = 150,
+                name = 'Third Rails',
+                desc = 'Side Contact',
+                icon = 'third_rails_side_contact.tga',
+                speedLimit = 120,
+            }
+            local trackModule = {
+                availability = {},
+                description = {},
+                order = {},
+                category = {},
+                updateScript = {},
+                getModelsScript = {},
+                cost = {},
+                metadata = {
+                    
+                }
+            }
+
+            TrackModuleUtils.assignZigZagToModule(trackModule, track, 'third_rails_side_contact.lua', true, 2)
+
+            assert.are.same({
+                fileName = 'motras_generic_zigzag_passengers_third_rails_side_contact_catenary.module',
+                availability = {
+                    yearFrom = 1900,
+                    yearTo = 1988,
+                },
+                description = {
+                    name = "Third Rails with_catenary",
+                    description = "zigzag_desc",
+                    icon = "third_rails_side_contact_module_catenary.tga"
+                },
+                type = "motras_track",
+                order = {
+                    value = 100021
+                },
+                category = {
+                    categories = { "zigzags", }
+                },
+                cost = {
+                    price = 72000
+                },
+                updateScript = {
+                    fileName = "construction/station/rail/generic_modules/motras_zigzag_passengers.updateFn",
+                    params = {
+                        trackType = 'third_rails_side_contact.lua',
+                        catenary = true
+                    }
+                },
+                getModelsScript = {
+                    fileName = "construction/station/rail/generic_modules/motras_zigzag_passengers.getModelsFn",
+                    params = {
+						trackType = 'third_rails_side_contact.lua',
+						catenary = true
+					}
+                },
+                metadata = {
+                    motras_electrified = true,
+                    motras_toggleElectrificationTo = "motras_generic_zigzag_passengers_third_rails_side_contact.module",
+                    motras_speedLimit = 120,
+                    motras_zigZag = true
+                }
+            }, trackModule)
+        end)
+    end)
+
     describe('addFenceSlots', function ()
         it ('add slots for fences', function ()
             local expectedSlots = {}

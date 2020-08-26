@@ -30,43 +30,22 @@ function data()
             local tracks = api.res.trackTypeRep.getAll()
             
             for sortIndex, trackFileName in ipairs(tracks) do
-                if trackFileName ~= "standard.lua" and trackFileName ~= "high_speed.lua" then 
-                    local track = api.res.trackTypeRep.get(api.res.trackTypeRep.find(trackFileName))
+                local track = api.res.trackTypeRep.get(api.res.trackTypeRep.find(trackFileName))
 
+                if trackFileName ~= "standard.lua" and trackFileName ~= "high_speed.lua" then 
                     for __, hasCatenary in pairs({false, true}) do
                         local trackModule = api.type.ModuleDesc.new()
                         TrackModuleUtils.assignTrackToModule(trackModule, track, trackFileName, hasCatenary, sortIndex)
                         api.res.moduleRep.add(trackModule.fileName, trackModule, true)
                     end
                 end
+
+                for __, hasCatenary in pairs({false, true}) do
+                    local zigZagModule = api.type.ModuleDesc.new()
+                    TrackModuleUtils.assignZigZagToModule(zigZagModule, track, trackFileName, hasCatenary, sortIndex)
+                    api.res.moduleRep.add(zigZagModule.fileName, zigZagModule, true)
+                end
             end
-
-            -- local styleList = {}
-
-            -- local findStyle = function (styleList, styleName)
-            --     for pos, style in ipairs(styleList) do
-            --         if styleName == style.metadata.name then
-            --             return style
-            --         end
-            --     end
-
-            --     local style = {
-            --         metadata = {
-            --             name = styleName
-            --         }
-            --     }
-            --     table.insert(styleList, style)
-
-            --     return style
-            -- end
-
-            -- for _, moduleFile in pairs(api.res.moduleRep.getAll()) do
-            --     local conModule = api.res.moduleRep.get(api.res.moduleRep.find(moduleFile))
-            --     if conModule.metadata and conModule.metadata.motras_style_group and conModule.metadata.motras_style_type then
-            --         local style = findStyle(styleList, conModule.metadata.motras_style_group)
-            --         style[conModule.metadata.motras_style_type] = moduleFile
-            --     end
-            -- end
 
             local stylelist = Stylelist:new()
             stylelist:collectFromModules()

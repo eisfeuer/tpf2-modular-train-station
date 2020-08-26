@@ -122,6 +122,55 @@ function TrackModuleUtils.assignTrackToModule(trackModule, track, filename, hasC
     }
 end
 
+function TrackModuleUtils.assignZigZagToModule(zigZagModule, track, filename, hasCatenary, sortIndex, isCargo)
+    local zigZagFilenamePart = isCargo and "cargo_" or "passengers_"
+    local electrifiedFilename = 'motras_generic_zigzag_' .. zigZagFilenamePart .. string.gsub(filename, '.lua', '_catenary.module')
+    local notElectrifiedFilename = 'motras_generic_zigzag_' .. zigZagFilenamePart .. string.gsub(filename, '.lua', '.module')
+
+    zigZagModule.fileName = hasCatenary and electrifiedFilename or notElectrifiedFilename
+
+    zigZagModule.availability.yearFrom = track.yearFrom
+    zigZagModule.availability.yearTo = track.yearTo
+
+    zigZagModule.cost.price = math.ceil(track.cost / 75 * 36000)
+
+    zigZagModule.description.name = track.name .. (hasCatenary and (' ' .. _("with_catenary")) or "")
+    zigZagModule.description.description = _('zigzag_desc')
+    zigZagModule.description.icon = track.icon
+
+    if zigZagModule.description.icon and zigZagModule.description.icon ~= "" then
+        zigZagModule.description.icon = string.gsub(zigZagModule.description.icon, ".tga", "")
+        zigZagModule.description.icon = zigZagModule.description.icon .. "_module" .. (hasCatenary and "_catenary" or "") .. ".tga"
+    else
+        zigZagModule.description.icon = 'ui/tracks/' .. string.gsub(filename, '.lua', '.tga')
+    end
+
+    zigZagModule.type = "motras_track"
+    zigZagModule.order.value = 100000 + sortIndex * 10 + (hasCatenary and 1 or 0)
+
+    zigZagModule.category.categories = { "zigzags", }
+
+
+    local zigZagModulePostfix = isCargo and "_cargo" or "_passengers"
+    zigZagModule.updateScript.fileName = "construction/station/rail/generic_modules/motras_zigzag" .. zigZagModulePostfix .. ".updateFn"
+    zigZagModule.updateScript.params = {
+        trackType = filename,
+        catenary = hasCatenary
+    }
+    zigZagModule.getModelsScript.fileName = "construction/station/rail/generic_modules/motras_zigzag" .. zigZagModulePostfix .. ".getModelsFn"
+    zigZagModule.getModelsScript.params = {
+        trackType = filename,
+        catenary = hasCatenary
+    }
+
+    zigZagModule.metadata = {
+        motras_electrified = hasCatenary,
+        motras_toggleElectrificationTo = hasCatenary and notElectrifiedFilename or electrifiedFilename,
+        motras_speedLimit = track.speedLimit,
+        motras_zigZag = true
+    }
+end
+
 function TrackModuleUtils.addFenceSlots(track, slots)
     if not track:hasNeighborTop() then
         track:addAssetSlot(slots, 47, {

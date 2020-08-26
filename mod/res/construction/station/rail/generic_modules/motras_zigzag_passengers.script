@@ -1,0 +1,17 @@
+local TrackModuleUtils = require("motras_trackmoduleutils")
+
+function data()
+    return {
+        updateFn = function(result, transform, tag, slotId, addModelFn, params, closureParams)
+            local track = result.motras:register(slotId)
+            track:handle(function (moduleResult)
+                local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
+                local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())
+                TrackModuleUtils.makeTrack(track, closureParams.trackType, closureParams.catenary, snapLeft, snapRight)
+            end)
+        end,
+        getModelsFn = function()
+            return { }
+        end
+    }
+end

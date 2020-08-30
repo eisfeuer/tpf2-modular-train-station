@@ -33,9 +33,11 @@ function Stylelist:collectFromModules()
 
     for _, moduleFile in pairs(api.res.moduleRep.getAll()) do
         local conModule = api.res.moduleRep.get(api.res.moduleRep.find(moduleFile))
-        if conModule.metadata and conModule.metadata.motras_style_group and conModule.metadata.motras_style_type then
-            local style = self:findStyle(conModule.metadata.motras_style_group)
-            style[conModule.metadata.motras_style_type] = moduleFile
+        if conModule.metadata and conModule.metadata.motras_style_groups and conModule.metadata.motras_style_type then
+            for _, styleGroup in pairs(conModule.metadata.motras_style_groups) do
+                local style = self:findStyle(styleGroup)
+                style[conModule.metadata.motras_style_type] = moduleFile
+            end
         end
     end
 end

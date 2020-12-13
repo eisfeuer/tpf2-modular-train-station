@@ -26,6 +26,10 @@ function data()
             value = 19021,
         },
         metadata = {
+            motras = {
+                theme = "era_c",
+                themeType = "underpass_small",
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId, {underpassFloorHeight = -4.8})

@@ -90,6 +90,10 @@ function data()
             value = 19005,
         },
         metadata = {
+            motras = {
+                theme = "era_c",
+                themeType = "main_building_large"
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId, {groups = {'ug_era_c'}})

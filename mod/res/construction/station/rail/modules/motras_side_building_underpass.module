@@ -29,7 +29,9 @@ function data()
         },
         metadata = {
             motras = {
-                keepFence = true
+                keepFence = true,
+                theme = "era_c",
+                themeType = "side_building_underpass",
             }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)

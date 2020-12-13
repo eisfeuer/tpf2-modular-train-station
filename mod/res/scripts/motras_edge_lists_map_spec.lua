@@ -38,7 +38,7 @@ describe('EdgeListMap', function ()
         type = 'STREET',
         params = {
             type = 'country_small.lua',
-            tram = 'ELECTRIC'
+            tramTrackType = 'ELECTRIC'
         },
         edges = {},
         snapNodes = {},
@@ -89,7 +89,7 @@ describe('EdgeListMap', function ()
                     type = 'STREET',
                     params = {
                         type = 'country_small.lua',
-                        tram = 'ELECTRIC'
+                        tramTrackType = 'ELECTRIC'
                     },
                     edges = {},
                     snapNodes = {},
@@ -153,7 +153,7 @@ describe('EdgeListMap', function ()
                     type = 'STREET',
                     params = {
                         type = 'country_small.lua',
-                        tram = 'ELECTRIC'
+                        tramTrackType = 'ELECTRIC'
                     },
                     edges = {},
                     snapNodes = {},

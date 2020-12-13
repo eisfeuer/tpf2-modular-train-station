@@ -27,6 +27,10 @@ function data()
             value = 19000,
         },
         metadata = {
+            motras = {
+                theme = "era_c",
+                themeType = "side_building_stairs",
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId)

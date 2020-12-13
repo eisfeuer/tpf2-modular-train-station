@@ -101,6 +101,8 @@ function data()
         },
         metadata = {
             motras = {
+                theme = "era_c",
+                themeType = "platform_crossing",
                 platformHeight = 0,
                 isRailroadCrossingAccess = true
             }

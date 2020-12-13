@@ -131,6 +131,10 @@ function data()
             value = 49004,
         },
         metadata = {
+            motras = {
+                theme = "era_c",
+                themeType = "station_number_and_clock",
+            }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local decoration = result.motras:register(slotId)

@@ -46,7 +46,9 @@ function data()
         metadata = {
             platform_roof = true,
             motras = {
-                poleRadius = 0.17
+                poleRadius = 0.17,
+                theme = "era_c",
+                themeType = "roof_special",
             }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)

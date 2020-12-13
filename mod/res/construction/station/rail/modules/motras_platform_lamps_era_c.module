@@ -24,6 +24,8 @@ function data()
         },
         metadata = {
             motras = {
+                theme = "era_c",
+                themeType = "lighting",
                 poleRadius = 0.05
             }
         },

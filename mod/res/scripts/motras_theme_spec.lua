@@ -1,46 +1,67 @@
-local Theme = require('motras_theme')
+local Theme = require("motras_theme")
 
-describe('Theme', function ()
-    describe('getModuleForComponent', function ()
-        it ('returns theme component', function ()
-            local theme = Theme:new{
-                components = {clock = "a_station_clock.mdl"},
-                defaultComponents = {clock = "default_station_clock.mdl"}
+describe("Theme", function ()
+    local theme = Theme:new{
+        theme = {
+            platformLeft = {
+                moduleName = "hamburg_platform_left.module",
+            },
+            metadata = {
+                excludes = { "shelter" }
+            },
+            billboard = {
+                moduleName = "billboard.module"
             }
+        },
+        defaultTheme = {
+            platformLeft = {
+                moduleName = "platform_left.module",
+            },
+            platformRight = {
+                moduleName = "platform_right.module",
+            },
+            shelter = {
+                moduleName = "shelter.module",
+            },
+            schedule = {
+                moduleName = "schedule.module"
+            },
+            metadata = {}
+        }
+    }
 
-            assert.are.equal("a_station_clock.mdl", theme:getModuleForComponent('clock'))
+    describe("get", function ()
+        it ("returns theme module", function ()
+            assert.are.equal("hamburg_platform_left.module", theme:get("platformLeft"))
+        end)    
+
+        it ("returns default when module is not available in given theme", function ()
+            assert.are.equal("platform_right.module", theme:get("platformRight"))
+        end)
+    end)
+
+    describe("has", function ()
+        it ("checks whether there is a module for given theme type", function ()
+            assert.is_true(theme:has("platformLeft"))
+            assert.is_false(theme:has("platformIsland"))
         end)
 
-        it('returns default theme component', function ()
-            local theme = Theme:new{
-                components = {},
-                defaultComponents = {clock = "default_station_clock.mdl"}
-            }
+        it ("returns false when given theme type is excluded", function ()
+            assert.is_false(theme:has("shelter"))
+        end)
+    end)
 
-            assert.are.equal("default_station_clock.mdl", theme:getModuleForComponent('clock'))
+    describe("getWithAlternative", function ()
+        it ("returns module", function ()
+            assert.are.equal("billboard.module", theme:getWithAlternative("billboard", "schedule"))
         end)
 
-        it('returns alternative', function ()
-            local theme = Theme:new{
-                components = {clock = "a_station_clock.mdl"},
-                defaultComponents = {clock = "default_station_clock.mdl", destination_display = "destination_display.mdl"}
-            }
-
-            assert.are.equal("a_station_clock.mdl", theme:getModuleForComponentOrAlternative('destination_display', 'clock', false))
-            assert.are.equal("destination_display.mdl", theme:getModuleForComponentOrAlternative('destination_display', 'clock', true))
+        it ("returns alternative module", function ()
+            assert.are.equal("billboard.module", theme:getWithAlternative("schedule", "billboard"))
         end)
 
-        it('checks whether current theme has component', function ()
-            local theme = Theme:new{
-                components = {clock = "a_station_clock.mdl"},
-                defaultComponents = {clock = "default_station_clock.mdl", destination_display = "destination_display.mdl"}
-            }
-
-            assert.is_true(theme:hasComponent('clock'))
-            assert.is_false(theme:hasComponent('destination_display'))
-
-            assert.is_true(theme:hasComponent('destination_display', true))
+        it ("returns alternative default", function ()
+            assert.are.equal("schedule.module", theme:getWithAlternative("infoboard", "schedule"))
         end)
-        
     end)
 end)

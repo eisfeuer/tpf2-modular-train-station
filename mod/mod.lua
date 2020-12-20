@@ -119,7 +119,11 @@ function data()
 
             -- Assign script files
             motrasStation.createTemplateScript.fileName = "construction/station/rail/motras.createTemplateFn"
-            motrasStation.createTemplateScript.params = {themes = themeRepository:getRepositoryTable(), defaultTheme = themeRepository:getDefaultTheme() }
+            motrasStation.createTemplateScript.params = {
+                tracks = trackRepository:getRepositoryTable(),
+                themes = themeRepository:getRepositoryTable(),
+                defaultTheme = themeRepository:getDefaultTheme()
+            }
         end
     }
     end

@@ -13,6 +13,8 @@ function ThroughStation:new(o)
     o = o or {}
     o.params = o.params or {}
 
+    print(require("inspect")(o.params))
+
     setmetatable(o, self)
     self.__index = self
 
@@ -103,8 +105,11 @@ function ThroughStation:isOppositeEntranceEnabled()
 end
 
 -- Themes
-
 function ThroughStation:getDefaultThemeComponents()
+    if self.params.capturedParams.defaultTheme then
+        return self.params.capturedParams.defaultTheme
+    end
+
     return {
         benches_and_trashbin = 'station/rail/modules/motras_decoration_benches_and_trashbin_era_c.module',
         clock_ceiling_mounted = 'station/rail/modules/motras_clock_era_c_ceiling_mounted.module',
@@ -128,8 +133,8 @@ end
 function ThroughStation:getTheme()
     if not self.theme then
         self.theme = Theme:new{
-            components = self:getComponents(),
-            defaultComponents = self:getDefaultThemeComponents()
+            theme = self:getComponents(),
+            defaultTheme = self:getDefaultThemeComponents()
         }
     end
     
@@ -139,16 +144,19 @@ end
 -- Tracks
 
 function ThroughStation:getTrackModule(trackType, catenary)
-    if trackType > 0 then
-        if catenary > 0 then
-            return 'station/rail/modules/motras_track_train_high_speed_catenary.module'
-        end
-        return 'station/rail/modules/motras_track_train_high_speed.module'
-    end
+    local trackModules = self.params.capturedParams.tracks
 
-    if catenary > 0 then
+    if catenary then
+        if trackModules and trackModules[0] and trackModules[1][trackType + 1] then
+            return trackModules[1] and trackModules[1][trackType + 1]
+        end
         return 'station/rail/modules/motras_track_train_normal_catenary.module'
     end
+
+    if trackModules and trackModules[0] and trackModules[0][trackType + 1] then
+        return trackModules[0] and trackModules[0][trackType + 1]
+    end
+
     return 'station/rail/modules/motras_track_train_normal.module'
 end
 
@@ -353,43 +361,43 @@ function ThroughStation:placeRoof(platformBlueprint)
     if platformBlueprint:getGridX() == 0 and self:getHorizontalSize() % 2 == 1 then
         if self:getHorizontalSize() > 4 then
             platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33, function(decorationBlueprint)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 2)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 4)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('platform_number_truss_mounted'), 3) 
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 2)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 4)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('platform_number_truss_mounted'), 3) 
 
-                if self:getTheme():hasComponent('speakers_truss_mounted') then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('speakers_truss_mounted'), 1)
+                if self:getTheme():has('speakers_truss_mounted') then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('speakers_truss_mounted'), 1)
                 end
             end)
         else
             platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 2)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 4)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('platform_number_truss_mounted'), 3) 
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 2)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 4)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('platform_number_truss_mounted'), 3) 
 
-                if self:getTheme():hasComponent('speakers_truss_mounted') then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('speakers_truss_mounted'), 1)
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('speakers_truss_mounted'), 5)
+                if self:getTheme():has('speakers_truss_mounted') then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('speakers_truss_mounted'), 1)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('speakers_truss_mounted'), 5)
                 end
 
                 if not platformBlueprint:isSidePlatformTop() and (platformBlueprint:isSidePlatformBottom() or self:getPlatformVerticalSize() < 2 or platformBlueprint:hasIslandPlatformSlots()) then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('clock_ceiling_mounted'), 5)
-                    if self:getTheme():getModuleForComponent('camera_ceiling_mounted') then
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 3)
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 7)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('clock_ceiling_mounted'), 5)
+                    if self:getTheme():get('camera_ceiling_mounted') then
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 3)
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 7)
                     end
-                    if self:getTheme():getModuleForComponent('destination_display_ceiling_mounted') then
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 1)
+                    if self:getTheme():get('destination_display_ceiling_mounted') then
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 1)
                     end
                 end
                 if not platformBlueprint:isSidePlatformBottom() and (platformBlueprint:isSidePlatformTop() or self:getPlatformVerticalSize() < 2 or not platformBlueprint:hasIslandPlatformSlots()) then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('clock_ceiling_mounted'), 6)
-                    if self:getTheme():getModuleForComponent('camera_ceiling_mounted') then
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 4)
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 8)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('clock_ceiling_mounted'), 6)
+                    if self:getTheme():get('camera_ceiling_mounted') then
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 4)
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 8)
                     end
-                    if self:getHorizontalSize() > 1 and self:getTheme():hasComponent('destination_display_ceiling_mounted') then
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 2)
+                    if self:getHorizontalSize() > 1 and self:getTheme():has('destination_display_ceiling_mounted') then
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 2)
                     end
                 end
             end)
@@ -400,20 +408,20 @@ function ThroughStation:placeRoof(platformBlueprint)
 
     if self:getHorizontalSize() > 4 and platformBlueprint:getRelativeHorizontalDistanceToCenter() < self:getHorizontalSize() * 0.15 then
         platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c_curved.module', 33, function(decorationBlueprint)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 2)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 4)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('platform_number_and_clock_truss_mounted'), 3) 
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 2)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 4)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('platform_number_and_clock_truss_mounted'), 3) 
 
-            if self:getTheme():hasComponent('speakers_truss_mounted') then
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('speakers_truss_mounted'), 1)
+            if self:getTheme():has('speakers_truss_mounted') then
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('speakers_truss_mounted'), 1)
             end
 
-            if hasDestinationDisplay and self:getTheme():hasComponent('destination_display_ceiling_mounted') then
+            if hasDestinationDisplay and self:getTheme():has('destination_display_ceiling_mounted') then
                 if not platformBlueprint:isSidePlatformTop() and (platformBlueprint:isSidePlatformBottom() or self:getPlatformVerticalSize() < 2 or platformBlueprint:hasIslandPlatformSlots()) then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 1)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 1)
                 end
                 if not platformBlueprint:isSidePlatformBottom() and (platformBlueprint:isSidePlatformTop() or self:getPlatformVerticalSize() < 2 or not platformBlueprint:hasIslandPlatformSlots()) then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 2)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 2)
                 end
             end
         end)
@@ -426,43 +434,43 @@ function ThroughStation:placeRoof(platformBlueprint)
             and platformBlueprint:getRelativeHorizontalDistanceToCenter() + 1 > self:getHorizontalSize() * 0.35
 
         platformBlueprint:addAsset(t.ROOF, 'station/rail/modules/motras_roof_era_c.module', 33, function(decorationBlueprint)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 2)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('station_name_sign_truss_mounted'), 4)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('platform_number_truss_mounted'), 3) 
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 2)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('station_name_sign_truss_mounted'), 4)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('platform_number_truss_mounted'), 3) 
 
-            if self:getTheme():hasComponent('speakers_truss_mounted') then
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('speakers_truss_mounted'), 1)
+            if self:getTheme():has('speakers_truss_mounted') then
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('speakers_truss_mounted'), 1)
                 if isEndOfRoof then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('speakers_truss_mounted'), 5)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('speakers_truss_mounted'), 5)
                 end
             end
 
             if not platformBlueprint:isSidePlatformTop() and (platformBlueprint:isSidePlatformBottom() or self:getPlatformVerticalSize() < 2 or platformBlueprint:hasIslandPlatformSlots()) then
-                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('clock_ceiling_mounted'), 5)
-                if self:getTheme():getModuleForComponent('camera_ceiling_mounted') then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 3)
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 7)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('clock_ceiling_mounted'), 5)
+                if self:getTheme():get('camera_ceiling_mounted') then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 3)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 7)
                 end
 
-                if hasDestinationDisplay and self:getTheme():hasComponent('destination_display_ceiling_mounted') then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 1)
+                if hasDestinationDisplay and self:getTheme():has('destination_display_ceiling_mounted') then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 1)
                 end
-                if self:getTheme():hasComponent('destination_display_ceiling_mounted') and isEndOfRoof and not platformBlueprint:isInEveryNthSegmentFromCenter(2) then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 9)
+                if self:getTheme():has('destination_display_ceiling_mounted') and isEndOfRoof and not platformBlueprint:isInEveryNthSegmentFromCenter(2) then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 9)
                 end
             end
             if not platformBlueprint:isSidePlatformBottom() and (platformBlueprint:isSidePlatformTop() or self:getPlatformVerticalSize() < 2 or not platformBlueprint:hasIslandPlatformSlots()) then
-                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('clock_ceiling_mounted'), 6)
-                if self:getTheme():getModuleForComponent('camera_ceiling_mounted') then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 4)
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('camera_ceiling_mounted'), 8)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('clock_ceiling_mounted'), 6)
+                if self:getTheme():get('camera_ceiling_mounted') then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 4)
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('camera_ceiling_mounted'), 8)
                 end
 
-                if hasDestinationDisplay and self:getTheme():hasComponent('destination_display_ceiling_mounted') then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 2)
+                if hasDestinationDisplay and self:getTheme():has('destination_display_ceiling_mounted') then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 2)
                 end
-                if self:getTheme():hasComponent('destination_display_ceiling_mounted') and isEndOfRoof and not platformBlueprint:isInEveryNthSegmentFromCenter(2) then
-                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():getModuleForComponent('destination_display_ceiling_mounted'), 10)
+                if self:getTheme():has('destination_display_ceiling_mounted') and isEndOfRoof and not platformBlueprint:isInEveryNthSegmentFromCenter(2) then
+                    decorationBlueprint:decorate(t.ASSET_DECORATION_CEILING_MOUNTED, self:getTheme():get('destination_display_ceiling_mounted'), 10)
                 end
             end
         end)
@@ -471,13 +479,13 @@ function ThroughStation:placeRoof(platformBlueprint)
 
     if self:getPlatformVerticalSize() > 1 and platformBlueprint:isIslandPlatform() then
         if platformBlueprint:hasIslandPlatformSlots() then
-            platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('lamps'), 46, function(decorationBlueprint)
-                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('platform_number_truss_mounted'), 3) 
+            platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('lamps'), 46, function(decorationBlueprint)
+                decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('platform_number_truss_mounted'), 3) 
             end)
         end
     else
-        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('lamps'), 45, function(decorationBlueprint)
-            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():getModuleForComponent('platform_number_truss_mounted'), 3) 
+        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('lamps'), 45, function(decorationBlueprint)
+            decorationBlueprint:decorate(t.ASSET_DECORATION_TRUSS_MOUNTED, self:getTheme():get('platform_number_truss_mounted'), 3) 
         end)
     end
 end
@@ -487,43 +495,43 @@ function ThroughStation:placeDecoration(platformBlueprint)
         if platformBlueprint:hasIslandPlatformSlots() then
             if platformBlueprint:horizontalSizeIsEven() then
                 if platformBlueprint:getGridX() == -1 then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 41)
-                    if self:getTheme():hasComponent('ticket_validator') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 42)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 41)
+                    if self:getTheme():has('ticket_validator') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 42)
                     end
-                    if self:getTheme():hasComponent('ticket_mashine') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_mashine'), 44)
+                    if self:getTheme():has('ticket_mashine') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_mashine'), 44)
                     end
                 elseif platformBlueprint:getGridX() == 0 then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 44)
-                    if self:getTheme():hasComponent('ticket_validator') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 43)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 44)
+                    if self:getTheme():has('ticket_validator') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 43)
                     end
-                    if self:getTheme():hasComponent('infoboard_large') or self:getTheme():hasComponent('infoboard') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponentOrAlternative('infoboard_large', 'infoboard'), 41)
+                    if self:getTheme():has('infoboard_large') or self:getTheme():has('infoboard') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getWithAlternative('infoboard_large', 'infoboard'), 41)
                     end
                 else
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 42)
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 43)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 42)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 43)
                 end
             elseif platformBlueprint:getGridX() ~= 0 then
-                platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 42)
-                platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 43)
+                platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 42)
+                platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 43)
 
-                if self:getTheme():hasComponent('ticket_validator') then
+                if self:getTheme():has('ticket_validator') then
                     if platformBlueprint:getGridX() == -1 then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 44)
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 44)
                     end
                     if platformBlueprint:getGridX() == 1 then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 41)
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 41)
                     end
                 end
             else
-                if self:getTheme():hasComponent('ticket_mashine') then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_mashine'), 42)
+                if self:getTheme():has('ticket_mashine') then
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_mashine'), 42)
                 end
-                if self:getTheme():hasComponent('infoboard_large') or self:getTheme():hasComponent('infoboard') then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponentOrAlternative('infoboard_large', 'infoboard'), 43)
+                if self:getTheme():has('infoboard_large') or self:getTheme():has('infoboard') then
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getWithAlternative('infoboard_large', 'infoboard'), 43)
                 end
             end
         end
@@ -531,42 +539,42 @@ function ThroughStation:placeDecoration(platformBlueprint)
         if self:blocksNotStationEntrance(platformBlueprint) then
             if platformBlueprint:horizontalSizeIsEven() then
                 if platformBlueprint:getGridX() == -1 then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 37)
-                    if self:getTheme():hasComponent('ticket_validator') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 38)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 37)
+                    if self:getTheme():has('ticket_validator') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 38)
                     end
-                    if self:getTheme():hasComponent('ticket_mashine') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_mashine'), 40)
+                    if self:getTheme():has('ticket_mashine') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_mashine'), 40)
                     end
                 elseif platformBlueprint:getGridX() == 0 then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 40)
-                    if self:getTheme():hasComponent('ticket_validator') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 39)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 40)
+                    if self:getTheme():has('ticket_validator') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 39)
                     end
-                    if self:getTheme():hasComponent('infoboard_large') or self:getTheme():hasComponent('infoboard') then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponentOrAlternative('infoboard_large', 'infoboard'), 37)
+                    if self:getTheme():has('infoboard_large') or self:getTheme():has('infoboard') then
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getWithAlternative('infoboard_large', 'infoboard'), 37)
                     end
                 else
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 38)
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 39)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 38)
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 39)
                 end
             elseif platformBlueprint:getGridX() ~= 0 then
-                if self:getTheme():hasComponent('ticket_validator') then
+                if self:getTheme():has('ticket_validator') then
                     if platformBlueprint:getGridX() == -1 then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 40)
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 40)
                     end
                     if platformBlueprint:getGridX() == 1 then
-                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_validator'), 37)
+                        platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_validator'), 37)
                     end
                 end
-                platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 38)
-                platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('benches_and_trashbin'), 39)
+                platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 38)
+                platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('benches_and_trashbin'), 39)
             else
-                if self:getTheme():hasComponent('ticket_mashine') then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponent('ticket_mashine'), 38)
+                if self:getTheme():has('ticket_mashine') then
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():get('ticket_mashine'), 38)
                 end
-                if self:getTheme():hasComponent('infoboard_large') or self:getTheme():hasComponent('infoboard') then
-                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getModuleForComponentOrAlternative('infoboard_large', 'infoboard'), 39)
+                if self:getTheme():has('infoboard_large') or self:getTheme():has('infoboard') then
+                    platformBlueprint:addAsset(t.DECORATION, self:getTheme():getWithAlternative('infoboard_large', 'infoboard'), 39)
                 end
             end
         end
@@ -611,33 +619,33 @@ function ThroughStation:placeBuilding(platformBlueprint)
             if platformBlueprint:getGridX() == building.gridX then
                 platformBlueprint:addAsset(t.BUILDING, building.module, building.slot, function (decorationBlueprint)
                     if building.decoration == 'logo_small' then
-                        if self:getTheme():hasComponent('logo_small_wall_mounted') then
-                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getModuleForComponent('logo_small_wall_mounted'), 1)
+                        if self:getTheme():has('logo_small_wall_mounted') then
+                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():get('logo_small_wall_mounted'), 1)
                             return
                         end
 
-                        if self:getTheme():hasComponent('logo_wall_mounted') then
-                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getModuleForComponent('logo_wall_mounted'), 1)
+                        if self:getTheme():has('logo_wall_mounted') then
+                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():get('logo_wall_mounted'), 1)
                             return
                         end
 
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getModuleForComponentOrAlternative('clock_small_wall_mounted', 'clock_wall_mounted'), 1)
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getWithAlternative('clock_small_wall_mounted', 'clock_wall_mounted'), 1)
                         return
                     end
 
                     if building.decoration == 'clock_large' then
-                        if self:getTheme():hasComponent('central_station_sign_wall_mounted') then
-                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getModuleForComponentOrAlternative('clock_large_wall_mounted', 'clock_wall_mounted'), 1)
+                        if self:getTheme():has('central_station_sign_wall_mounted') then
+                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getWithAlternative('clock_large_wall_mounted', 'clock_wall_mounted'), 1)
                         end
                         return
                     end
 
                     if building.decoration == 'central_station' then
-                        if self:getTheme():hasComponent('central_station_sign_wall_mounted') then
-                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getModuleForComponent('central_station_sign_wall_mounted'), 1)
+                        if self:getTheme():has('central_station_sign_wall_mounted') then
+                            decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():get('central_station_sign_wall_mounted'), 1)
                             return
                         end
-                        decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getModuleForComponentOrAlternative('clock_large_wall_mounted', 'clock_wall_mounted'), 1)
+                        decorationBlueprint:decorate(t.ASSET_DECORATION_WALL_MOUNTED, self:getTheme():getWithAlternative('clock_large_wall_mounted', 'clock_wall_mounted'), 1)
                     end
                 end)
             end

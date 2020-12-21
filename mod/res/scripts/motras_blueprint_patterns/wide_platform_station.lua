@@ -20,10 +20,14 @@ function WidePlatformStationPattern:getHorizontalRange()
     return -math.floor(self.horizontalSize / 2), math.floor(self.horizontalSize / 2)
 end
 
+
 function WidePlatformStationPattern:getTypeAndModule(gridX, gridY)
     local positionInSection = (self.trackCount - 1 - gridY) % 4
+    local primaryPlatformIndex = self.preferIslandPlatforms and 1 or 3
+    local secondaryPlatformIndex = self.preferIslandPlatforms and 2 or 0
 
-    if positionInSection == 3 then
+
+    if positionInSection == primaryPlatformIndex then
         local options = {}
         if gridY > -self.trackCount then
             options.hasIslandPlatformSlots = true
@@ -31,7 +35,7 @@ function WidePlatformStationPattern:getTypeAndModule(gridX, gridY)
         return t.PLATFORM, self.platformModule, options
     end
 
-    if positionInSection == 0 then
+    if positionInSection == secondaryPlatformIndex then
         return t.PLATFORM, self.platformModule, {}
     end
 

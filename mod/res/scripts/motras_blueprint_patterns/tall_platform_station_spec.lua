@@ -34,6 +34,30 @@ describe('TallPlatformStationPattern', function ()
             assertGridTypeAndModule(2, t.TRACK, 'track.module', pattern:getTypeAndModule(0, 2))
             assertGridTypeAndModule(3, t.PLATFORM, 'platform.module', pattern:getTypeAndModule(0, 3))
         end)
+
+        it ('it returns grid types and modules (prefer island even)', function ()
+            local pattern = TallPlatformStationPattern:new{trackModule = 'track.module', platformModule = 'platform.module', trackCount = 4, horizontalSize = 1, preferIslandPlatforms = true}
+
+            assertGridTypeAndModule(-3, t.TRACK, 'track.module', pattern:getTypeAndModule(0, -3))
+            assertGridTypeAndModule(-2, t.PLATFORM, 'platform.module', pattern:getTypeAndModule(0, -2))
+            assertGridTypeAndModule(-1, t.TRACK, 'track.module', pattern:getTypeAndModule(0, -1))
+            assertGridTypeAndModule(0, t.TRACK, 'track.module', pattern:getTypeAndModule(0, 0))
+            assertGridTypeAndModule(1, t.PLATFORM, 'platform.module', pattern:getTypeAndModule(0, 1))
+            assertGridTypeAndModule(2, t.TRACK, 'track.module', pattern:getTypeAndModule(0, 2))
+        end)
+
+        it ('it returns grid types and modules (prefer island odd)', function ()
+            local pattern = TallPlatformStationPattern:new{trackModule = 'track.module', platformModule = 'platform.module', trackCount = 5, horizontalSize = 1, preferIslandPlatforms = true}
+
+            assertGridTypeAndModule(-4, t.PLATFORM, 'platform.module', pattern:getTypeAndModule(0, -4))
+            assertGridTypeAndModule(-3, t.TRACK, 'track.module', pattern:getTypeAndModule(0, -3))
+            assertGridTypeAndModule(-2, t.TRACK, 'track.module', pattern:getTypeAndModule(0, -2))
+            assertGridTypeAndModule(-1, t.PLATFORM, 'platform.module', pattern:getTypeAndModule(0, -1))
+            assertGridTypeAndModule(0, t.TRACK, 'track.module', pattern:getTypeAndModule(0, 0))
+            assertGridTypeAndModule(1, t.TRACK, 'track.module', pattern:getTypeAndModule(0, 1))
+            assertGridTypeAndModule(2, t.PLATFORM, 'platform.module', pattern:getTypeAndModule(0, 2))
+            assertGridTypeAndModule(3, t.TRACK, 'track.module', pattern:getTypeAndModule(0, 3))
+        end)
     end)
 
     describe('getVerticalRange', function ()

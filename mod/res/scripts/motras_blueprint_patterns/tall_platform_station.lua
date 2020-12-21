@@ -24,10 +24,22 @@ function TallPlatformStationPattern:getHorizontalRange()
     return -math.floor(self.horizontalSize / 2), math.floor(self.horizontalSize / 2)
 end
 
+function TallPlatformStationPattern:getPlatformIndex()
+    if not self.preferIslandPlatforms then
+        return 0
+    end
+
+    if self.trackCount % 2 == 0 then
+        return 2
+    end
+
+    return 1
+end
+
 function TallPlatformStationPattern:getTypeAndModule(gridX, gridY)
     local bottomGridY, topGridY = self:getVerticalRange()
     
-    local isPlatform = (topGridY - gridY) % 3 == 0
+    local isPlatform = (topGridY - gridY) % 3 == self:getPlatformIndex()
     local gridType = isPlatform and t.PLATFORM or t.TRACK
     local moduleName = isPlatform and self.platformModule or self.trackModule
 

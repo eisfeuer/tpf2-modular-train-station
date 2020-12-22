@@ -15,6 +15,12 @@ function data()
             {
                 node = {
                     children = {
+                        {
+                            materials = { "station/rail/cargo/cargo_station_concrete_1.mtl", },
+                            mesh = "station/rail/motras/railroad_crossing_concrete_1435_lod0.msh",
+                            name = "railroad_crossing_concrete_lod0",
+                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+                        },
                         -- {
                         --     materials = { "station/rail/era_c/era_c_trainstation_assets.mtl", },
                         --     mesh = "station/rail/asset/era_c_street_pillar/era_a_street_pillar_lod0.msh",
@@ -182,18 +188,12 @@ function data()
                         --         0, 1.0, 0.6, 1,
                         --     },
                         -- },
-                        {
-                            materials = { "station/rail/cargo/cargo_station_concrete_1.mtl", },
-                            mesh = "station/rail/motras/luggage_platform_tall_lod0.msh",
-                            name = "luggage_platform_tall_lod0",
-                            transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
-                        },
 
                     },
                     name = "RootNode",
                     transf = { 
-                        0, 1, 0, 0,
-                        -1, 0, 0, 0,
+                        0, -1, 0, 0,
+                        1, 0, 0, 0,
                         0, 0, 1, 0,
                         0, 0, 0.0, 1
                     },

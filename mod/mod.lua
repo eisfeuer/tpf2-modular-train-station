@@ -79,7 +79,7 @@ function data()
 
             -- Import Themes
             local modulesInGame = api.res.moduleRep.getAll()
-            local themeRepository = ThemeRepository:new{defaultTheme = 'era_c', paramName = _("modutram_theme"), tooltip = _("modutram_theme_tooltip")}
+            local themeRepository = ThemeRepository:new{defaultTheme = 'era_c', paramName = _("motras_theme"), tooltip = _("motras_theme_tooltip")}
 
             for _, moduleFileName in ipairs(modulesInGame) do
                 local module = api.res.moduleRep.get(api.res.moduleRep.find(moduleFileName))

@@ -1,8 +1,5 @@
 function data()
     return {
-      da = {
-        ["motras_menu_name"] = "Katze",
-      },
       en = {
         ["truss_mountable"] = "Can be mounted on truss, lamps or pillars",
         ["wall_mountable"] = "Can be mounted on walls",
@@ -40,7 +37,8 @@ function data()
         ["default_platform_height"] = "Tranport Fever 2 Default (270)",
         ["motras_use_track_ids"] = "track numbers for tracks without platforms",
         ["motras_menu_name"] = "Advanced modern station",
-        ["motras_menu_desc"] = "Advanced modern vanilla station with adjustable platform height and decoration modules",
+        ["motras_menu_desc"] = "Advanced modern vanilla station with adjustable platform height and decoration modules.",
+        ["motras_menu_desc_2"] = "Commuter station with island platforms and underpass.",
         ["motras_mod_desc"] = "This package contains the MOTRAS core logic and the advanced modern vanilla station.",
         ["with_catenary"] = "with Catenary",
         ["manual_placement"] = "Press m or n to select placement (Automatic, Left Side, Right Side, Both Sides).",
@@ -57,6 +55,13 @@ function data()
         ["platform_without_functionality"] = "This platform is only decoration and has no functionality",
         ["luggage_platform_tall"] = "Tall luggage or maintenance platform",
         ["motras_theme"] = "Appearance / Corporate Identity",
+        ["zigzag_desc"] = "Track module with fake stop.\nPassengers cannot enter or leave trains.",
+        ["platform_access_for_railroad_crossing"] = "Railroad crossing connection platform",
+        ["platform_access_for_railroad_crossing_desc"] = "Platform height will automatically adjust to connectet platform modules.",
+        ["railroad_crossing"] = "Railroad Crossing",
+        ["railroad_crossing_desc"] = "To connect with a platform use the railroad crossing platform module\nTo connect with a street use the side entrance module.",
+        ["side_entrance_underpass_desc"] = "Underpass street access\nCan be placed on platform or track modules.",
+        ["side_entrance_desc"] = "Street access\nCan be placed on platform as stairs or track modules as platform crossing entrance."
       },
       de = {
         ["truss_mountable"] = "Befestigung an Trägern, Säulen oder Lampen",
@@ -96,6 +101,7 @@ function data()
         ["motras_use_track_ids"] = "Gleisnummern für Gleise ohne Bahnsteig",
         ["motras_menu_name"] = "Verbesserter moderner Bahnhof",
         ["motras_menu_desc"] = "Verbesserter moderner Vanilla-Bahnhof mit anpassbarer Bahnsteighöhe und Deko-Modulen.",
+        ["motras_menu_desc_2"] = "S- oder Regionalbahnhof mit bevorzugt Inselbahnsteigen.",
         ["MOTRAS Base Kit"] = "MOTRAS Basisset",
         ["motras_mod_desc"] = "Dieses Paket beinhaltet die Kernlogik von MOTRAS, sowie den verbesserten modernen Vanilla-Bahnhof.",
         ["with_catenary"] = "mit Oberleitung",
@@ -112,7 +118,14 @@ function data()
         ["placeable_on_tracks"] = "Auf/An Gleisen platzierbar",
         ["platform_without_functionality"] = "Dieser Bahnsteig dient nur zur Dekoration und hat keinerlei Funktion",
         ["luggage_platform_tall"] = "Schmaler Gepäck-/Wartungsbahnsteig",
-        ["motras_theme"] = "Aussehen / Corporate Identity"
+        ["motras_theme"] = "Aussehen / Corporate Identity",
+        ["zigzag_desc"] = "Gleis mit Fake-Stop\nPassagieren können den Zug nicht besteigen oder verlassen.",
+        ["platform_access_for_railroad_crossing"] = "Anschlussbahnsteig für Bahnübergang",
+        ["platform_access_for_railroad_crossing_desc"] = "Bahnsteighöhe wird automatisch an die benachbarten Bahnsteigmodule angepasst.",
+        ["railroad_crossing"] = "Bahnübergang",
+        ["railroad_crossing_desc"] = "Benutze den Anschlussbahnsteig um den Bahnübergang an einen Bahnsteig anzuschließen\nBenutze den Seiteneingang um den Bahnübergang an eine Straße anzuschließen.",
+        ["side_entrance_underpass_desc"] = "Straßenanschluss für Unterführung\nKann an Bahnsteigen und Gleisen platziert.",
+        ["side_entrance_desc"] = "Straßenzugang\nKann als Treppe an einen Bahnsteig und als Anschluss für eine BÜ an ein Gleis angeschlossen werden.",
       },
     }
 end

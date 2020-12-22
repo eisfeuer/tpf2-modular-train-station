@@ -16,8 +16,8 @@ function data()
         },
         description = {
             name = _("Side entrance"),
-            description = _("Street access for passengers and cargo."),
-            icon = "ui/construction/station/rail/modular_station/stairs.tga"
+            description = _("side_entrance_underpass_desc"),
+            icon = "ui/construction/station/rail/motras/building_underpass_1.tga"
         }, 
         availability = {
             yearFrom = 1980,

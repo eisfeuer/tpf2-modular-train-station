@@ -15,7 +15,7 @@ function data()
         },
         description = {
             name = _("Side entrance"),
-            description = _("Street access for passengers and cargo."),
+            description = _("side_entrance_desc"),
             icon = "ui/construction/station/rail/modular_station/stairs.tga"
         }, 
         availability = {

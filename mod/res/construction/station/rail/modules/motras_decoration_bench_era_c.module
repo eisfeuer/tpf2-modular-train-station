@@ -24,7 +24,10 @@ function data()
         metadata = {
             motras = {
                 theme = "era_c",
-                themeType = "bench"
+                themeType = "bench",
+                themeTranslations = {
+                    era_c = "Epoche C"
+                }
             }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)

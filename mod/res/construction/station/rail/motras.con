@@ -109,7 +109,7 @@ function data()
                 },
                 description = {
                     name = _('motras_menu_name'),			
-                    description = _('motras_menu_desc'),
+                    description = _('motras_menu_desc_2'),
                     icon = "ui/construction/station/rail/motras/template_2.tga"
                 },
                 data = {

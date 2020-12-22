@@ -88,8 +88,8 @@ function data()
         },
         description = {
             name = _("platform_access_for_railroad_crossing"),
-		    description = _("270mm"),
-            icon = "ui/construction/station/rail/motras/platform_270_era_c.tga"
+		    description = _("platform_access_for_railroad_crossing"),
+            icon = "ui/construction/station/rail/motras/platform_crossing_era_c.tga"
         }, 
         availability = {
             yearFrom = 1980,
@@ -97,7 +97,7 @@ function data()
         },
         type = "motras_platform",
         order = {
-            value = 10270,
+            value = 19000,
         },
         metadata = {
             motras = {

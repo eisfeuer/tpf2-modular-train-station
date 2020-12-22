@@ -78,7 +78,7 @@ function TrackRepository:getConstructionParams()
 
             table.insert(params, {
                 key = "trackType",
-                name = _("trackType"),
+                name = _("Track type"),
                 values = values,
                 uiType = "COMBOBOX",
                 defaultIndex = 0,

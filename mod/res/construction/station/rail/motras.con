@@ -100,6 +100,77 @@ function data()
                         },
                     }
                 }
+            }, {
+                type = 'DYNAMIC',
+                constructionType = 'RAIL_STATION',
+                availability = {
+                    yearFrom = 0,
+                    yearTo = 0
+                },
+                description = {
+                    name = _('motras_menu_name'),			
+                    description = _('motras_menu_desc'),
+                    icon = "ui/construction/station/rail/motras/template_2.tga"
+                },
+                data = {
+                    params = {
+                        {
+                            key = "motras_tracks",
+                            name = _("Tracks"),
+                            values = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"),  _("9"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18") },
+                            defaultIndex = 0,
+                        },
+                        UgParamUtils.makeTrackTypeParam(),
+                        UgParamUtils.makeTrackCatenaryParam(),
+                        {
+                            key = "motras_length",
+                            name = _("length_in_m"),
+                            uiType = "COMBOBOX",
+                            values = { _("40"), _("80"), _("120"), _("160"), _("200"), _("240"), _("280"), _("320"), _("360"), _("400"), _("440"), _("480") },
+                            defaultIndex = 3,
+                        },
+                        {
+                            key = "motras_platform_width",
+                            name = _("platform_width"),
+                            values = { _("platform_width_tall"), _("platform_width_wide") },
+                            defaultIndex = 0
+                        },
+                        {
+                            key = "motras_platform_height",
+                            uiType = "COMBOBOX",
+                            name = _("platform_height_in_mm"),
+                            values = { _("default_platform_height"), _("200"), _("250"), _("350"), _("380"), _("550"), _("580"), _("635"), _("680"), _("730"), _("760"), _("840"), _("900"), _("915"), _("920"), _("960"), _("1060"), _("1080"), _("1100"), _("1150"), _("1219"), _("1250")},
+                            defaultIndex = 0
+                        },
+                        {
+                            key = "motras_middle_platform_station_building",
+                            name = _("Building"),
+                            values = { _("No"), _("Yes")},
+                            defaultIndex = 1
+                        },
+                        {
+                            key = "motras_fence_platform",
+                            uiType = "COMBOBOX",
+                            name = _("fence_or_wall_platform"),
+                            values = { _("motras_no_fence"), _("metal_wall"), _("railing"), _("noise_barrier"), _("mesh_wire_fence") },
+                            defaultIndex = 1
+                        },
+                        {
+                            key = "motras_fence_track",
+                            uiType = "COMBOBOX",
+                            name = _("fence_or_wall_track"),
+                            values = { _("motras_no_fence"), _("metal_wall"), _("railing"), _("noise_barrier"), _("mesh_wire_fence") },
+                            defaultIndex = 0
+                        },
+                        {
+                            key = "motras_opposite_entrance",
+                            uiType = "CHECKBOX",
+                            name = _("opposite_entrance"),
+                            values = {"0", "1"},
+                            defaultIndex = 0
+                        },
+                    }
+                }
             }
         },
         createTemplateFn = function(params)

@@ -1,8 +1,13 @@
 local ThroughStationTemplate = require('motras_templates.through_station')
+local MiddlePlatformStation = require('motras_templates.middle_platform_station')
 
 function data()
     return {
         createTemplateFn = function(params)
+            if params.templateIndex == 1 then
+                return MiddlePlatformStation:new{params = params}:toTpf2Template()
+            end
+
             return ThroughStationTemplate:new{params = params}:toTpf2Template()
         end,
     }

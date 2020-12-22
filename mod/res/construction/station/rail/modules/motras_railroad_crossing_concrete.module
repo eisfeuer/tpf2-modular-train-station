@@ -15,18 +15,18 @@ function data()
 		    icon = "ui/construction/station/rail/motras/luggage_platform_tall.tga"
         }, 
         availability = {
-            yearFrom = 1980,
-            yearTo = 0
+            yearFrom = 1800,
+            yearTo = 1801
         },
         type = "motras_railroad_crossing",
         order = {
             value = 89001,
         },
         metadata = {
-            motras = {
-                theme = "era_c",
-                themeType = "railroad_crossing",
-            }
+            -- motras = {
+            --     theme = "era_c",
+            --     themeType = "railroad_crossing",
+            -- }
         },
         updateFn = function(result, transform, tag, slotId, addModelFn, params)
             local asset = result.motras:register(slotId)

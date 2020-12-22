@@ -4,6 +4,8 @@ function data()
     return {
         updateFn = function(result, transform, tag, slotId, addModelFn, params, closureParams)
             local track = result.motras:register(slotId)
+            TrackModuleUtils.addBasicTrackSlots(track, result.slots)
+            
             track:handle(function (moduleResult)
                 local snapLeft = not track:getGrid():has(track:getGridX() - 1, track:getGridY())
                 local snapRight = not track:getGrid():has(track:getGridX() + 1, track:getGridY())

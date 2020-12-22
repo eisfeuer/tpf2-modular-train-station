@@ -14,6 +14,10 @@ function TallPlatformStationPattern:getVerticalRange()
     local gridRowCount = platformCount + self.trackCount
 
     local bottomGridY = math.floor(gridRowCount / 2) * -1
+
+    if self.preferIslandPlatforms and self.trackCount % 2 == 0 then
+        return bottomGridY, bottomGridY + gridRowCount - 2
+    end
     return bottomGridY, bottomGridY + gridRowCount - 1
 end
 
@@ -27,10 +31,6 @@ end
 function TallPlatformStationPattern:getPlatformIndex()
     if not self.preferIslandPlatforms then
         return 0
-    end
-
-    if self.trackCount % 2 == 0 then
-        return 2
     end
 
     return 1
